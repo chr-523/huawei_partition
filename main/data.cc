@@ -1,6 +1,6 @@
 #include "data.h"
 
-/*jiabian*/
+/*add_edge*/
 void EdgeList::add_edge(){
 
 }

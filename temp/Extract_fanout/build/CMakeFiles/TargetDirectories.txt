@@ -1,0 +1,8 @@
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/CMakeFiles/edit_cache.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/CMakeFiles/rebuild_cache.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/CMakeFiles/verilogparser.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/CMakeFiles/edit_cache.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/CMakeFiles/rebuild_cache.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/test/CMakeFiles/test_verilog_bison.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/test/CMakeFiles/edit_cache.dir
+/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/test/CMakeFiles/rebuild_cache.dir

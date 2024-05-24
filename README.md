@@ -1,7 +1,18 @@
-<<<<<<< HEAD
+```cpp
+output形式：
+module (名 +换行+pin 名)
+    (pin 名 + in/out)
+    net 只有名
+    assigment 两个点 映射成线
+    instance (1) module 类 名 口
+    instance (2) gate 类 名 口
+    	其中
+    		口 -> 口名(连线)
+    	or	口 -> 带group线的 思考下怎么拆
+  
+```
 # huawei_4
 huawei_4
-=======
 2024.05.22
 
 
@@ -141,4 +152,3 @@ $$
 {RF}=\frac{\sum^p_{k=1}\abs{V(P_k)}}{\abs{V}}
 $$
 
->>>>>>> a7d180b (main)

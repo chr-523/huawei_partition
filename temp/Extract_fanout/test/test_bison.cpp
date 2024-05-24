@@ -43,7 +43,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
 
     virtual void verilog_instance_cbk(std::string const& macro_name, std::string const& inst_name, std::vector<VerilogParser::NetPin> const& vNetPin)
         {
-			 outfile << __func__ << " => " << macro_name << ", " << inst_name << ", ";  
+			 outfile << "instance" << " => " << macro_name << ", " << inst_name << ", ";  
             for (std::vector<VerilogParser::NetPin>::const_iterator it = vNetPin.begin(); it != vNetPin.end(); ++it)
             {
                 if (it->net == "VerilogParser::CONSTANT_NET")
@@ -69,16 +69,16 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
     
     virtual void verilog_pin_declare_cbk(std::string const& pin_name, unsigned type, VerilogParser::Range const& range)
     {
-         outfile << __func__ << " => " << pin_name << " " << type << endl;
+         outfile << "pin" << " => " << pin_name << " " << type << endl;
     }
     
     virtual void verilog_assignment_cbk(std::string const& target_name, VerilogParser::Range const& target_range, std::string const& source_name, VerilogParser::Range const& source_range)
     {
-         outfile << __func__ << " => " << target_name << " => " << source_name  <<  endl;
+         outfile << "assigment" << " => " << target_name << " => " << source_name  <<  endl;
     }
 
     virtual void verilog_net_declare_cbk(std::string const& net_name, VerilogParser::Range const& range){
-         outfile << __func__ << " => " << net_name << endl;
+         outfile << "net" << " => " << net_name << endl;
     }
 
     virtual void verilog_modules_cbk(){

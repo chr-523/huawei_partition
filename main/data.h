@@ -36,9 +36,9 @@ From verilog to output.txt. (limbo)
                 or
             {PIN} = pin({group:(net)(net)...})pin(net)...
         
-From output to my database.
+From output to my database. (Function)
 
-    instance type = gate
+    instance (type = gate)
     -> name  -> is_clk + index
     -> pin(net) -> connect net
     
@@ -67,11 +67,17 @@ private:
 class Vertex{
 public: // Initialization
     // Direct initialization
-    Vertex():vertex_index(-1), vertex_weight(default_vertex_weight), vertex_data(LogicGate().get_is_clk_gate(), LogicGate().get_gate_index()){};
+    Vertex():   vertex_index(-1), vertex_weight(default_vertex_weight), vertex_data(false,-1){};
+                /*vertex_data(LogicGate().get_is_clk_gate(), LogicGate().get_gate_index())*/
+    Vertex(vertex_index_type index, weight_type vertex_weight, bool is_clk){
+        this->vertex_index=index;
+        this->vertex_weight=vertex_weight;
+        this->vertex_data={is_clk,index};
+    };
     //
     Vertex(){};
     
-    // Initialize with LogicGate
+    // Initialize with LogicGate (no use)
     Vertex( const vertex_index_type& vertex_index, const LogicGate& vertex_data):
             vertex_index(vertex_index), 
             vertex_weight(vertex_data.get_weight_gate()), 

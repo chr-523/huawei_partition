@@ -162,6 +162,7 @@ general_name_array: NAME {
 /* wire_pin_cbk will be called before module_instance_cbk */
 param2: '.' NAME '(' NAME ')' {driver.wire_pin_cbk(*$4, *$2); delete $2; delete $4;}
       | '.' NAME '(' NAME range ')' {driver.wire_pin_cbk(*$4, *$2, *$5); delete $2; delete $4; delete $5;}
+      /*it has!!!*/
       | '.' NAME '(' ')' {delete $2;} /* allow floating pin */
       | '.' NAME '(' BIT_MASK ')' {driver.wire_pin_cbk($4.bits, $4.value, *$2); delete $2;} 
       | '.' NAME '(' OCT_MASK ')' {driver.wire_pin_cbk($4.bits, $4.value, *$2); delete $2;} 

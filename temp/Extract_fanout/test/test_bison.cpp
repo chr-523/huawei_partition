@@ -55,21 +55,39 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                      outfile << it->pin << "(" << it->net << " {";
                     for (std::vector<VerilogParser::GeneralName>::const_iterator itn = it->extension.vNetName->begin(); itn != it->extension.vNetName->end(); ++itn)
                     {
-                         outfile << "(" << itn->name << ")" ;
+                         //aaa
+                         outfile << "(" << itn->name ;//<< ")" ;
+                         if (itn->range.low < 0)
+                         {
+                        //  outfile << itn->name;
+                         }
+                         else{
+                         outfile <<"->[" << itn->range.low << ":" << itn->range.high << "]";
+                         }
+                         outfile << ")";
+                         
                     }
-                     outfile << "} " << ")";
+                     outfile << "}" << ")";
                 }
                 else 
                 {
-                     outfile << it->pin << "(" << it->net << ")";
+                     outfile << it->pin << "(--" << it->net << "--)";
+                    //  outfile << it->pin << "(" << it->range.low<<":"<<it->range.high<< ")";
                 }
             }
              outfile << endl;
         }
     
     virtual void verilog_pin_declare_cbk(std::string const& pin_name, unsigned type, VerilogParser::Range const& range)
-    {
+    {       
          outfile << "pin" << " => " << pin_name << " " << type << endl;
+         if ( range.low < 0 ){
+            outfile << "pin" << " => " << pin_name << " " << type << endl;
+         }
+         else{
+            outfile << "pin" << " => " << pin_name << " => is " << range.low << " to " << range.high << " " << type << endl;
+         }
+         
     }
     
     virtual void verilog_assignment_cbk(std::string const& target_name, VerilogParser::Range const& target_range, std::string const& source_name, VerilogParser::Range const& source_range)
@@ -78,7 +96,13 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
     }
 
     virtual void verilog_net_declare_cbk(std::string const& net_name, VerilogParser::Range const& range){
-         outfile << "net" << " => " << net_name << endl;
+         outfile << "net" << " => " << net_name << endl;         
+         if ( range.low < 0 ){
+            outfile << "net" << " => " << net_name << " " << endl;
+         }
+         else{
+            outfile << "net" << " => " << net_name << " => is " << range.low << " to " << range.high << " " << endl;
+         }
     }
 
     virtual void verilog_modules_cbk(){

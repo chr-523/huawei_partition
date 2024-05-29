@@ -1,8 +1,8 @@
 #include<vector>
 #include<list>
-#include<deque> // to be choosen
+#include<deque>
 #include<queue>
-#include<tuple>
+#include<tuple> // to be choosen
 
 #include<map>
 #include<string>
@@ -14,8 +14,10 @@
 #define weight_type float
 // Afterwards, these can be used int8_t, int16_t, ...
 #define module_index_type int
-#define edge_offset_type int
 #define vertex_index_type int   
+#define edge_index_type int
+#define edge_offset_type int
+#define name_type std::string
 // unuseful
 #define wire_index_type int
 
@@ -30,75 +32,53 @@ From verilog to output.txt. (limbo)
     'module' -> (module_name + \n +pin_name)
         'pin' -> pin_name + 1/2 (in or out)
         'net' -> net_name
-        'assigment' -> point1 point2 (need to add net)
+        'assigment' -> vertex1 vertex2 (need to add net)
         instance -> type name {PIN}
             {PIN} = pin(net)pin(net)...pin(net)
                 or
             {PIN} = pin({group:(net)(net)...})pin(net)...
         
-From output to my database. (Function)
+From output to my database. (These orders are important.)
 
-    instance (type = gate)
-    -> name  -> is_clk + index
-    -> pin(net) -> connect net
+    module module_name pin_name
+        module_name -> graph_name
+        
+    net net_name -> Edge
+    name -> name + index
+         -> adj = offset = None
+
+    pin pin_name + 1/2 -> Edge
+    name -> (1/2+name) + index
+         -> adj = offset = None
+         
+    instance (type = gate) -> vertex
+    -> name -> is_clk + index
+    -> pin(net) -> edge adj+offset (connect_net)
+
+    // instance (type = module) -> sub_graph
+    // -> name  -> index
+    // -> pin(net) -> edge adj+offset (connect_net)
+
+
+    assigment vertex1 vertex2 (instance's pin)
+        -> Edge index
+        -> adj = v_1+v_2 offset~
     
 */
 
-class Graph{
-public:
-    Graph(){};
-    ~Graph(){};
-    module_index_type get_module_index() const { return module_index; };
-    weight_type get_module_weight() const { return module_weight; };
-    std::tuple<bool,vertex_index_type> get_module_data() const { return module_data; }
-    std::list<Vertex> get_vertex() const { return vertex; }
-    std::list<Graph*> get_subgraph() const { return subgraph; }
-    std::list<EdgeList> get_edge_list() const { return edge_list; }
-protected:
-private:
-    module_index_type module_index;
-    weight_type module_weight;    // depend on how many and what gate it remain
-    std::tuple<bool,vertex_index_type> module_data;   // verse vertex_data type:= <isclk?,index>
-    std::list<Vertex> vertex; // vertex_list -> index, is_clk, weight
-    std::list<Graph*> subgraph; // subgraph_list -> index, weight
-    std::list<EdgeList> edge_list; // -> offset + adj
+struct Range 
+{
+    int low;
+    int high;
+    Range() {low = high = -1;}
+    Range(int l, int h) : low(l), high(h) {}
 };
 
-class Vertex{
-public: // Initialization
-    // Direct initialization
-    Vertex():   vertex_index(-1), vertex_weight(default_vertex_weight), vertex_data(false,-1){};
-                /*vertex_data(LogicGate().get_is_clk_gate(), LogicGate().get_gate_index())*/
-    Vertex(vertex_index_type index, weight_type vertex_weight, bool is_clk){
-        this->vertex_index=index;
-        this->vertex_weight=vertex_weight;
-        this->vertex_data={is_clk,index};
-    };
-    //
-    Vertex(){};
-    
-    // Initialize with LogicGate (no use)
-    Vertex( const vertex_index_type& vertex_index, const LogicGate& vertex_data):
-            vertex_index(vertex_index), 
-            vertex_weight(vertex_data.get_weight_gate()), 
-            vertex_data( vertex_data.get_is_clk_gate() , vertex_data.get_gate_index() ){};
-    ~Vertex(){};
-public: // Function
-
-    vertex_index_type get_vertex_index() const { return vertex_index; };
-    std::tuple<bool,vertex_index_type> get_vertex_data() const { return vertex_data; };
-protected:
-private:
-    vertex_index_type vertex_index;
-    weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise.(default 1)
-    std::tuple<bool,vertex_index_type> vertex_data;   // := <isclk?,index>
-    //which net it connevt?
-    //input/output graph? Is this need?
-};
-
-class EdgeList{
+class Edge{
 /*
-    Edge_list Infromation:
+    Edge Infromation:
+        edge_name
+        edge_index
         adjacency_array
         offset_array
     Function：
@@ -108,23 +88,108 @@ class EdgeList{
     | 0	   \ /    4 |		2---+--1--+---5
     | 2    |1|      |		3--/      
     |_3____/ \____5_|	
-        adjacency_array：[0,1,2,3,1,4,5]
-        offset_array:[(0,4),(4,3),(6,0)]    
+name:e_0    index: 0                    name:e_1    index: 1
+        adjacency_array：[0,1,2,3]      adjacency_array：[1,4,5]
+        offset_array:(0,4)              offset_array:(0,3) 
 */
 public: // Initialization
-    EdgeList(): offset_array(0,0){};
-    ~EdgeList(){};
-public: // Function
-    std::tuple<int,int> get_offset_array() const { return offset_array; }
-    vertex_index_type get_adjacency_array() const { return adjacency_array; }
-
+    Edge():edge_index(-1), /*adjacency_array(NULL), */offset_array(0,-1){};
+    Edge(edge_index_type edge_index):edge_index(edge_index), range(), offset_array(0,-1){};
+    ~Edge(){};
+public: // function
     void add_edge(){};
+    void connect_net(){};
+public: // get_function
+    // std::string get_name() const { return edge_name; };
+    edge_index_type get_edge_index() const { return edge_index; } 
+    std::tuple<int,int> get_offset_array() const { return offset_array; }
+    std::vector<vertex_index_type> get_adjacency_array() const { return adjacency_array; }
 protected:
-private:
-    vertex_index_type adjacency_array;
+private:// data
+    // name_type edge_name; // for distinguish between single and multiple strands of wire
+    Range range;
+    edge_index_type edge_index;
+    std::vector<vertex_index_type> adjacency_array;
     std::tuple<edge_offset_type,edge_offset_type> offset_array;
 };
 
+class Vertex{
+/*    
+    Vertex Infromation:
+        <is_clk,index>
+    Function：
+
+    |-e0-\     /-e1-|		0--\       /--4
+    | 0	   \ /    4 |		2---+--1--+---5
+    | 2    |1|      |		3--/      
+    |_3____/ \____5_|
+    v_0 index: 0            v_1 index: 1
+        data: <true,0>          data: <false,1>
+    
+*/
+public: // Initialization
+
+    // Direct initialization
+    Vertex(): vertex_weight(default_vertex_weight), vertex_data(false,-1){};
+    Vertex(vertex_index_type index, weight_type vertex_weight, bool is_clk){
+        /*this -> vertex_index    = index;*/
+        this -> vertex_weight   = vertex_weight;
+        this -> vertex_data     = {is_clk,index};
+    };
+    ~Vertex(){};
+public:
+public: // get_Function
+    weight_type get_vertex_weight() const { return vertex_weight; }
+    std::list<edge_index_type> get_connect_edge() const { return connect_edgelist; };
+    std::tuple<bool,vertex_index_type> get_vertex_data() const { return vertex_data; };
+protected:
+private:
+    // name_type vertex_name;  
+    weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise.(default 1)
+    std::list<edge_index_type> connect_edgelist;
+    std::tuple<bool,vertex_index_type> vertex_data;   // := <isclk?,index>
+    
+};
+
+class Graph{
+/*
+big graph
+    |-e0-\     /-e1-|
+    | 1	   \ /   (1)|
+    |(0)  |0,3|  (2)|
+    |_2____/ \____4_|
+small = (0)(1)(2)
+    |-e0-\     /-e1-|		0--\       /--4
+    | 0	   \ /    4 |		2---+--1--+---5
+    | 2    |1|      |		3--/      
+    |_3____/ \____5_|
+*/
+public:
+    Graph(){};
+    ~Graph(){};
+public:
+public:
+    name_type get_module_name() const { return module_name; };
+    module_index_type get_module_index() const { return module_index; };
+    weight_type get_module_weight() const { return module_weight; };
+    // std::list<name_type> get_multi_edge_list() const { return multi_edge_list; };
+    std::tuple<bool,vertex_index_type> get_module_data() const { return module_data; }
+    std::list<Vertex> get_vertex() const { return vertex; }
+    std::list<Graph*> get_subgraph() const { return subgraph; }
+    std::list<Edge> get_edge_list() const { return edge_list; }
+protected:
+private:
+    name_type module_name;
+    module_index_type module_index;
+    weight_type module_weight;    // depend on how many and what gate it remain
+    // std::list<name_type> multi_edge_list; //std::unordered_set?
+    std::tuple<bool,vertex_index_type> module_data;   // verse vertex_data type:= <isclk?,index>
+    std::list<Vertex> vertex; // vertex_list -> index, is_clk, weight
+    std::list<Graph*> subgraph; // subgraph_list -> index, weight
+    std::list<Edge> edge_list; // -> offset + adj
+};
+
+/* CLASS VERTEX_OLD
 class Vertex_old{
 public:
     Vertex_old():vertex_index(0),vertex_data( LogicGate() ){};
@@ -139,11 +204,13 @@ private:
     vertex_index_type vertex_index;
     LogicGate vertex_data;
 };
-
-class LogicGate{
-/*
-    Previously used as a parser, may now be abandoned.
 */
+
+/* CLASS LOGICGATE
+class LogicGate{
+
+    Previously used as a parser, may now be abandoned.
+
 public:
     LogicGate():is_clk(false), gate_index(-1), 
                 weight_gate(1.0), name_gate("Unknown"), type_gate("Unknown"), 
@@ -169,25 +236,27 @@ public:
     std::vector<vertex_index_type> get_output_gate_list() const { return output_gate_list; };
 protected:
 private:
-    /* Related to the competition question,*/
+    // Related to the competition question,
     bool is_clk;    // Determine if it is the starting/ending point of the timing path.
     vertex_index_type gate_index;
-    /*The remaining information is is just information from Verilog*/
+    //The remaining information is is just information from Verilog
     weight_type weight_gate;
     std::string name_gate;
     std::string type_gate;
     std::vector<vertex_index_type> input_gate_list;
     std::vector<vertex_index_type> output_gate_list;
 };
+*/
 
+/* CLASS WIRE
 class Wire{
-/*  Store net information
-wire    n1, ... n199, ... n142, ... n222,...
-    nand2_1 U519 ( .A(n119), .B(n142), .Y(n222) );
-    nand2_1 U524 ( .A(n119), .B(n142), .Y(n225) ); */
+//   Store net information
+// wire    n1, ... n199, ... n142, ... n222,...
+//     nand2_1 U519 ( .A(n119), .B(n142), .Y(n222) );
+//     nand2_1 U524 ( .A(n119), .B(n142), .Y(n225) ); 
 
-    // std::tuple<std::string, wire_index_type, std::tuple<int ,int>> wire;
-    // maybe this can be used instead of class
+//     // std::tuple<std::string, wire_index_type, std::tuple<int ,int>> wire;
+//     // maybe this can be used instead of class (or struct)
 public:
     Wire(): name("n142"), wire_index(142), pin2pin{519,524}{};
     Wire(const std::string& name, const wire_index_type& wire_index, const std::vector<vertex_index_type>& pin2pin):
@@ -203,4 +272,4 @@ private:
     wire_index_type wire_index;
     std::vector<vertex_index_type> pin2pin;
 };
-
+*/

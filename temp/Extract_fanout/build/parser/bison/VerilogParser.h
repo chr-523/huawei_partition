@@ -204,7 +204,7 @@ namespace VerilogParser {
     /// Symbol semantic values.
     union value_type
     {
-#line 52 "VerilogParser.yy"
+#line 53 "VerilogParser.yy"
 
     int integerVal;
     std::string* stringVal;

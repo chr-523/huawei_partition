@@ -74,7 +74,12 @@ void Driver::module_instance_cbk(std::string const& macro_name, std::string cons
 
 void Driver::wire_pin_cbk(std::string& net_name, std::string& pin_name, Range const& range)
 {
-	m_vNetPin.push_back(NetPin(net_name, pin_name, range));
+    // std::cout << net_name << " " << pin_name << " " << range.low << " " << range.high << std::endl; 
+	// m_vNetPin.emplace_back(net_name, pin_name, range);
+    // std::cout << "emplace_back" << std::endl; //test
+    m_vNetPin.push_back(NetPin(net_name, pin_name, range));
+    std::cout << m_vNetPin.back().net << " " << m_vNetPin.back().pin << " " << m_vNetPin.back().range.low << " " << m_vNetPin.back().range.high << std::endl; 
+
 }
 void Driver::wire_pin_cbk(int bits, int value, std::string& pin_name)
 {

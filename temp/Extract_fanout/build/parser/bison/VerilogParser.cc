@@ -45,15 +45,16 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <iostream>
 
 
-#line 51 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 52 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
 
 
 #include "VerilogParser.h"
 
 // Second part of user prologue.
-#line 112 "VerilogParser.yy"
+#line 113 "VerilogParser.yy"
 
 
 #include "VerilogDriver.h"
@@ -66,7 +67,7 @@
 #define yylex driver.lexer->lex
 
 
-#line 70 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 71 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
 
 
 
@@ -159,7 +160,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace VerilogParser {
-#line 163 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 164 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
 
   /// Build a parser object.
   Parser::Parser (class Driver& driver_yyarg)
@@ -369,21 +370,21 @@ namespace VerilogParser {
     switch (yysym.kind ())
     {
       case symbol_kind::S_NAME: // NAME
-#line 105 "VerilogParser.yy"
+#line 106 "VerilogParser.yy"
                     {delete (yysym.value.stringVal);}
-#line 375 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 376 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
         break;
 
       case symbol_kind::S_range: // range
-#line 106 "VerilogParser.yy"
+#line 107 "VerilogParser.yy"
                     {delete (yysym.value.rangeVal);}
-#line 381 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 382 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
         break;
 
       case symbol_kind::S_general_name_array: // general_name_array
-#line 108 "VerilogParser.yy"
+#line 109 "VerilogParser.yy"
                     {delete (yysym.value.generalNameArrayVal);}
-#line 387 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 388 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
         break;
 
       default:
@@ -520,13 +521,13 @@ namespace VerilogParser {
 
 
     // User initialization code.
-#line 37 "VerilogParser.yy"
+#line 38 "VerilogParser.yy"
 {
     // initialize the initial location object
     yyla.location.begin.filename = yyla.location.end.filename = &driver.streamname;
 }
 
-#line 530 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 531 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
 
 
     /* Initialize the stack.  The initial state will be set in
@@ -662,280 +663,280 @@ namespace VerilogParser {
           switch (yyn)
             {
   case 2: // range: '[' NUM ':' NUM ']'
-#line 129 "VerilogParser.yy"
+#line 130 "VerilogParser.yy"
                            {(yylhs.value.rangeVal) = new Range ((yystack_[3].value.integerVal), (yystack_[1].value.integerVal));}
-#line 668 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 669 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 3: // range: '[' NUM ']'
-#line 130 "VerilogParser.yy"
+#line 131 "VerilogParser.yy"
                    {(yylhs.value.rangeVal) = new Range (std::numeric_limits<int>::min(), (yystack_[1].value.integerVal));}
-#line 674 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 675 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 4: // general_name_array: NAME
-#line 134 "VerilogParser.yy"
+#line 135 "VerilogParser.yy"
                          {
           (yylhs.value.generalNameArrayVal) = new GeneralNameArray(1, GeneralName(*(yystack_[0].value.stringVal)));
           delete (yystack_[0].value.stringVal);
         }
-#line 683 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 684 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 5: // general_name_array: BIT_MASK
-#line 138 "VerilogParser.yy"
+#line 139 "VerilogParser.yy"
                    {
           (yylhs.value.generalNameArrayVal) = new GeneralNameArray(1, GeneralName((yystack_[0].value.mask).value));
         }
-#line 691 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 692 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 6: // general_name_array: NAME range
-#line 141 "VerilogParser.yy"
+#line 142 "VerilogParser.yy"
                      {
           (yylhs.value.generalNameArrayVal) = new GeneralNameArray(1, GeneralName(*(yystack_[1].value.stringVal), (yystack_[0].value.rangeVal)->low, (yystack_[0].value.rangeVal)->high));
           delete (yystack_[1].value.stringVal);
           delete (yystack_[0].value.rangeVal); 
         }
-#line 701 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 702 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 7: // general_name_array: general_name_array ',' BIT_MASK
-#line 146 "VerilogParser.yy"
+#line 147 "VerilogParser.yy"
                                           {
             (yystack_[2].value.generalNameArrayVal)->push_back(GeneralName((yystack_[0].value.mask).value));
             (yylhs.value.generalNameArrayVal) = (yystack_[2].value.generalNameArrayVal);
         }
-#line 710 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 711 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 8: // general_name_array: general_name_array ',' NAME
-#line 150 "VerilogParser.yy"
+#line 151 "VerilogParser.yy"
                                       {
             (yystack_[2].value.generalNameArrayVal)->push_back(GeneralName(*(yystack_[0].value.stringVal)));
             delete (yystack_[0].value.stringVal);
             (yylhs.value.generalNameArrayVal) = (yystack_[2].value.generalNameArrayVal);
         }
-#line 720 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 721 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 9: // general_name_array: general_name_array ',' NAME range
-#line 155 "VerilogParser.yy"
+#line 156 "VerilogParser.yy"
                                             {
             (yystack_[3].value.generalNameArrayVal)->push_back(GeneralName(*(yystack_[1].value.stringVal), (yystack_[0].value.rangeVal)->low, (yystack_[0].value.rangeVal)->high));
             delete (yystack_[1].value.stringVal);
             delete (yystack_[0].value.rangeVal); 
             (yylhs.value.generalNameArrayVal) = (yystack_[3].value.generalNameArrayVal);
         }
-#line 731 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 732 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 10: // param2: '.' NAME '(' NAME ')'
-#line 163 "VerilogParser.yy"
+#line 164 "VerilogParser.yy"
                               {driver.wire_pin_cbk(*(yystack_[1].value.stringVal), *(yystack_[3].value.stringVal)); delete (yystack_[3].value.stringVal); delete (yystack_[1].value.stringVal);}
-#line 737 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 738 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 11: // param2: '.' NAME '(' NAME range ')'
-#line 164 "VerilogParser.yy"
+#line 165 "VerilogParser.yy"
                                     {driver.wire_pin_cbk(*(yystack_[2].value.stringVal), *(yystack_[4].value.stringVal), *(yystack_[1].value.rangeVal)); delete (yystack_[4].value.stringVal); delete (yystack_[2].value.stringVal); delete (yystack_[1].value.rangeVal);}
-#line 743 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 744 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 12: // param2: '.' NAME '(' ')'
-#line 166 "VerilogParser.yy"
+#line 167 "VerilogParser.yy"
                          {delete (yystack_[2].value.stringVal);}
-#line 749 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 750 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 13: // param2: '.' NAME '(' BIT_MASK ')'
-#line 167 "VerilogParser.yy"
+#line 168 "VerilogParser.yy"
                                   {driver.wire_pin_cbk((yystack_[1].value.mask).bits, (yystack_[1].value.mask).value, *(yystack_[3].value.stringVal)); delete (yystack_[3].value.stringVal);}
-#line 755 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 756 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 14: // param2: '.' NAME '(' OCT_MASK ')'
-#line 168 "VerilogParser.yy"
+#line 169 "VerilogParser.yy"
                                   {driver.wire_pin_cbk((yystack_[1].value.mask).bits, (yystack_[1].value.mask).value, *(yystack_[3].value.stringVal)); delete (yystack_[3].value.stringVal);}
-#line 761 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 762 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 15: // param2: '.' NAME '(' DEC_MASK ')'
-#line 169 "VerilogParser.yy"
+#line 170 "VerilogParser.yy"
                                   {driver.wire_pin_cbk((yystack_[1].value.mask).bits, (yystack_[1].value.mask).value, *(yystack_[3].value.stringVal)); delete (yystack_[3].value.stringVal);}
-#line 767 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 768 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 16: // param2: '.' NAME '(' HEX_MASK ')'
-#line 170 "VerilogParser.yy"
+#line 171 "VerilogParser.yy"
                                   {driver.wire_pin_cbk((yystack_[1].value.mask).bits, (yystack_[1].value.mask).value, *(yystack_[3].value.stringVal)); delete (yystack_[3].value.stringVal);}
-#line 773 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 774 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 17: // param2: '.' NAME '(' '{' general_name_array '}' ')'
-#line 171 "VerilogParser.yy"
+#line 172 "VerilogParser.yy"
                                                     {driver.wire_pin_cbk(*(yystack_[2].value.generalNameArrayVal), *(yystack_[5].value.stringVal)); delete (yystack_[5].value.stringVal); delete (yystack_[2].value.generalNameArrayVal);}
-#line 779 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 780 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 18: // param2: '.' NAME '(' '{' general_name_array ',' '}' ')'
-#line 172 "VerilogParser.yy"
+#line 173 "VerilogParser.yy"
                                                         {driver.wire_pin_cbk(*(yystack_[3].value.generalNameArrayVal), *(yystack_[6].value.stringVal)); delete (yystack_[6].value.stringVal); delete (yystack_[3].value.generalNameArrayVal);}
-#line 785 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 786 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 19: // param3: INPUT general_name_array
-#line 175 "VerilogParser.yy"
+#line 176 "VerilogParser.yy"
                                  {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT); delete (yystack_[0].value.generalNameArrayVal);}
-#line 791 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 792 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 20: // param3: INPUT range general_name_array
-#line 176 "VerilogParser.yy"
+#line 177 "VerilogParser.yy"
                                        {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT, *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 797 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 798 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 21: // param3: INPUT REG range general_name_array
-#line 177 "VerilogParser.yy"
+#line 178 "VerilogParser.yy"
                                            {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT|kREG, *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 803 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 804 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 22: // param3: INPUT REG general_name_array
-#line 178 "VerilogParser.yy"
+#line 179 "VerilogParser.yy"
                                      {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT|kREG); delete (yystack_[0].value.generalNameArrayVal);}
-#line 809 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 810 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 23: // param3: OUTPUT general_name_array
-#line 179 "VerilogParser.yy"
+#line 180 "VerilogParser.yy"
                                   {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kOUTPUT); delete (yystack_[0].value.generalNameArrayVal);}
-#line 815 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 816 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 24: // param3: OUTPUT range general_name_array
-#line 180 "VerilogParser.yy"
+#line 181 "VerilogParser.yy"
                                         {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kOUTPUT, *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 821 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 822 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 25: // param3: OUTPUT REG range general_name_array
-#line 181 "VerilogParser.yy"
+#line 182 "VerilogParser.yy"
                                             {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kOUTPUT|kREG, *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 827 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 828 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 26: // param3: OUTPUT REG general_name_array
-#line 182 "VerilogParser.yy"
+#line 183 "VerilogParser.yy"
                                       {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kOUTPUT|kREG); delete (yystack_[0].value.generalNameArrayVal);}
-#line 833 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 834 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 27: // param3: INOUT general_name_array
-#line 183 "VerilogParser.yy"
+#line 184 "VerilogParser.yy"
                                  {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT|kOUTPUT); delete (yystack_[0].value.generalNameArrayVal);}
-#line 839 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 840 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 28: // param3: INOUT range general_name_array
-#line 184 "VerilogParser.yy"
+#line 185 "VerilogParser.yy"
                                        {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT|kOUTPUT, *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 845 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 846 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 29: // param3: INOUT REG range general_name_array
-#line 185 "VerilogParser.yy"
+#line 186 "VerilogParser.yy"
                                            {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT|kOUTPUT|kREG, *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 851 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 852 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 30: // param3: INOUT REG general_name_array
-#line 186 "VerilogParser.yy"
+#line 187 "VerilogParser.yy"
                                      {driver.pin_declare_cbk(*(yystack_[0].value.generalNameArrayVal), kINPUT|kOUTPUT|kREG); delete (yystack_[0].value.generalNameArrayVal);}
-#line 857 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 858 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 31: // param4: REG general_name_array
-#line 189 "VerilogParser.yy"
+#line 190 "VerilogParser.yy"
                                {delete (yystack_[0].value.generalNameArrayVal);}
-#line 863 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 864 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 32: // param4: REG range general_name_array
-#line 190 "VerilogParser.yy"
+#line 191 "VerilogParser.yy"
                                      {delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 869 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 870 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 33: // param5: WIRE general_name_array
-#line 193 "VerilogParser.yy"
+#line 194 "VerilogParser.yy"
                                 {driver.wire_declare_cbk(*(yystack_[0].value.generalNameArrayVal)); delete (yystack_[0].value.generalNameArrayVal);}
-#line 875 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 876 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 34: // param5: WIRE range general_name_array
-#line 194 "VerilogParser.yy"
+#line 195 "VerilogParser.yy"
                                       {driver.wire_declare_cbk(*(yystack_[0].value.generalNameArrayVal), *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 881 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 882 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 35: // param5: TRI general_name_array
-#line 195 "VerilogParser.yy"
+#line 196 "VerilogParser.yy"
                                 {driver.wire_declare_cbk(*(yystack_[0].value.generalNameArrayVal)); delete (yystack_[0].value.generalNameArrayVal);}
-#line 887 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 888 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 36: // param5: TRI range general_name_array
-#line 196 "VerilogParser.yy"
+#line 197 "VerilogParser.yy"
                                       {driver.wire_declare_cbk(*(yystack_[0].value.generalNameArrayVal), *(yystack_[1].value.rangeVal)); delete (yystack_[1].value.rangeVal); delete (yystack_[0].value.generalNameArrayVal);}
-#line 893 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 894 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 37: // module_declare: MODULE NAME '(' ')' ';'
-#line 200 "VerilogParser.yy"
+#line 201 "VerilogParser.yy"
                                                     {driver.module_name_cbk(*(yystack_[3].value.stringVal), GeneralNameArray()); delete (yystack_[3].value.stringVal);}
-#line 899 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 900 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 38: // module_declare: MODULE NAME '(' general_name_array ')' ';'
-#line 201 "VerilogParser.yy"
+#line 202 "VerilogParser.yy"
                                                            {driver.module_name_cbk(*(yystack_[4].value.stringVal), *(yystack_[2].value.generalNameArrayVal)); delete (yystack_[4].value.stringVal); delete (yystack_[2].value.generalNameArrayVal);}
-#line 905 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 906 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 39: // module_declare: MODULE NAME '(' INPUT general_name_array ',' OUTPUT general_name_array ')' ';'
-#line 202 "VerilogParser.yy"
+#line 203 "VerilogParser.yy"
                                                                                                {driver.module_name_cbk(*(yystack_[8].value.stringVal), *(yystack_[5].value.generalNameArrayVal), *(yystack_[2].value.generalNameArrayVal)); delete (yystack_[8].value.stringVal); delete (yystack_[5].value.generalNameArrayVal); delete (yystack_[2].value.generalNameArrayVal);}
-#line 911 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 912 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 40: // module_declare: MODULE NAME '(' OUTPUT general_name_array ',' INPUT general_name_array ')' ';'
-#line 203 "VerilogParser.yy"
+#line 204 "VerilogParser.yy"
                                                                                                {driver.module_name_cbk(*(yystack_[8].value.stringVal), *(yystack_[2].value.generalNameArrayVal), *(yystack_[5].value.generalNameArrayVal)); delete (yystack_[8].value.stringVal); delete (yystack_[5].value.generalNameArrayVal); delete (yystack_[2].value.generalNameArrayVal);}
-#line 917 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 918 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 41: // module_declare: MODULE NAME '(' INPUT general_name_array ')' ';'
-#line 204 "VerilogParser.yy"
+#line 205 "VerilogParser.yy"
                                                                  {driver.module_name_cbk(*(yystack_[5].value.stringVal), *(yystack_[2].value.generalNameArrayVal), GeneralNameArray()); delete (yystack_[5].value.stringVal); delete (yystack_[2].value.generalNameArrayVal); }
-#line 923 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 924 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 42: // module_declare: MODULE NAME '(' OUTPUT general_name_array ')' ';'
-#line 205 "VerilogParser.yy"
+#line 206 "VerilogParser.yy"
                                                                   {driver.module_name_cbk(*(yystack_[5].value.stringVal), GeneralNameArray(), *(yystack_[2].value.generalNameArrayVal)); delete (yystack_[5].value.stringVal); delete (yystack_[2].value.generalNameArrayVal); }
-#line 929 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 930 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 49: // module_instance: NAME NAME '(' instance_params ')' ';'
-#line 218 "VerilogParser.yy"
+#line 219 "VerilogParser.yy"
                                                        {driver.module_instance_cbk(*(yystack_[5].value.stringVal), *(yystack_[4].value.stringVal)); delete (yystack_[5].value.stringVal); delete (yystack_[4].value.stringVal);}
-#line 935 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 936 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 50: // module_instance: NAME NAME '[' NUM ']' '(' instance_params ')' ';'
-#line 219 "VerilogParser.yy"
+#line 220 "VerilogParser.yy"
                                                                    {
                /* append NUM to instance name */
                char buf[256];
@@ -945,59 +946,59 @@ namespace VerilogParser {
                delete (yystack_[8].value.stringVal); 
                delete (yystack_[7].value.stringVal);
                }
-#line 949 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 950 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 51: // assignment: ASSIGN NAME '=' BIT_MASK ';'
-#line 229 "VerilogParser.yy"
+#line 230 "VerilogParser.yy"
                                          {driver.assignment_cbk(*(yystack_[3].value.stringVal), Range(), (yystack_[1].value.mask).bits, (yystack_[1].value.mask).value); delete (yystack_[3].value.stringVal); }
-#line 955 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 956 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 52: // assignment: ASSIGN NAME range '=' BIT_MASK ';'
-#line 230 "VerilogParser.yy"
+#line 231 "VerilogParser.yy"
                                                {driver.assignment_cbk(*(yystack_[4].value.stringVal), *(yystack_[3].value.rangeVal), (yystack_[1].value.mask).bits, (yystack_[1].value.mask).value); delete (yystack_[4].value.stringVal); delete (yystack_[3].value.rangeVal); }
-#line 961 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 962 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 53: // assignment: ASSIGN NAME '=' NAME ';'
-#line 231 "VerilogParser.yy"
+#line 232 "VerilogParser.yy"
                                      {driver.assignment_cbk(*(yystack_[3].value.stringVal), Range(), *(yystack_[1].value.stringVal), Range()); delete (yystack_[3].value.stringVal); delete (yystack_[1].value.stringVal);}
-#line 967 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 968 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 54: // assignment: ASSIGN NAME range '=' NAME ';'
-#line 232 "VerilogParser.yy"
+#line 233 "VerilogParser.yy"
                                            {driver.assignment_cbk(*(yystack_[4].value.stringVal), *(yystack_[3].value.rangeVal), *(yystack_[1].value.stringVal), Range()); delete (yystack_[4].value.stringVal); delete (yystack_[3].value.rangeVal); delete (yystack_[1].value.stringVal);}
-#line 973 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 974 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 55: // assignment: ASSIGN NAME '=' NAME range ';'
-#line 233 "VerilogParser.yy"
+#line 234 "VerilogParser.yy"
                                            {driver.assignment_cbk(*(yystack_[4].value.stringVal), Range(), *(yystack_[2].value.stringVal), *(yystack_[1].value.rangeVal)); delete (yystack_[4].value.stringVal); delete (yystack_[2].value.stringVal); delete (yystack_[1].value.rangeVal);}
-#line 979 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 980 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 56: // assignment: ASSIGN NAME range '=' NAME range ';'
-#line 234 "VerilogParser.yy"
+#line 235 "VerilogParser.yy"
                                                  {driver.assignment_cbk(*(yystack_[5].value.stringVal), *(yystack_[4].value.rangeVal), *(yystack_[2].value.stringVal), *(yystack_[1].value.rangeVal)); delete (yystack_[5].value.stringVal); delete (yystack_[4].value.rangeVal); delete (yystack_[2].value.stringVal); delete (yystack_[1].value.rangeVal);}
-#line 985 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 986 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 62: // modules: single_module
-#line 245 "VerilogParser.yy"
+#line 246 "VerilogParser.yy"
                         {driver.modules_cbk();}
-#line 991 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 992 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
   case 63: // modules: modules single_module
-#line 246 "VerilogParser.yy"
+#line 247 "VerilogParser.yy"
                                 {driver.modules_cbk();}
-#line 997 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 998 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
     break;
 
 
-#line 1001 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 1002 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
 
             default:
               break;
@@ -1520,13 +1521,13 @@ namespace VerilogParser {
   const unsigned char
   Parser::yyrline_[] =
   {
-       0,   129,   129,   130,   134,   138,   141,   146,   150,   155,
-     163,   164,   166,   167,   168,   169,   170,   171,   172,   175,
-     176,   177,   178,   179,   180,   181,   182,   183,   184,   185,
-     186,   189,   190,   193,   194,   195,   196,   200,   201,   202,
-     203,   204,   205,   208,   209,   210,   213,   214,   215,   218,
-     219,   229,   230,   231,   232,   233,   234,   236,   237,   238,
-     239,   243,   245,   246,   249,   250,   251
+       0,   130,   130,   131,   135,   139,   142,   147,   151,   156,
+     164,   165,   167,   168,   169,   170,   171,   172,   173,   176,
+     177,   178,   179,   180,   181,   182,   183,   184,   185,   186,
+     187,   190,   191,   194,   195,   196,   197,   201,   202,   203,
+     204,   205,   206,   209,   210,   211,   214,   215,   216,   219,
+     220,   230,   231,   232,   233,   234,   235,   237,   238,   239,
+     240,   244,   246,   247,   250,   251,   252
   };
 
   void
@@ -1607,9 +1608,9 @@ namespace VerilogParser {
   }
 
 } // VerilogParser
-#line 1611 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
+#line 1612 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.cc"
 
-#line 256 "VerilogParser.yy"
+#line 257 "VerilogParser.yy"
  /*** Additional Code ***/
 
 void VerilogParser::Parser::error(const Parser::location_type& l,

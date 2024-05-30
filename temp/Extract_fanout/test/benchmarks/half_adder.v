@@ -5,15 +5,24 @@ module half_adder(a,b,sum,cout,cc,dd);
     output sum;
     output cout;
     output [15:0] dd;
+
     assign dd = cc;
+    assign dd[7] = cc[9];
+    assign dd[7:0] = cc[9:2];
+    
     wire n1, n2, n3, n4;
 
     wire [15:0] n5;
+    wire [15:0] n6;
+    wire [15:0] n7;
 
     tuu T1 ( .A(n5));
-    tuu T2 ( .B(n5[3]));
+    tuu T2 ( .B(n6[3]));
     tuu T3 ( .C({n1, n2, n5[15:0]}));
-    tuu T4 ( .D(n5[7:0])); //question! and 2
+    tuu T4 ( .D(n7[7:0])); //question! and 2
+    //2 and 4 has been detected
+    //NAME range was detected twice
+
 
 //   aq_idu_expand_32_7 x_aq_idu_expand_32_wbt_dst0_reg ( .x_num(
 //         dp_wbt_dst0_reg[4:0]), .x_num_expand({wbt_dst0_reg_expand, 

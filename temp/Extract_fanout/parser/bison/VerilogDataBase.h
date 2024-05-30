@@ -53,9 +53,11 @@ struct NetPin
 
     NetPin(std::string& n, std::string& p, Range const& r = Range())
     {
+        // std::cout << "constructor" << std::endl; //test
         net.swap(n);
         pin.swap(p);
         range = r;
+        // std::cout << net << " " << pin << " " << range.low << " " << range.high << std::endl; //test
     }
 
     /// @param n net name; it will be VerilogParser::CONSTANT_NET if the net is actually a value 
@@ -80,10 +82,14 @@ struct NetPin
 
     NetPin(NetPin const& rhs)
     {
-        copy(rhs);
+        // std::cout << "copy constructor 1" << std::endl; //test
+        copy(rhs);  // There is no copy of range in this copy function.
+                    // Only copy _low_ and _high_.
+        // std::cout << net << " " << pin << " " << range.low << " " << range.high << std::endl; 
     }
     NetPin& operator=(NetPin const& rhs)
     {
+        // std::cout << "copy constructor 2" << std::endl; //test
         if (this != &rhs)
             copy(rhs);
         return *this;
@@ -115,6 +121,7 @@ struct NetPin
         {
             extension.vNetName = new std::vector<GeneralName> (*rhs.extension.vNetName);
         }
+        range = rhs.range;//1111
     }
 };
 

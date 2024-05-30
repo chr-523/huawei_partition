@@ -1,42 +1,29 @@
 VerilogDataBase::VerilogDataBase
 module => half_adder
 	a	b	sum	cout	cc	dd
-pin => a 1
-pin => a 1
-pin => b 1
-pin => b 1
-pin => cc 1
-pin => cc => is 15 to 0 1
-pin => sum 2
-pin => sum 2
-pin => cout 2
-pin => cout 2
-pin => dd 2
-pin => dd => is 15 to 0 2
-assigment => dd [-2147483648:-2147483648] to cc [-2147483648:-2147483648]
-assigment => dd [-2147483648:7] to cc [-2147483648:9]
-assigment => dd [7:0] to cc [9:2]
-net => n1
-net => n1 
-net => n2
-net => n2 
-net => n3
-net => n3 
-net => n4
-net => n4 
-net => n5
-net => n5 => is 15 to 0 
-net => n6
-net => n6 => is 15 to 0 
-net => n7
-net => n7 => is 15 to 0 
-instance => tuu, T1, A(--n5--range is[-2147483648:-2147483648])
-instance => tuu, T2, B(--n6--range is[-2147483648:3])
-instance => tuu, T3, Cg(VerilogParser::GROUP_NETS {(n1)(n2)(n5->[15:0])})
-instance => tuu, T4, D(--n7--range is[7:0])
-instance => sky130_fd_sc_hd__xor2_1, U1, A(--a--range is[-2147483648:-2147483648])B(--b--range is[-2147483648:-2147483648])X(--n1--range is[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__and2_1, U2, A(--a--range is[-2147483648:-2147483648])B(--b--range is[-2147483648:-2147483648])X(--cout--range is[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U3, A(--n1--range is[-2147483648:-2147483648])Y(--n2--range is[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U4, A(--n2--range is[-2147483648:-2147483648])Y(--sum--range is[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U5, A(--n3--range is[-2147483648:-2147483648])Y(--n4--range is[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U6, A(--n4--range is[-2147483648:-2147483648])Y(--cout--range is[-2147483648:-2147483648])
+pin => a->[-1:-1] =>1
+pin => b->[-1:-1] =>1
+pin => cc->[15:0] =>1
+pin => sum->[-1:-1] =>2
+pin => cout->[-1:-1] =>2
+pin => dd->[15:0] =>2
+net => n1->[-1:-1]
+net => n2->[-1:-1]
+net => n3->[-1:-1]
+net => n4->[-1:-1]
+net => n5->[15:0]
+net => n6->[15:0]
+net => n7->[15:0]
+assigment => dd->[-2147483648:-2147483648] to cc->[-2147483648:-2147483648]
+assigment => dd->[-2147483648:7] to cc->[-2147483648:9]
+assigment => dd->[-2147483648:8] to n1->[-2147483648:-2147483648]
+instance => tu_test_ins, T1, A(n5->[-2147483648:-2147483648])
+instance => tu_test_ins, T2, B(n6->[-2147483648:3])
+instance => tu_test_ins, T3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:-1])(n5->[15:0])})
+instance => tu_test_ins, T4, D(n7->[7:0])
+instance => sky130_fd_sc_hd__xor2_1, U1, A(a->[-2147483648:-2147483648])B(b->[-2147483648:-2147483648])X(n1->[-2147483648:-2147483648])
+instance => sky130_fd_sc_hd__and2_1, U2, A(a->[-2147483648:-2147483648])B(b->[-2147483648:-2147483648])X(cout->[-2147483648:-2147483648])
+instance => sky130_fd_sc_hd__inv_1, U3, A(n1->[-2147483648:-2147483648])Y(n2->[-2147483648:-2147483648])
+instance => sky130_fd_sc_hd__inv_1, U4, A(n2->[-2147483648:-2147483648])Y(sum->[-2147483648:-2147483648])
+instance => sky130_fd_sc_hd__inv_1, U5, A(n3->[-2147483648:-2147483648])Y(n4->[-2147483648:-2147483648])
+instance => sky130_fd_sc_hd__inv_1, U6, A(n4->[-2147483648:-2147483648])Y(cout->[-2147483648:-2147483648])

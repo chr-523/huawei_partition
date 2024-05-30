@@ -52,7 +52,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                 }
                 else if (it->net == "VerilogParser::GROUP_NETS")
                 {
-                     outfile << it->pin << "g(" << it->net << " {";
+                     outfile << it->pin << "(" << "GROUP_NETS" << " {";
                     for (std::vector<VerilogParser::GeneralName>::const_iterator itn = it->extension.vNetName->begin(); itn != it->extension.vNetName->end(); ++itn)
                     {
                          //aaa
@@ -60,6 +60,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                          if (itn->range.low < 0)
                          {
                         //  outfile << itn->name;
+                         outfile <<"->[-1:-1]";
                          }
                          else{
                          outfile <<"->[" << itn->range.low << ":" << itn->range.high << "]";
@@ -71,12 +72,12 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                 }
                 else 
                 {
-                    if(1){
-                     outfile << it->pin << "(--" << it->net << "--";
-                     outfile << "range is" << "[" << it->range.low<<":"<<it->range.high<< "]"<< ")";
+                    if(1){//if(it->range.low<0){
+                     outfile << it->pin << "(" << it->net << "";
+                     outfile << "->" << "[" << it->range.low<<":"<<it->range.high<< "]"<< ")";
                     }
                     else{
-                     outfile << it->pin << "(--" << it->net << "--)";
+                     outfile << it->pin << "(" << it->net << ")";
                     }
                 }
             }
@@ -85,31 +86,33 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
     
     virtual void verilog_pin_declare_cbk(std::string const& pin_name, unsigned type, VerilogParser::Range const& range)
     {       
-         outfile << "pin" << " => " << pin_name << " " << type << endl;
+        //  outfile << "pin" << " => " << pin_name << " " << type << endl;
          if ( range.low < 0 ){
-            outfile << "pin" << " => " << pin_name << " " << type << endl;
+            // outfile << "pin" << " => " << pin_name << " " << type << endl;
+            outfile << "pin" << " => " << pin_name << "->[-1:-1] =>" << type << endl;
          }
          else{
-            outfile << "pin" << " => " << pin_name << " => is " << range.low << " to " << range.high << " " << type << endl;
+            outfile << "pin" << " => " << pin_name << "->[" << range.low << ":" << range.high << "] =>" << type << endl;
          }
          
     }
     
     virtual void verilog_assignment_cbk(std::string const& target_name, VerilogParser::Range const& target_range, std::string const& source_name, VerilogParser::Range const& source_range)
     {
-         outfile << "assigment" << " => " << target_name << " [" << target_range.low << ":" << target_range.high  << "]";
-         outfile <<  " to " << source_name<< " [" << source_range.low << ":" << source_range.high  << "]" << endl;
+        // Here, all range are printed. A "if(range<0)" should be add.
+         outfile << "assigment" << " => " << target_name << "->[" << target_range.low << ":" << target_range.high  << "]";
+         outfile <<  " to " << source_name<< "->[" << source_range.low << ":" << source_range.high  << "]" << endl;
 
 
     }
 
     virtual void verilog_net_declare_cbk(std::string const& net_name, VerilogParser::Range const& range){
-         outfile << "net" << " => " << net_name << endl;         
+        //  outfile << "net" << " => " << net_name << endl;         
          if ( range.low < 0 ){
-            outfile << "net" << " => " << net_name << " " << endl;
+            outfile << "net" << " => " << net_name << "->[-1:-1]"  << endl;
          }
          else{
-            outfile << "net" << " => " << net_name << " => is " << range.low << " to " << range.high << " " << endl;
+            outfile << "net" << " => " << net_name << "->[" << range.low << ":" << range.high << "]" << endl;
          }
     }
 

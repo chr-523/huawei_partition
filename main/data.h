@@ -213,7 +213,7 @@ class Graph{
 //     |_2____/ \____4_|
 // small = (0)(1)(2)
 //     |-e0-\     /-e1-|		0--\       /--4
-//     | 0	   \ /    4 |		2---+--1--+---5
+//     | 0	   \ /   4 |		2---+--1--+---5
 //     | 2    |1|      |		3--/      
 //     |_3____/ \____5_|
 */
@@ -241,8 +241,8 @@ private:
     std::list<Vertex> vertex; // vertex_list -> index, is_clk, weight
     std::list<Graph*> subgraph; // subgraph_list -> index, weight
     std::list<Edge> edge_list; // -> offset + adj
-    std::list<Edge> input_list; // -> offset + adj
-    std::list<Edge> output_list; // -> offset + adj
+    std::list<Edge> input_list; // -> offset + adj delite
+    std::list<Edge> output_list; // -> offset + adj de
 };
 
 /* CLASS VERTEX_OLD

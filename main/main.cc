@@ -15,7 +15,7 @@ int main(){
             }
         }
         else{//module
-            Graph module_1;
+            Graph module_1//(packge graph shengcheng ,recursion);
             half_adder.add_module
         }
     }

@@ -1,11 +1,12 @@
-#include<vector>
-#include<list>
-#include<deque>
-#include<queue>
-#include<tuple> // to be choosen
+#include <vector>
+#include <list>
+#include <deque>
+#include <queue>
+#include <tuple> // to be choosen
+#include <unordered_set>
 
-#include<map>
-#include<string>
+#include <string>
+#include <map>
 
 #define default_edge_weight 1.0
 #define default_vertex_weight 1.0
@@ -17,9 +18,10 @@
 #define vertex_index_type int   
 #define edge_index_type int
 #define edge_offset_type int
-#define name_type std::string
 // unuseful
 #define wire_index_type int
+
+using name_type = std::string;
 
 /* name explain
 Replace circuit terminology with graph theory terminology.
@@ -95,6 +97,8 @@ struct Range
     Range(int l, int h) : low(l), high(h) {}
 };
 
+class Vertex;
+
 class Edge{
 /*
     Edge Infromation:
@@ -120,7 +124,7 @@ name:input_PI    index: 3               name:output_PO    index: 4
         offset_array:(0,1)              offset_array:(0,1) 
 */
 public: // initialization
-    Edge():edge_index(-1), /*adjacency_array(NULL), */offset_array({0,-1}){};
+    Edge():edge_index(-1),offset_array({0,-1}){}; /*adjacency_array(NULL), */
     //signal edge initialization
     Edge(name_type edge_name, edge_index_type edge_index):
             edge_name(edge_name),
@@ -134,13 +138,13 @@ public: // initialization
                 };
     ~Edge(){};
 public: // function
-    void split_edge(){};//to be done
+    void split_edge(){};//to be done, maybe it should be in graph?
 
-    void connect_vertex(Vertex vertex){};//only connect signal edge
-    void connect_vertex_old(Vertex vertex){};
+    void connect_vertex(Vertex* vertex){};//only connect signal edge
+    void connect_vertex_old(Vertex* vertex){};
 
 public: // get_function
-    std::string get_name() const { return edge_name; };
+    name_type get_name() const { return edge_name; };
     edge_index_type get_edge_index() const { return edge_index; } 
     std::array<edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector<vertex_index_type> get_adjacency_array() const { return adjacency_array; }
@@ -170,8 +174,7 @@ class Vertex{
 public: // Initialization
 
     // Direct initialization
-    Vertex(): vertex_weight(default_vertex_weight), vertex_data(false,-1){};
-
+    // Vertex(){}; // equal to the next
     Vertex(vertex_index_type index = -1, weight_type vertex_weight = default_vertex_weight, bool is_clk = false){
         /*this -> vertex_index    = index;*/
         this -> vertex_weight   = vertex_weight;
@@ -185,7 +188,7 @@ public: // Initialization
     
     ~Vertex(){};
 public: // function
-    void connect_edge(Edge edge){};;
+    void connect_edge(Edge* edge){};;
 
 public: // get_Function
     weight_type get_vertex_weight() const { return vertex_weight; }
@@ -193,39 +196,40 @@ public: // get_Function
     std::tuple<bool,vertex_index_type> get_vertex_data() const { return vertex_data; };
 protected:
 private:
-    bool is_clk(name_type name){};
+    bool is_clk(name_type name){ return false; };//tobedone
     // name_type vertex_name;  
     weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise.(default 1)
     std::vector<edge_index_type> connect_edgelist;
-    std::tuple<bool,vertex_index_type> vertex_data;   // := <isclk?,index>
+    std::tuple<bool,vertex_index_type> vertex_data;   //  = <isclk?,index>
 
 };
 
 class Graph{
 /*
-big graph
-    |-e0-\     /-e1-|
-    | 1	   \ /   (1)|
-    |(0)  |0,3|  (2)|
-    |_2____/ \____4_|
-small = (0)(1)(2)
-    |-e0-\     /-e1-|		0--\       /--4
-    | 0	   \ /    4 |		2---+--1--+---5
-    | 2    |1|      |		3--/      
-    |_3____/ \____5_|
+// big graph
+//     |-e0-\     /-e1-|
+//     | 1	   \ /  (1)|
+//     |(0)  |0,3|  (2)|
+//     |_2____/ \____4_|
+// small = (0)(1)(2)
+//     |-e0-\     /-e1-|		0--\       /--4
+//     | 0	   \ /    4 |		2---+--1--+---5
+//     | 2    |1|      |		3--/      
+//     |_3____/ \____5_|
 */
 public:
-    Graph(){};
+    Graph():module_weight(1){};
     ~Graph(){};
-public:
+public: //function
+    
 public:
     name_type get_module_name() const { return module_name; };
     module_index_type get_module_index() const { return module_index; };
     weight_type get_module_weight() const { return module_weight; };
     // std::list<name_type> get_multi_edge_list() const { return multi_edge_list; };
     std::tuple<bool,vertex_index_type> get_module_data() const { return module_data; }
-    std::list<Vertex> get_vertex() const { return vertex; }
-    std::list<Graph*> get_subgraph() const { return subgraph; }
+    std::list<Vertex> get_vertex_list() const { return vertex; }
+    std::list<Graph*> get_subgraph_list() const { return subgraph; }
     std::list<Edge> get_edge_list() const { return edge_list; }
 protected:
 private:
@@ -237,6 +241,8 @@ private:
     std::list<Vertex> vertex; // vertex_list -> index, is_clk, weight
     std::list<Graph*> subgraph; // subgraph_list -> index, weight
     std::list<Edge> edge_list; // -> offset + adj
+    std::list<Edge> input_list; // -> offset + adj
+    std::list<Edge> output_list; // -> offset + adj
 };
 
 /* CLASS VERTEX_OLD

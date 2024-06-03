@@ -21,7 +21,7 @@
 // unuseful
 #define wire_index_type int
 
-using name_type = std::string;
+using Name_type = std::string;
 
 /* name explain
 Replace circuit terminology with graph theory terminology.
@@ -50,19 +50,38 @@ Replace circuit terminology with graph theory terminology.
 /* From output(.txt)    to my database. 
 
     module module_name pin_name
-        module_name -> graph_name
+        -->> Graph module_name
         
-    pin_name + range + 1 or 2 -> Edge(name,index,range,adj,offset)
-    net_name + range-> Edge
-        name(+1/2) -> edge_name
-        range -> range
-        index -> index
-        none -> adj
-        {0,-1} -> offset
+    pin_name + range + 1 or 2
+            -->> for each pin
+        {
+        module_name.add_edge(pin_name,range.low,range.high,type);//   pin name [123] 1/2  
+            -> Edge(name,index,range,adj,offset,type)
+        // module_name.split_multi_edge(); (to be done)
+        }     
 
-    split the edge(to be done)
+    net_name + rang e-> Edge
+            -->> for each pin
+        {
+            module_name.add_edge(net_name,range.low,range.high);//   net name [123]
+                -> Edge(name,index,range,adj,offset)
+            // module_name.split_multi_edge(); (to be done)
+        }     
 
-    instance_type(gate) name [pin(net)pin(net)...] -> vertex(weight,edge_list,data(isclk,index))
+    assign vertex1 vertex2 
+    (tobedone after split edge)(instance's pin or wire ) (only signal edge)
+        -> combine multiple edges into one?
+        -> ? 6.7
+
+    instance_type(gate) name [pin(net)pin(net)...] -> vertex
+            -->> for each instance(if type == gate)
+        {
+            Vertex
+
+            module_name.add_vertex(vv_before)
+
+        }
+
         data <-:
             type -> is_clk (now)  (or pin->is_clk?)
             index -> index
@@ -70,91 +89,85 @@ Replace circuit terminology with graph theory terminology.
             vertex.connectedge -> edge_list.pushback(net)
             edge.connectvertex
 
-    assign(tobedone after split edge)
-        -> combine multiple edges into one?
-
     instance_type(module) -> sub_graph (to be done)
-        ->
-        -> ? 6.??        
+        -> connect the edge should be reconfiguration
+        -> ?? 6.7 
+        this three situations should be ...
         instance => tu_test_ins, T2, B(n6->[-1:3])
         instance => tu_test_ins, T3, C(GROUP_NETS {(n1)(n2)(n5->[15:0])})
         instance => tu_test_ins, T4, D(n7->[7:0])
 
-    else
-    assigment vertex1 vertex2 (instance's pin or wire )(only signal edge)
-        ->
-        -> ? 5.31
-
-
-    
 */
 
-struct Range 
-{
+struct Range {
     int low;
     int high;
     Range() {low = high = -1;}
     Range(int l, int h) : low(l), high(h) {}
 };
 
-class Vertex;
+enum Edge_type {
+    INPUT = 0x1,
+    OUTPUT = 0x2,
+    NORMAL = 0x0
+};
+
+class Vertex; // advance declaration
 
 class Edge{
 /*
     Edge Infromation:
+        type : input output normal
         edge_name
         range
         edge_index
-        adjacency_array
-        offset_array
+        adjacency_array : what vertex it connect
     
     Function：
 
-
-    eg. to be done
-    |-e0-\     /-e1-|		 input--0--\       /--4--output
-PI<-+-0	   \ /    4-+->PO	        2---+--1--+---5
-    | 2    |1|      |		        3--/      
-    |_3____/ \____5_|	    
-name:e_0    index: 0                    name:e_1    index: 1
-        adjacency_array：[0,1,2,3]      adjacency_array：[1,4,5]
-        offset_array:(0,4)              offset_array:(0,3) 
-name:input_PI    index: 3               name:output_PO    index: 4
-        adjacency_array：[0]            adjacency_array：[4]
-        offset_array:(0,1)              offset_array:(0,1) 
 */
 public: // initialization
-    Edge():edge_index(-1),offset_array({0,-1}){}; /*adjacency_array(NULL), */
-    //signal edge initialization
-    Edge(name_type edge_name, edge_index_type edge_index):
-            edge_name(edge_name),
-            edge_index(edge_index), range(), offset_array({0,-1}){};
-    //multi-edge initialization
-    Edge(name_type edge_name, edge_index_type edge_index, Range range):
-            edge_name(edge_name),
-            edge_index(edge_index),offset_array({0,-1}){
-                this -> range.high = range.high;
+    // Edge(name,index,range,[type]) or Edge(name,index,low,high,[type])
+    Edge(Name_type edge_name = "default", edge_index_type edge_index = -1, Range range = Range(), Edge_type type = NORMAL){
+                this -> edge_name = edge_name;  // default = "default"  
+                this -> edge_index = edge_index;    // default = -1
                 this -> range.low = range.low;
+                this -> range.high = range.high;    // default high = low = -1
+                this -> type = type;    // default = NORMAL
+                // this -> offset_array = {0,-1};
+                // this - > adjacency_array = NULL
                 };
+    
+    Edge(Name_type edge_name = "default", edge_index_type edge_index = -1, int low, int high, Edge_type type = NORMAL){
+                this -> edge_name = edge_name;  // default = "default"  
+                this -> edge_index = edge_index;    // default = -1
+                this -> range.low = low;
+                this -> range.high = high;
+                this -> type = type;    // default = NORMAL
+                // this -> offset_array = {0,-1};
+                // this - > adjacency_array = NULL
+                };
+    
     ~Edge(){};
+
 public: // function
     void split_edge(){};//to be done, maybe it should be in graph?
-
-    void connect_vertex(Vertex* vertex){};//only connect signal edge
-    void connect_vertex_old(Vertex* vertex){};
+    void connect_vertex(Vertex& vertex){};//connect signal edge to the vertex
 
 public: // get_function
-    name_type get_name() const { return edge_name; };
+    Edge_type get_type() const { return type; };
+    Name_type get_name() const { return edge_name; };
     edge_index_type get_edge_index() const { return edge_index; } 
-    std::array<edge_offset_type,2> get_offset_array() const { return offset_array; }
+    // std::array<edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector<vertex_index_type> get_adjacency_array() const { return adjacency_array; }
 protected:
 private:// data
-    name_type edge_name; // input_...or output_...
+    Edge_type type;
+    Name_type edge_name; // graphindex + '_' +edge_index
     Range range; // [range.low (and range.high) < 0] means edge is signal
     edge_index_type edge_index;
+    // std::array<edge_offset_type,2> offset_array;
     std::vector<vertex_index_type> adjacency_array;//what vertex it connect
-    std::array<edge_offset_type,2> offset_array;
 };
 
 class Vertex{
@@ -167,28 +180,28 @@ class Vertex{
     | 0	   \ /    4 |		2---+--1--+---5
     | 2    |1|      |		3--/      
     |_3____/ \____5_|
-    v_0 index: 0            v_1 index: 1
-        data: <true,0>          data: <false,1>
-    
+    v_0 index: 0            v_1 index: 1       ...  v_5 index: 5
+        data: <true,0>          data: <false,1>         data: <true,5>
+        e_l: [0]                e_l: [1,0]              e_l: [1]
 */
 public: // Initialization
-
-    // Direct initialization
     // Vertex(){}; // equal to the next
     Vertex(vertex_index_type index = -1, weight_type vertex_weight = default_vertex_weight, bool is_clk = false){
-        /*this -> vertex_index    = index;*/
+        /*this -> vertex_index    = index; // this data is in the vertex_data*/ 
         this -> vertex_weight   = vertex_weight;
+        // this -> connect_edgelist = NULL; 
         this -> vertex_data     = {is_clk,index};
     };    
     
-    Vertex(name_type vertex_name, vertex_index_type index, weight_type vertex_weight = default_vertex_weight){
+    Vertex(Name_type vertex_name, vertex_index_type index, weight_type vertex_weight = default_vertex_weight){
         this -> vertex_weight   = vertex_weight;
+        // this -> connect_edgelist = NULL; 
         this -> vertex_data = {is_clk(vertex_name),index};
     };
     
     ~Vertex(){};
 public: // function
-    void connect_edge(Edge* edge){};;
+    void connect_edge(Edge& edge){}; // connect vertex to the edge
 
 public: // get_Function
     weight_type get_vertex_weight() const { return vertex_weight; }
@@ -196,54 +209,68 @@ public: // get_Function
     std::tuple<bool,vertex_index_type> get_vertex_data() const { return vertex_data; };
 protected:
 private:
-    bool is_clk(name_type name){ return false; };//tobedone
-    // name_type vertex_name;  
-    weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise.(default 1)
+    bool is_clk(const Name_type& name){};
+    // Name_type vertex_name;  
+    weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise.(default 1.0)
     std::vector<edge_index_type> connect_edgelist;
     std::tuple<bool,vertex_index_type> vertex_data;   //  = <isclk?,index>
 
 };
 
 class Graph{
-/*
+/* eg.
 // big graph
-//     |-e0-\     /-e1-|
-//     | 1	   \ /  (1)|
-//     |(0)  |0,3|  (2)|
-//     |_2____/ \____4_|
-// small = (0)(1)(2)
-//     |-e0-\     /-e1-|		0--\       /--4
-//     | 0	   \ /   4 |		2---+--1--+---5
-//     | 2    |1|      |		3--/      
-//     |_3____/ \____5_|
+//
+//      |-e0--\   /--e1-|
+//      | 1	   \ /   (1)|
+//      |(0)  |0,3|  (2)|
+//input-+-2    / \    4-+-output
+//      |_____/   \___6_|
+//
+// sub_graph = (0)(1)(2)
+//
+//      |-e0--\   /--e1-|
+//      | 0	   \ /    4-+-output
+//input-+-2    |1|      |  
+//      |_3____/ \____5_|
+*/
+/*
+
 */
 public:
-    Graph():module_weight(1){};
+    Graph():module_name("default_graph"), module_index(-1), module_weight(default_module_weight){};
     ~Graph(){};
 public: //function
-    
+    void add_edge(Name_type name, Range range,Edge_type type){}; // add net/pin
+    void add_instance(Name_type name){}; // add instance no pin
+    void add_ins_edge(Name_type name, Name_type edge_name, Range());
 public:
-    name_type get_module_name() const { return module_name; };
+    Name_type get_module_name() const { return module_name; };
     module_index_type get_module_index() const { return module_index; };
     weight_type get_module_weight() const { return module_weight; };
-    // std::list<name_type> get_multi_edge_list() const { return multi_edge_list; };
-    std::tuple<bool,vertex_index_type> get_module_data() const { return module_data; }
+    // std::list<Name_type> get_multi_edge_list() const { return multi_edge_list; };
+    // std::tuple<bool,vertex_index_type> get_module_data() const { return module_data; }
     std::list<Vertex> get_vertex_list() const { return vertex; }
     std::list<Graph*> get_subgraph_list() const { return subgraph; }
     std::list<Edge> get_edge_list() const { return edge_list; }
 protected:
 private:
-    name_type module_name;
+    bool is_instance_type(Name_type& instance_name);
+    Name_type module_name;
     module_index_type module_index;
-    weight_type module_weight;    // depend on how many and what gate it remain
-    // std::list<name_type> multi_edge_list; //std::unordered_set?
-    std::tuple<bool,vertex_index_type> module_data;   // verse vertex_data type:= <isclk?,index>
-    std::list<Vertex> vertex; // vertex_list -> index, is_clk, weight
+    weight_type module_weight;    // depend on how many and what gate it remain?
+    // std::list<Name_type> multi_edge_list;
+    // std::tuple<bool,vertex_index_type> module_data;   // verse vertex_data type:= <isclk?,index>
+    std::list<Vertex> vertex; // vertex_list -> data, weight (data = <is_clk,index>)
     std::list<Graph*> subgraph; // subgraph_list -> index, weight
-    std::list<Edge> edge_list; // -> offset + adj
-    std::list<Edge> input_list; // -> offset + adj delite
-    std::list<Edge> output_list; // -> offset + adj de
+    std::list<Edge> edge_list; // -> adj
 };
+
+
+
+//else is old
+
+
 
 /* CLASS VERTEX_OLD
 class Vertex_old{

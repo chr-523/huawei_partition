@@ -148,11 +148,26 @@ public: // initialization
                 // this - > adjacency_array = NULL
                 };
     
+    Edge(const Edge& other): edge_name(other.edge_name), edge_index(other.edge_index),
+          range(other.range), type(other.type), adjacency_array(other.adjacency_array){}
+
+    Edge& operator=(const Edge& other) {
+        if (this != &other) { // Prevent self assigmant
+            edge_name = other.edge_name;
+            edge_index = other.edge_index;
+            range = other.range; // is this no bug?
+            type = other.type;
+            adjacency_array = other.adjacency_array;
+        }
+        return *this;
+    }
+
     ~Edge(){};
 
 public: // function
     void split_edge(){};//to be done, maybe it should be in graph?
-    void connect_vertex(Vertex& vertex){};//connect signal edge to the vertex
+    //connect signal edge to the vertex
+    void connect_vertex(Vertex& vertex){};
 
 public: // get_function
     Edge_type get_type() const { return type; };
@@ -162,8 +177,8 @@ public: // get_function
     std::vector<vertex_index_type> get_adjacency_array() const { return adjacency_array; }
 protected:
 private:// data
-    Edge_type type;
-    Name_type edge_name; // graphindex + '_' +edge_index
+    Edge_type type;    //input, output or normal
+    Name_type edge_name; // graphindex + '_' +edge_index ?
     Range range; // [range.low (and range.high) < 0] means edge is signal
     edge_index_type edge_index;
     // std::array<edge_offset_type,2> offset_array;
@@ -193,12 +208,23 @@ public: // Initialization
         this -> vertex_data     = {is_clk,index};
     };    
     
-    Vertex(Name_type vertex_name, vertex_index_type index, weight_type vertex_weight = default_vertex_weight){
+    Vertex(Name_type vertex_name, vertex_index_type index = -1, weight_type vertex_weight = default_vertex_weight){
         this -> vertex_weight   = vertex_weight;
         // this -> connect_edgelist = NULL; 
         this -> vertex_data = {is_clk(vertex_name),index};
     };
-    
+    Vertex(const Vertex& other): vertex_weight(other.vertex_weight), 
+        connect_edgelist(other.connect_edgelist), vertex_data(other.vertex_data){};
+
+    Vertex& operator=(const Vertex& other) {
+            if (this != &other){ //Prevent self assignment
+                vertex_weight = other.vertex_weight;
+                connect_edgelist = other.connect_edgelist; // deep copy vector
+                vertex_data = other.vertex_data;
+            }
+            return *this;
+        }
+
     ~Vertex(){};
 public: // function
     void connect_edge(Edge& edge){}; // connect vertex to the edge
@@ -209,10 +235,10 @@ public: // get_Function
     std::tuple<bool,vertex_index_type> get_vertex_data() const { return vertex_data; };
 protected:
 private:
-    bool is_clk(const Name_type& name){};
+    bool is_clk(const Name_type& name){}; //Determine whether it is clk through vertex_name
     // Name_type vertex_name;  
-    weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise.(default 1.0)
-    std::vector<edge_index_type> connect_edgelist;
+    weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise. (default 1.0)
+    std::vector<edge_index_type> connect_edgelist; // what edge this vertex connect
     std::tuple<bool,vertex_index_type> vertex_data;   //  = <isclk?,index>
 
 };
@@ -238,13 +264,33 @@ class Graph{
 
 */
 public:
-    Graph():module_name("default_graph"), module_index(-1), module_weight(default_module_weight){};
+    Graph(Name_type module_name = "default_graph", module_index_type module_index = -1, weight_type module_weight = default_module_weight):
+          module_name(module_name), module_index(module_index), module_weight(module_weight){};
+
+    Graph(const Graph& other): module_name(other.module_name), module_index(other.module_index),
+          module_weight(other.module_weight), vertex(other.vertex), subgraph(other.subgraph),
+          edge_list(other.edge_list){};
+    // 赋值运算符
+    Graph& operator=(const Graph& other){
+        if (this != &other) { // Prevent self assigment
+            module_name = other.module_name;
+            module_index = other.module_index;
+            module_weight = other.module_weight;
+            vertex = other.vertex;
+            subgraph = other.subgraph;
+            edge_list = other.edge_list;
+        }
+        return *this;
+    }
+
     ~Graph(){};
 public: //function
-    void add_edge(Name_type name, Range range,Edge_type type){}; // add net/pin
-    void add_instance(Name_type name){}; // add instance no pin
-    void add_ins_edge(Name_type name, Name_type edge_name, Range());
-public:
+    void add_edge(Name_type& name, int& low, int& high, Edge_type& type){}; // add net/pin
+    void add_edge(Name_type& name, Range& range,        Edge_type& type){}; // add net/pin
+    void add_instance(Name_type& name/*, name such as U1?*/){}; // add instance no pin
+    void add_ins_edge(Name_type& name, Name_type& edge_name, Range()); // connect instance and edge
+    void add_module(){}; // add module...to be done
+public://getfunction
     Name_type get_module_name() const { return module_name; };
     module_index_type get_module_index() const { return module_index; };
     weight_type get_module_weight() const { return module_weight; };
@@ -256,14 +302,15 @@ public:
 protected:
 private:
     bool is_instance_type(Name_type& instance_name);
-    Name_type module_name;
-    module_index_type module_index;
-    weight_type module_weight;    // depend on how many and what gate it remain?
+    Name_type module_name; // module_name 
+    module_index_type module_index; // index, is this need?
+    weight_type module_weight;    // maybe depend on how many and what gate it remain?
     // std::list<Name_type> multi_edge_list;
     // std::tuple<bool,vertex_index_type> module_data;   // verse vertex_data type:= <isclk?,index>
-    std::list<Vertex> vertex; // vertex_list -> data, weight (data = <is_clk,index>)
+    std::list<Vertex> vertex; // vertex_list -> data, weight (within data = <is_clk,index>)
     std::list<Graph*> subgraph; // subgraph_list -> index, weight
-    std::list<Edge> edge_list; // -> adj
+    std::list<Edge> edge_list; // edge_list -> edge's adj
+    // std::list<edge_index_type> connect_edgelist; // what edge this module connect******
 };
 
 

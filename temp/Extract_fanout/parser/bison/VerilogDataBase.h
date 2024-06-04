@@ -121,7 +121,7 @@ struct NetPin
         {
             extension.vNetName = new std::vector<GeneralName> (*rhs.extension.vNetName);
         }
-        range = rhs.range;//add 111
+        range = rhs.range;//chr add 111
     }
 };
 

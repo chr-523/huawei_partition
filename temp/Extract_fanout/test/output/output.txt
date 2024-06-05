@@ -1,29 +1,16 @@
 VerilogDataBase::VerilogDataBase
-module => half_adder
-	a	b	sum	cout	cc	dd
+module => test
+	a	dd
 pin => a->[-1:-1] =>1
-pin => b->[-1:-1] =>1
-pin => cc->[15:0] =>1
-pin => sum->[-1:-1] =>2
-pin => cout->[-1:-1] =>2
 pin => dd->[15:0] =>2
 net => n1->[-1:-1]
-net => n2->[-1:-1]
-net => n3->[-1:-1]
-net => n4->[-1:-1]
-net => n5->[15:0]
-net => n6->[15:0]
-net => n7->[15:0]
+net => n2->[15:0]
 assigment => dd->[-2147483648:-2147483648] to cc->[-2147483648:-2147483648]
 assigment => dd->[-2147483648:7] to cc->[-2147483648:9]
 assigment => dd->[-2147483648:8] to n1->[-2147483648:-2147483648]
-instance => tu_test_ins, T1, A(n5->[-2147483648:-2147483648])
-instance => tu_test_ins, T2, B(n6->[-2147483648:3])
-instance => tu_test_ins, T3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:-1])(n5->[15:0])})
-instance => tu_test_ins, T4, D(n7->[7:0])
-instance => sky130_fd_sc_hd__xor2_1, U1, A(a->[-2147483648:-2147483648])B(b->[-2147483648:-2147483648])X(n1->[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__and2_1, U2, A(a->[-2147483648:-2147483648])B(b->[-2147483648:-2147483648])X(cout->[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U3, A(n1->[-2147483648:-2147483648])Y(n2->[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U4, A(n2->[-2147483648:-2147483648])Y(sum->[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U5, A(n3->[-2147483648:-2147483648])Y(n4->[-2147483648:-2147483648])
-instance => sky130_fd_sc_hd__inv_1, U6, A(n4->[-2147483648:-2147483648])Y(cout->[-2147483648:-2147483648])
+instance => tu_test_ins, T1, A(n1->[-2147483648:-2147483648])B(n2->[-2147483648:3])
+instance => tu_test_ins, T2, B(n2->[-2147483648:3])
+instance => tu_test_mod, T1, A(n1->[-2147483648:-2147483648])
+instance => tu_test_mod, T2, B(n2->[-2147483648:5])
+instance => tu_test_mod, T3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:-1])(n5->[15:0])})
+instance => tu_test_mod, T4, D(n7->[7:0])

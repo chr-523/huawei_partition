@@ -11,18 +11,18 @@
 #define default_edge_weight 1.0
 #define default_vertex_weight 1.0
 #define default_module_weight 1.0
+#define default_name "default"
 
-#define weight_type float
+using weight_type = float;
 // Afterwards, these can be used int8_t, int16_t, ...
+using Name_type = std::string;
 using Module_index_type  = std::string;
 using Vertex_index_type  = std::string;
 using Edge_index_type = std::string;
-#define default_name "default"
-#define Edge_offset_type int
+using Edge_offset_type = int;
 // unuseful
-#define Wire_index_type int
+using Wire_index_type = int;
 
-using Name_type = std::string;
 
 /* name explain
 Replace circuit terminology with graph theory terminology.
@@ -286,30 +286,29 @@ public:
 public: //function
     void add_edge(Name_type& name, int& low, int& high, Edge_type& type){}; // add net/pin
     void add_edge(Name_type& name, Range& range,        Edge_type& type){}; // add net/pin
-    void add_instance(Name_type& type_name, Vertex_index_type& name){}; // add instance no pin
+    void add_instance(Name_type& type_name, Vertex_index_type& name){}; // add instance without connection
     void connect_ins_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect instance and edge
-    void add_module(){}; // add module...to be done
+    void add_module(Module_index_type& module_name){}; // add module without connection
     void connect_mod_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect module and edge...to be done
-public://getfunction
-    Name_type get_module_name() const { return module_name; };
-    weight_type get_module_weight() const { return module_weight; };
-    // std::list<Name_type> get_multi_edge_list() const { return multi_edge_list; };
-    // std::tuple<bool,Vertex_index_type> get_module_data() const { return module_data; }
-    std::vector< Vertex > get_vertex_list() const { return vertex; }
-    std::vector< Graph* > get_subgraph_list() const { return subgraph; }
+        // same as vertex
+    void connect_edge(Edge& edge){}; // connect vertex to the edge
+    void connect_edge(Name_type& edge_name){}; // connect vertex to the edge
+public: //get_function
+    Name_type get_module_name() const { return module_name; };  // same as vertex's index in data<1>
+    weight_type get_module_weight() const { return module_weight; }; // same as vertex's weight
+    std::vector< Vertex > get_vertex_list() const { return vertex; }; // internal vertex
+    std::vector< Graph* > get_subgraph_list() const { return subgraph; }; // internal sub_graph
     std::vector< Edge > get_internal_edge_list() const { return internal_edge_list; }
-    std::vector< Edge_index_type > get_connect_edge_list() const { return connect_edge_list; }
+    std::vector< Edge_index_type > get_connect_edge_list() const { return connect_edge_list; } // same as vertex's edgelist
 protected:
 private:
     bool is_instance_type(Name_type& instance_name);
-    Name_type module_name; // module_name 
-    weight_type module_weight;    // maybe depend on how many and what gate it remain?
-    // std::list<Name_type> multi_edge_list;
-    // std::tuple<bool,Vertex_index_type> module_data;   // verse vertex_data type:= <isclk?,index>
-    std::vector< Vertex > vertex; // vertex_list -> data, weight (within data = <is_clk,index>)
-    std::vector< Graph* > subgraph; // subgraph_list -> index, weight
+    Name_type module_name; // module_name (same as vertex's index in data<1>)
+    weight_type module_weight;    // (same as vertex's weight) maybe depend on how many and what gate it remain?
+    std::vector< Vertex > vertex; // internal vertex -> _list -> data, weight (within data = <is_clk,index>)
+    std::vector< Graph* > subgraph; // internal subgraph -> _list -> index, weight
     std::vector< Edge > internal_edge_list; // what edge this module contain (edge_list -> edge's adj)
-    std::vector< Edge_index_type > connect_edge_list; // what edge this module connect
+    std::vector< Edge_index_type > connect_edge_list; // what edge this module connect (same as vertex's edgelist)
 
 };
 

@@ -1,0 +1,21 @@
+    if(Graph name == clk) -> jump
+    else instantiation graph
+
+    instantiation graph:
+    
+        empty Graph A~
+
+        for each pin and net
+            A.add_edge(name,low,high,type);
+                edge name range type index
+                    split_edge that have range(in the add edge)
+
+        for each instance
+            if ins_name == instance
+                A.add_instance()
+                    empty Vertex 
+                    vertex name(clk) index 
+            else ins_name == module
+                A.add_module()
+                    re_diao_yong
+                

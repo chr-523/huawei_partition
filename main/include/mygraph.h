@@ -8,7 +8,7 @@
 #include <map>
 #include "vertex.h"
 #include "edge.h"
-
+#include "VerilogDataBase.h"
 
 #define default_name "default"
 #define default_module_weight 1.0
@@ -63,8 +63,15 @@ public: //function
     void add_edge(Name_type& name, Range& range,        Edge_type& type){}; // add net/pin
     void add_instance(Name_type& type_name, Vertex_index_type& name){}; // add instance without connection
     void connect_ins_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect instance and edge
-    void add_module(Module_index_type& module_name){}; // add module without connection
+    // add module without connection
+    void add_module(Module_index_type& module_name){};
+    // should find G_1 before use it add module without connection 
+    void add_module(Graph* G_1); 
+    // used in connecting edge except group net
     void connect_mod_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect module and edge...to be done
+    // used in group net connection
+    void connect_mod_edge(Module_index_type& module_name, std::vector< VerilogParser::GeneralName >& group_edge);
+    
         // same as vertex
     void connect_edge(Edge& edge){}; // connect vertex to the edge
     void connect_edge(Name_type& edge_name){}; // connect vertex to the edge

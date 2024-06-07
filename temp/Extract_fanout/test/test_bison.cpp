@@ -57,14 +57,14 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                     {
                          //aaa
                          outfile << "(" << itn->name ;//<< ")" ;
-                         if (itn->range.low < 0)
-                         {
-                        //  outfile << itn->name;
-                         outfile <<"->[-1:-1]";
-                         }
-                         else{
+                        //  if (itn->range.low < 0)
+                        //  {
+                        // //  outfile << itn->name;
+                        //  outfile <<"->[-1:-1]";
+                        //  }
+                        //  else{
                          outfile <<"->[" << itn->range.low << ":" << itn->range.high << "]";
-                         }
+                        //  }
                          outfile << ")";
                          
                     }

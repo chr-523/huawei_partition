@@ -1,4 +1,4 @@
 #include "edge.h"
 #include "vertex.h"
-#include "graph.h"
+#include "mygraph.h"
 #include "process.h"

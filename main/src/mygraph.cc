@@ -203,25 +203,31 @@ void Graph::connect_mod_edge(Module_index_type& module_name,
         ++current_edge;
 
         // instance => tu_test_mod, M3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:4])(n5->[15:0])})
-        if(e_range.low < 0){
+        if(e_range.low < 0){ // n1 and n2
             // which means n1->[-1:-1] and n2[-1,4] in GROUP_NETS {(n1->[-1:-1])(n2->[-1:4])(n5->[15:0])}
             if(e_range.high >= 0){
                 // which means e_name <- n2_4
                 e_name = e_name_temp + '_' + std::to_string(e_range.high);
                 // if(e_range.high < 0) e_name = n1 which means do nothing
             }
-            //im in here~~~~~~~~
-            this_graph -> connect_edg; // connect n1/n2_4 to M3
+            // else{ 
+            //     // which means e_name <- n1
+            //     // do nothing
+            // }
+
+            // Note that this_graph is an iterator that points to Graph*.
+            // so should used (*this_graph)
+            (*this_graph) -> connect_edge(e_name); // connect n1/n2_4 to M3
             auto it_ = edgeMap.find(e_name); // find edge
+
             if (it_ != edgeMap.end()) {
             // if found, connect_vertex
-            it_ -> second -> connect_vertex(vertex_name); // connect T1/T2 to n1/n2_3
-        }
-        
+                it_ -> second -> connect_vertex(module_name); // connect T1/T2 to n1/n2_3
+            }
         }
         else{
         
         };
-        }
+        
     }
 };

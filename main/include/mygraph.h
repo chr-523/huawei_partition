@@ -8,7 +8,7 @@
 #include <map>
 #include "vertex.h"
 #include "edge.h"
-#include "VerilogDataBase.h"
+#include "../paser/VerilogDataBase.h"
 
 #define default_name "default"
 #define default_module_weight 1.0
@@ -17,6 +17,9 @@ using Name_type = std::string;
 using Module_index_type  = std::string;
 using Vertex_index_type  = std::string;
 using Edge_index_type = std::string;
+
+#ifndef GRAPH_H
+#define GRAPH_H
 
 class Graph{
 /* eg.
@@ -59,12 +62,12 @@ public:
 
     ~Graph(){};
 public: //function
-    void add_edge(Name_type& name, int& low, int& high, Edge_type& type){}; // add net/pin
-    void add_edge(Name_type& name, Range& range,        Edge_type& type){}; // add net/pin
-    void add_instance(Name_type& type_name, Vertex_index_type& name){}; // add instance without connection
+    void add_edge(Name_type& name, int& low, int& high, Edge_type& type); // add net/pin
+    void add_edge(Name_type& name, Range& range,        Edge_type& type); // add net/pin
+    void add_instance(Name_type& type_name, Vertex_index_type& name); // add instance without connection
     void connect_ins_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect instance and edge
     // add module without connection
-    void add_module(Module_index_type& module_name){};
+    void add_module(Module_index_type& module_name);
     // should find G_1 before use it add module without connection 
     void add_module(Graph* G_1); 
     // used in connecting edge except group net
@@ -73,8 +76,8 @@ public: //function
     void connect_mod_edge(Module_index_type& module_name, std::vector< VerilogParser::GeneralName >& group_edge);
     
         // same as vertex
-    void connect_edge(Edge& edge){}; // connect vertex to the edge
-    void connect_edge(Name_type& edge_name){}; // connect vertex to the edge
+    void connect_edge(Edge& edge); // connect vertex to the edge
+    void connect_edge(Name_type& edge_name); // connect vertex to the edge
 public: //get_function
     Name_type get_module_name() const { return module_name; };  // same as vertex's index in data<1>
     weight_type get_module_weight() const { return module_weight; }; // same as vertex's weight
@@ -94,3 +97,4 @@ private:
 
 };
 
+#endif

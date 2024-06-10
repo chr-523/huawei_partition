@@ -32,7 +32,7 @@
 
 
 /**
- ** \file /home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.h
+ ** \file /home/chr_523/Work_all/huawei_partition/main/paser/VerilogParser.h
  ** Define the VerilogParser::parser class.
  */
 
@@ -42,8 +42,8 @@
 // especially those whose name start with YY_ or yy_.  They are
 // private implementation details that can be changed or removed.
 
-#ifndef YY_VERILOGPARSER_HOME_CHR_523_WORK_ALL_HUAWEI_PARTITION_TEMP_EXTRACT_FANOUT_BUILD_PARSER_BISON_VERILOGPARSER_H_INCLUDED
-# define YY_VERILOGPARSER_HOME_CHR_523_WORK_ALL_HUAWEI_PARTITION_TEMP_EXTRACT_FANOUT_BUILD_PARSER_BISON_VERILOGPARSER_H_INCLUDED
+#ifndef YY_VERILOGPARSER_HOME_CHR_523_WORK_ALL_HUAWEI_PARTITION_MAIN_PASER_VERILOGPARSER_H_INCLUDED
+# define YY_VERILOGPARSER_HOME_CHR_523_WORK_ALL_HUAWEI_PARTITION_MAIN_PASER_VERILOGPARSER_H_INCLUDED
 
 
 # include <cstdlib> // std::abort
@@ -186,7 +186,7 @@
 #endif  /* ! defined VERILOGPARSERDEBUG */
 
 namespace VerilogParser {
-#line 190 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.h"
+#line 190 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogParser.h"
 
 
 
@@ -217,7 +217,7 @@ namespace VerilogParser {
     struct Range* rangeVal;
 
 
-#line 221 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.h"
+#line 221 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogParser.h"
 
     };
 #endif
@@ -884,9 +884,9 @@ namespace VerilogParser {
 
 
 } // VerilogParser
-#line 888 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogParser.h"
+#line 888 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogParser.h"
 
 
 
 
-#endif // !YY_VERILOGPARSER_HOME_CHR_523_WORK_ALL_HUAWEI_PARTITION_TEMP_EXTRACT_FANOUT_BUILD_PARSER_BISON_VERILOGPARSER_H_INCLUDED
+#endif // !YY_VERILOGPARSER_HOME_CHR_523_WORK_ALL_HUAWEI_PARTITION_MAIN_PASER_VERILOGPARSER_H_INCLUDED

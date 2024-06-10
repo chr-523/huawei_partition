@@ -5,6 +5,9 @@ include_directories(
     ${FLEX_INCLUDE_DIRS}
     )
 
+find_package(FLEX REQUIRED)
+find_package(BISON REQUIRED)
+
 BISON_TARGET(VerilogParser
              VerilogParser.yy
              ${CMAKE_CURRENT_BINARY_DIR}/VerilogParser.cc

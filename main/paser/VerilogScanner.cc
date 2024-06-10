@@ -1,6 +1,6 @@
-#line 2 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
+#line 2 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
 
-#line 4 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
+#line 4 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -635,7 +635,7 @@ typedef VerilogParser::Parser::token_type token_type;
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
 
-#line 639 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
+#line 639 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
 /*** Flex Declarations and Options ***/
 /* enable c++ scanner class generation */
 /* change the name of the scanner class. results in "ExampleFlexLexer" */
@@ -648,8 +648,8 @@ typedef VerilogParser::Parser::token_type token_type;
  * yylex is invoked, the begin position is moved onto the end position. */
 #line 45 "VerilogScanner.ll"
 #define YY_USER_ACTION  yylloc->columns(yyleng);
-#line 652 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
-#line 653 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
+#line 652 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
+#line 653 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
 
 #define INITIAL 0
 
@@ -853,7 +853,7 @@ YY_DECL
 
  /*** BEGIN EXAMPLE - Change the example lexer rules below ***/
 
-#line 857 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
+#line 857 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1163,7 +1163,7 @@ YY_RULE_SETUP
 #line 164 "VerilogScanner.ll"
 ECHO;
 	YY_BREAK
-#line 1167 "/home/chr_523/Work_all/huawei_partition/temp/Extract_fanout/build/parser/bison/VerilogScanner.cc"
+#line 1167 "/home/chr_523/Work_all/huawei_partition/main/paser/VerilogScanner.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

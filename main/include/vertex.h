@@ -17,6 +17,9 @@ using Edge_index_type = std::string;
 using Vertex_index_type  = std::string;
 
 class Edge;
+#ifndef VERTEX_H
+#define VERTEX_H
+
 
 class Vertex{
 /*    
@@ -61,8 +64,8 @@ public: // Initialization
 
     ~Vertex(){};
 public: // function
-    void connect_edge(Edge& edge){}; // connect vertex to the edge
-    void connect_edge(Name_type& edge_name){}; // connect vertex to the edge
+    void connect_edge(Edge& edge); // connect vertex to the edge
+    void connect_edge(Name_type& edge_name); // connect vertex to the edge
 
 public: // get_Function
     weight_type get_vertex_weight() const { return vertex_weight; }
@@ -70,9 +73,11 @@ public: // get_Function
     std::tuple< bool, Vertex_index_type > get_vertex_data() const { return vertex_data; };
 protected:
 private:
-    bool is_clk(const Name_type& name){}; //Determine whether it is clk through vertex_name
+    bool is_clk(const Name_type& name); //Determine whether it is clk through vertex_name
     // Name_type vertex_name;  
     weight_type vertex_weight;    // When multiple vertex are synthesized, vertex_weight may rise. (default 1.0)
     std::vector< Edge_index_type > connect_edge_list; // what edge this vertex connect
     std::tuple< bool, Vertex_index_type > vertex_data;   //  = <isclk?,index>
 };
+
+#endif

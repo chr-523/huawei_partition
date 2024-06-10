@@ -15,6 +15,9 @@ using Edge_index_type = std::string;
 using Vertex_index_type  = std::string;
 using Edge_offset_type = int;
 
+#ifndef EDGE_H
+#define EDGE_H
+
 struct Range { // low_high
     int low;
     int high;
@@ -53,7 +56,7 @@ public: // initialization
                 // this - > adjacency_array = NULL
                 };
     
-    Edge(Name_type edge_name = default_name, int low, int high, Edge_type type = NORMAL){
+    Edge(Name_type edge_name = default_name, int low = -1, int high = -1, Edge_type type = NORMAL){
                 this -> edge_name = edge_name;  // default = "default"  
                 this -> range.low = low;
                 this -> range.high = high;
@@ -78,10 +81,10 @@ public: // initialization
     ~Edge(){};
 
 public: // function
-    void split_edge(){};//to be done, maybe it should be in graph
+    void split_edge();//to be done, maybe it should be in graph
     //connect signal edge to the vertex
-    void connect_vertex(Vertex& vertex){};
-    void connect_vertex(Name_type& vertex_name){};
+    void connect_vertex(Vertex& vertex);
+    void connect_vertex(Name_type& vertex_name);
 
 public: // get_function
     Edge_type get_type() const { return type; };
@@ -96,3 +99,5 @@ private:// data
     // std::array<Edge_offset_type,2> offset_array;
     std::vector< Vertex_index_type > adjacency_array;//what vertex it connect
 };
+
+#endif

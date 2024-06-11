@@ -12,6 +12,7 @@ bool Graph::is_instance_type(Name_type& instance_name){
 }
 
 //add internal edge -> pin and net
+//((Name_type& name, int& low, int& high, Edge_type& type))
 void Graph::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
 
     if (low > high) std::swap(low, high); // just in case
@@ -181,7 +182,6 @@ void Graph::connect_mod_edge(Module_index_type& module_name,
         //     function(name,*itn)
         // }
         */
-
     // at first find the mod M3
     auto this_graph = std::find_if( this -> get_subgraph_list().begin(), 
                             this -> get_subgraph_list().end(), [&]( Graph* g) {//*?

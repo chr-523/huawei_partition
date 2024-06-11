@@ -10,6 +10,7 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 cd test
+
 for file in $file_list
 do
     time ./test_bison $file 

@@ -1,0 +1,16 @@
+VerilogDataBase::VerilogDataBase
+module => test
+	a	dd
+pin => a->[-1:-1] =>1
+pin => dd->[15:0] =>2
+net => n1->[-1:-1]
+net => n2->[15:0]
+assigment => dd->[-2147483648:-2147483648] to cc->[-2147483648:-2147483648]
+assigment => dd->[-2147483648:7] to cc->[-2147483648:9]
+assigment => dd->[-2147483648:8] to n1->[-2147483648:-2147483648]
+instance => tu_test_ins, T1, A(n1->[-2147483648:-2147483648])B(n2->[-2147483648:3])
+instance => tu_test_ins, T2, B(n2->[-2147483648:3])
+instance => tu_test_mod, M1, A(n1->[-2147483648:-2147483648])
+instance => tu_test_mod, M2, B(n2->[-2147483648:5])
+instance => tu_test_mod, M3, C(GROUP_NETS {(n1->[-2147483648:-2147483648])(n2->[-2147483648:4])(n5->[15:0])})
+instance => tu_test_mod, M4, D(n7->[7:0])

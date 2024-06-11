@@ -1,6 +1,7 @@
 #include "VerilogDriver.h"
 #include "VerilogScanner.h"
 
+
 namespace VerilogParser {
 
 Driver::Driver(VerilogDataBase& db)
@@ -37,8 +38,7 @@ bool Driver::parse_string(const std::string &input, const std::string& sname)
     return parse_stream(iss, sname);
 }
 
-void Driver::error(const class location& l,
-		   const std::string& m)
+void Driver::error(const class location& l, const std::string& m)
 {
     std::cerr << l << ": " << m << std::endl;
 }
@@ -47,6 +47,8 @@ void Driver::error(const std::string& m)
 {
     std::cerr << m << std::endl;
 }
+//
+
 
 void Driver::module_name_cbk(std::string const& module_name, std::vector<GeneralName> const& vPinName)
 {
@@ -71,7 +73,6 @@ void Driver::module_instance_cbk(std::string const& macro_name, std::string cons
 	m_vNetPin.clear();
 }
 
-
 void Driver::wire_pin_cbk(std::string& net_name, std::string& pin_name, Range const& range)
 {
     // std::cout << net_name << " " << pin_name << " " << range.low << " " << range.high << std::endl; 
@@ -81,6 +82,7 @@ void Driver::wire_pin_cbk(std::string& net_name, std::string& pin_name, Range co
     // std::cout << m_vNetPin.back().net << " " << m_vNetPin.back().pin << " " << m_vNetPin.back().range.low << " " << m_vNetPin.back().range.high << std::endl; 
 
 }
+
 void Driver::wire_pin_cbk(int bits, int value, std::string& pin_name)
 {
     std::string net_name = "VerilogParser::CONSTANT_NET";
@@ -93,7 +95,7 @@ void Driver::wire_pin_cbk(std::vector<GeneralName>& vNetName, std::string& pin_n
 	m_vNetPin.push_back(NetPin(net_name, pin_name, vNetName));
 }
 
- void Driver::wire_declare_cbk(std::vector<GeneralName> const& vNetName, Range const& range)
+void Driver::wire_declare_cbk(std::vector<GeneralName> const& vNetName, Range const& range)
 {
     for (std::vector<GeneralName>::const_iterator it = vNetName.begin(); it != vNetName.end(); ++it)
     {
@@ -102,6 +104,7 @@ void Driver::wire_pin_cbk(std::vector<GeneralName>& vNetName, std::string& pin_n
         m_db.verilog_net_declare_cbk(it->name, range);
     }
 }
+
 void Driver::wire_declare_cbk(std::vector<GeneralName> const& vNetName)
 {
     for (std::vector<GeneralName>::const_iterator it = vNetName.begin(); it != vNetName.end(); ++it)
@@ -113,6 +116,7 @@ void Driver::pin_declare_cbk(std::vector<GeneralName> const& vPinName, unsigned 
     for (std::vector<GeneralName>::const_iterator it = vPinName.begin(); it != vPinName.end(); ++it)
         m_db.verilog_pin_declare_cbk(it->name, type, it->range);
 }
+
 void Driver::pin_declare_cbk(std::vector<GeneralName> const& vPinName, unsigned type, Range const& range)
 {
     for (std::vector<GeneralName>::const_iterator it = vPinName.begin(); it != vPinName.end(); ++it)
@@ -142,7 +146,6 @@ bool read(VerilogDataBase& db, const string& verilogFile)
 	Driver driver (db);
 	driver.trace_scanning = true;
 	driver.trace_parsing = true;
-
 	return driver.parse_file(verilogFile);
 }
 

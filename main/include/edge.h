@@ -93,7 +93,9 @@ public: // get_function
     std::vector< Vertex_index_type > get_adjacency_array() const { return adjacency_array; }
 protected:
 private:// data
+    
     Edge_type type;    //input, output or normal
+    Name_type connect_pin_name;//this represents which pin it connects to when it connects to module
     Name_type edge_name; // pin/net's name + '_' + edge_index  // maybe assign -> (list name)
     Range range; // [range.low (and range.high) < 0] means edge is signal
     // std::array<Edge_offset_type,2> offset_array;

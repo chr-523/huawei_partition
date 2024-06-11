@@ -1,5 +1,7 @@
+
 #ifndef VERILOGPARSER_DATABASE_H
 #define VERILOGPARSER_DATABASE_H
+
 
 #include <string>
 #include <vector>
@@ -171,17 +173,30 @@ class VerilogDataBase
 	public:
 
         virtual void verilog_module_declaration_cbk(std::string const& module_name, std::vector<GeneralName> const& vPinName); 
-
         virtual void verilog_instance_cbk(std::string const& macro_name, std::string const& inst_name, std::vector<NetPin> const& vNetPin) = 0;
-
         virtual void verilog_net_declare_cbk(std::string const& net_name, Range const& range) = 0;
-
         virtual void verilog_pin_declare_cbk(std::string const& pin_name, unsigned type, Range const& range) = 0;
-
         virtual void verilog_modules_cbk() = 0;
-
         // virtual void verilog_assignment_cbk(std::string const& target_name, std::string const& source_name); 
         virtual void verilog_assignment_cbk(std::string const& target_name, Range const& target_range, std::string const& source_name, Range const& source_range) = 0;
+        // add
+        // virtual void verilog_module_declaration_cbk(
+        //     std::string const& module_name, std::vector<GeneralName> const& vPinName,
+        //     Graph* gra, std::unordered_map < Name_type, Graph* >* sub_list); 
+        // virtual void verilog_instance_cbk(
+        //         std::string const& macro_name, std::string const& inst_name, std::vector<NetPin> const& vNetPin,
+        //         Graph* gra, std::unordered_map < Name_type, Graph* >* sub_list) = 0;
+        // virtual void verilog_net_declare_cbk(
+        //         std::string const& net_name, Range const& range,
+        //         Graph* gra, std::unordered_map < Name_type, Graph* >* sub_list) = 0;
+        // virtual void verilog_pin_declare_cbk(
+        //         std::string const& pin_name, unsigned type, Range const& range,
+        //         Graph* gra, std::unordered_map < Name_type, Graph* >* sub_list) = 0;
+        // virtual void verilog_modules_cbk() = 0;
+        // // virtual void verilog_assignment_cbk(std::string const& target_name, std::string const& source_name); 
+        // virtual void verilog_assignment_cbk(
+        //         std::string const& target_name, Range const& target_range, std::string const& source_name, Range const& source_range,
+        //         Graph* gra, std::unordered_map < Name_type, Graph* >* sub_list) = 0;
 
     protected:
         /// @brief remind users to define some optional callback functions at runtime 

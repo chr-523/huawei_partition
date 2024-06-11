@@ -128,8 +128,6 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
 
 };
 
-
-
 void test1(string const& filename, string filename1)
 {
 	VerilogDataBase db;

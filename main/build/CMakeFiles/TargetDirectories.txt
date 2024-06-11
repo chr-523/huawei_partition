@@ -1,0 +1,6 @@
+/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles/huawei_.dir
+/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles/edit_cache.dir
+/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles/rebuild_cache.dir
+/home/chr_523/Work_all/huawei_partition/main/build/paser/CMakeFiles/verilogparser.dir
+/home/chr_523/Work_all/huawei_partition/main/build/paser/CMakeFiles/edit_cache.dir
+/home/chr_523/Work_all/huawei_partition/main/build/paser/CMakeFiles/rebuild_cache.dir

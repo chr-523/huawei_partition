@@ -5,6 +5,7 @@ project(huawei_)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 find_package(Boost REQUIRED)
 if(Boost_INCLUDE_DIRS)

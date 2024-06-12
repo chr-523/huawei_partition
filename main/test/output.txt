@@ -1,15 +1,15 @@
 VerilogDataBase::VerilogDataBase
 module test
-pin a -2147483648 -2147483648 1
-pin dd 15 0 2
-net n1 -2147483648 -2147483648
-net n2 15 0
-assigment dd -2147483648 -2147483648 ->cc -2147483648 -2147483648 
-assigment dd -2147483648 7 ->cc -2147483648 9 
-assigment dd -2147483648 8 ->n1 -2147483648 -2147483648 
-instance tu_test_ins T1 A n1 -2147483648 -2147483648 B n2 -2147483648 3 
-instance tu_test_ins T2 B n2 -2147483648 3 
-instance tu_test_mod M1 A n1 -2147483648 -2147483648 
-instance tu_test_mod M2 B n2 -2147483648 5 
-instance tu_test_mod M3 C {(n1 -2147483648 -2147483648)(n2 -2147483648 4)(n5 15 0)}
-instance tu_test_mod M4 D n7 7 0 
+pin(aa -2147483648 -2147483648)(1)
+pin(dd 15 0)(2)
+net(n1 -2147483648 -2147483648)(0)
+net(n2 15 0)(0)
+assignment(dd -2147483648 -2147483648)(cc -2147483648 -2147483648)
+assignment(dd -2147483648 7)(cc -2147483648 9)
+assignment(dd -2147483648 8)(n1 -2147483648 -2147483648)
+instance tu_test_ins T1 A(n1 -2147483648 -2147483648)B(n2 -2147483648 3)
+instance tu_test_ins T2 B(n2 -2147483648 3)
+instance tu_test_mod M1 A(n1 -2147483648 -2147483648)
+instance tu_test_mod M2 B(n2 -2147483648 5)
+instance tu_test_mod M3 C({n1 -2147483648 -2147483648}{n2 -2147483648 4}{n5 15 0})
+instance tu_test_mod M4 D(n7 7 0)

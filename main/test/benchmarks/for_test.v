@@ -1,5 +1,5 @@
-module test(a,dd);
-    input a;
+module test(aa,dd);
+    input aa;
     output [15:0] dd;
     wire n1;
     wire [15:0] n2;

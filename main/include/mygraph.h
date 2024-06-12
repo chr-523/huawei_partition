@@ -78,7 +78,8 @@ public: //function
         // same as vertex
     void connect_edge(Edge& edge){ /**/ }; // connect vertex to the edge
     void connect_edge(Name_type& edge_name){ /**/ }; // connect vertex to the edge
-public: //get_function
+public: //function about the data
+    void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; }
     Name_type get_module_name() const { return module_name; };  // same as vertex's index in data<1>
     weight_type get_module_weight() const { return module_weight; }; // same as vertex's weight
     std::vector< Vertex > get_vertex_list() const { return vertex; }; // internal vertex

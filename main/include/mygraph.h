@@ -65,7 +65,7 @@ public: //function
     void add_edge(Name_type& name, int& low, int& high, Edge_type& type); // add net/pin
     void add_edge(Name_type& name, Range& range,        Edge_type& type); // add net/pin
     void add_instance(Name_type& type_name, Vertex_index_type& name); // add instance without connection
-    void connect_ins_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect instance and edge
+    friend void connect_ins_edge(Graph& gra, Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect instance and edge
     // add module without connection
     void add_module(Module_index_type& module_name);
     // should find G_1 before use it add module without connection 
@@ -74,7 +74,7 @@ public: //function
     void connect_mod_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect module and edge...to be done
     // used in group net connection
     void connect_mod_edge(Module_index_type& module_name, std::vector< VerilogParser::GeneralName >& group_edge);
-    
+
         // same as vertex
     void connect_edge(Edge& edge){ /**/ }; // connect vertex to the edge
     void connect_edge(Name_type& edge_name){ /**/ }; // connect vertex to the edge
@@ -88,7 +88,6 @@ public: //function about the data
     std::vector< Edge_index_type > get_connect_edge_list() const { return connect_edge_list; } // same as vertex's edgelist
 protected:
 private:
-    bool is_instance_type(Name_type& instance_name);
     Name_type module_name; // module_name (same as vertex's index in data<1>)
     weight_type module_weight;    // (same as vertex's weight) maybe depend on how many and what gate it remain?
     std::vector< Vertex > vertex; // internal vertex -> _list -> data, weight (within data = <is_clk,index>)

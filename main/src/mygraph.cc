@@ -3,13 +3,6 @@
 #include <algorithm>
 #include <unordered_set>
 
-//Determine whether it is instance or module through instance_name's prefix
-//If instance -> true     if module -> false*
-bool Graph::is_instance_type(Name_type& instance_name){
-    Name_type instance_prefix = "sky130_fd_sc_hd__";
-    Name_type name_prefix = instance_name.substr(0, instance_prefix.length() );
-    return name_prefix == instance_prefix;
-}
 
 //add internal edge -> pin and net
 //((Name_type& name, int& low, int& high, Edge_type& type))
@@ -20,7 +13,7 @@ void Graph::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
     if(low < 0 && high < 0 ){ // no range means signal edge
         // pin => a->[-1:-1] =>1    ->  add_edge(a, -1, -1, INPUT)
         // net => n1->[-1:-1]       ->  add_edge(n1, -1, -1, NORMAL)    
-        Edge edge_(name, type); // name is index
+        Edge edge_(name, -1, -1, type); // name is index
         this -> internal_edge_list.push_back(edge_); //range = [-1, -1]
     }
     else{   // only in cases where high low is greater than 0
@@ -59,20 +52,19 @@ void Graph::add_instance(Name_type& type_name, Vertex_index_type& name){
     Vertex v_1(type_name, name); // type_name is only used to determine is_clk during initialization
     this -> vertex.push_back(v_1);
 }
-
-void Graph::connect_ins_edge(Vertex_index_type& vertex_name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue){
+//friend void Graph::connect_ins_edg(~~)
+void connect_ins_edge(Graph& gra, Vertex_index_type& vertex_name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue){
     // instance => tu_test_ins, T1, A(n1->[-2147483648:-2147483648])B(n2->[-2147483648:3])
     // instance => tu_test_ins, T2, B(n2->[-2147483648:3])
     ;
     // at first find the ins
-    auto this_vertex = std::find_if( this -> get_vertex_list().begin(), 
-                            this -> get_vertex_list().end(), [&]( Vertex v) {
+    auto this_vertex = std::find_if( gra.vertex.begin(), gra.vertex.end(), [&]( Vertex v) {
         return std::get<1>( v.get_vertex_data() ) == vertex_name;
     });
         // Using a hash table to store edges in a vector for quick access
     std::unordered_map< std::string, Edge* > edgeMap;
         // creat the hash table
-    for (auto& e : this -> get_internal_edge_list()){
+    for (auto& e : gra.internal_edge_list){
         edgeMap[e.get_name()] = &e; 
     }
         // queue is not empty do ->

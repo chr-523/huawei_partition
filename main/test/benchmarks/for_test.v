@@ -1,5 +1,19 @@
-module test(aa,dd);
-    input aa;
+module tu_test_mod(a,dd);
+    input a;
+    output [15:0] dd;
+    wire n1;
+    wire [15:0] n2;
+
+    assign dd = cc;
+    assign dd[7] = cc[9];
+    assign dd[8] = n1;
+    
+    tu_test_ins T1 ( .A(n1), .B(n2[3]));
+    tu_test_ins T2 ( .B(n2[3]));
+
+endmodule
+module test(a,dd);
+    input a;
     output [15:0] dd;
     wire n1;
     wire [15:0] n2;

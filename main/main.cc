@@ -26,17 +26,17 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
 
     virtual void verilog_instance_cbk(std::string const& macro_name, std::string const& inst_name, std::vector<VerilogParser::NetPin> const& vNetPin)
         {
-			 outfile << "instance" << " " << macro_name << " " << inst_name << " ";  
+			 outfile << "instance" << "(" << macro_name << ")(" << inst_name << ")";  
             for (std::vector<VerilogParser::NetPin>::const_iterator it = vNetPin.begin(); it != vNetPin.end(); ++it)
             {
                 if (it->net == "VerilogParser::CONSTANT_NET")
                 {
-                     outfile << it->pin << "(" << it->net << " " << it->extension.constant << ")";
+                     outfile << "(" << it->pin << ")(" << it->net << " " << it->extension.constant << ")";
                      // It seems that there is no such situation in c906
                 }
                 else if (it->net == "VerilogParser::GROUP_NETS")
                 {
-                     outfile << it->pin << "(";
+                     outfile << "(" << it->pin << ")(";
                     for (std::vector<VerilogParser::GeneralName>::const_iterator itn = it->extension.vNetName->begin(); itn != it->extension.vNetName->end(); ++itn)
                     {
                          outfile << "{" <<itn->name << " " ;
@@ -47,7 +47,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                 }
                 else // it->net == NORMAL net
                 {
-                     outfile << it->pin << "(" << it->net << "";
+                     outfile << "(" << it->pin << ")(" << it->net << "";
                      outfile << " " << it->range.low<<" "<<it->range.high<<")";
                 }
             }
@@ -65,6 +65,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
         //     outfile << "pin" << " => " << pin_name << "->[" << range.low << ":" << range.high << "] =>" << type << std::endl;
         //  }
         outfile << "pin" << "(" << pin_name << " " << range.low << " " << range.high << ")";
+   
         outfile << "(" << type << ")" << std::endl;
          
     }

@@ -21,7 +21,10 @@ using Edge_offset_type = int;
 struct Range { // low_high
     int low;
     int high;
-    Range() {low = high = -1;}
+    Range() {
+        low = -1;
+        high = -1;
+    }
     Range(int l, int h) : low(l), high(h) {}
 };
 

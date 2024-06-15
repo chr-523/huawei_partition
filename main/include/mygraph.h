@@ -6,6 +6,8 @@
 #include <unordered_set>
 #include <string>
 #include <map>
+// #include <copy>
+
 #include "vertex.h"
 #include "edge.h"
 #include "../paser/VerilogDataBase.h"
@@ -46,7 +48,7 @@ public:
           module_name(module_name), module_weight(module_weight){};
 
     Graph(const Graph& other): module_name(other.module_name),
-          module_weight(other.module_weight), vertex(other.vertex), subgraph(other.subgraph),
+          module_weight(other.module_weight), vertex(other.vertex), submodule(other.submodule),
           internal_edge_list(other.internal_edge_list){};
     // 赋值运算符
     Graph& operator=(const Graph& other){
@@ -54,7 +56,7 @@ public:
             module_name = other.module_name;
             module_weight = other.module_weight;
             vertex = other.vertex;
-            subgraph = other.subgraph;
+            submodule = other.submodule;
             internal_edge_list = other.internal_edge_list;
         }
         return *this;
@@ -66,24 +68,31 @@ public: //function
     void add_edge(Name_type& name, Range& range,        Edge_type& type); // add net/pin
     void add_instance(Name_type& type_name, Vertex_index_type& name); // add instance without connection
     friend void connect_ins_edge(Graph& gra, Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect instance and edge
+    friend void connect_mod_edge(Graph& gra, Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect module and edge...to be done
+
     // add module without connection
     void add_module(Module_index_type& module_name);
     // should find G_1 before use it add module without connection 
     void add_module(Graph* G_1); 
     // used in connecting edge except group net
-    void connect_mod_edge(Vertex_index_type& name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue); // connect module and edge...to be done
-    // used in group net connection
-    void connect_mod_edge(Module_index_type& module_name, std::vector< VerilogParser::GeneralName >& group_edge);
+   
 
         // same as vertex
     void connect_edge(Edge& edge){ /**/ }; // connect vertex to the edge
     void connect_edge(Name_type& edge_name){ /**/ }; // connect vertex to the edge
 public: //function about the data
+    void clear(){
+        this -> module_name = default_name;
+        this -> module_weight = default_module_weight;        
+        this -> vertex.clear();       
+        this -> submodule.clear();        
+        this -> internal_edge_list.clear();        
+        this -> connect_edge_list.clear();        }
     void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; }
     Name_type get_module_name() const { return module_name; };  // same as vertex's index in data<1>
     weight_type get_module_weight() const { return module_weight; }; // same as vertex's weight
     std::vector< Vertex > get_vertex_list() const { return vertex; }; // internal vertex
-    std::vector< Graph* > get_subgraph_list() const { return subgraph; }; // internal sub_graph
+    std::vector< Graph* > get_submodule_list() const { return submodule; }; // internal sub_graph
     std::vector< Edge > get_internal_edge_list() const { return internal_edge_list; }
     std::vector< Edge_index_type > get_connect_edge_list() const { return connect_edge_list; } // same as vertex's edgelist
 protected:
@@ -91,7 +100,7 @@ private:
     Name_type module_name; // module_name (same as vertex's index in data<1>)
     weight_type module_weight;    // (same as vertex's weight) maybe depend on how many and what gate it remain?
     std::vector< Vertex > vertex; // internal vertex -> _list -> data, weight (within data = <is_clk,index>)
-    std::vector< Graph* > subgraph; // internal subgraph -> _list -> index, weight
+    std::vector< Graph* > submodule; // internal submodule -> _list -> index, weight
     std::vector< Edge > internal_edge_list; // what edge this module contain (edge_list -> edge's adj)
     std::vector< Edge_index_type > connect_edge_list; // what edge this module connect (same as vertex's edgelist)
 };

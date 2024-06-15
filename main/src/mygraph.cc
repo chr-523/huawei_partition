@@ -53,7 +53,11 @@ void Graph::add_instance(Name_type& type_name, Vertex_index_type& name){
     this -> vertex.push_back(v_1);
 }
 //friend void Graph::connect_ins_edg(~~)
-void connect_ins_edge(Graph& gra, Vertex_index_type& vertex_name, std::queue< Name_type >& edge_name_queue, std::queue< Range >& range_queue){
+void connect_ins_edge(
+    Graph& gra, 
+    Vertex_index_type& vertex_name, 
+    std::queue< Name_type >& edge_name_queue,
+     std::queue< Range >& range_queue){
     // instance => tu_test_ins, T1, A(n1->[-2147483648:-2147483648])B(n2->[-2147483648:3])
     // instance => tu_test_ins, T2, B(n2->[-2147483648:3])
     ;
@@ -102,32 +106,33 @@ void Graph::add_module(Module_index_type& module_name){
     //              then push_back it
     Graph* G_1;//?
     G_1 -> get_module_name();
-    this -> subgraph.push_back(G_1);
+    this -> submodule.push_back(G_1);
 };
 
     //should be find G_1 in progress.cc
 void Graph::add_module(Graph* G_1){
-    this -> subgraph.push_back(G_1);
+    this -> submodule.push_back(G_1);
 };
 
 // This function is used to handle the following three situations:
     // ~~ instance => tu_test_mod, M1, A(n1->[-2147483648:-2147483648])
     // ~~ instance => tu_test_mod, M2, B(n2->[-2147483648:5])
     // ~~ instance => tu_test_mod, M4, D(n7->[7:0])
-void Graph::connect_mod_edge(
+void connect_mod_edge(
+    Graph& gra,
     Module_index_type& module_name, 
     std::queue< Name_type >& edge_name_queue, 
     std::queue< Range >& range_queue){
     // at first find the mod
-    auto it = std::find_if( this -> get_subgraph_list().begin(), 
-                            this -> get_subgraph_list().end(), [&]( Graph* g) {//*?
+    auto this_module = std::find_if( gra.submodule.begin(), 
+                            gra.submodule.end(), [&]( Graph* g) {//*?
         return g -> get_module_name() == module_name;
     });
 
         // Using a hash table to store edges in a vector for quick access
     std::unordered_map< std::string, Edge* > edgeMap;
         // creat the hash table
-    for (auto& e : this -> get_internal_edge_list()){
+    for (auto& e : gra.internal_edge_list){
         edgeMap[e.get_name()] = &e; 
     }
         // queue is not empty do ->
@@ -139,87 +144,11 @@ void Graph::connect_mod_edge(
         range_queue.pop();
 
         if(e_range.low < 0 && e_range.high < 0){
-                // which means .A(n1->[-2147483648:-2147483648]) 
-                // instance => tu_test_mod, M3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:-1])(n5->[15:0])})
-                // instance => tu_test_mod, M4, D(n7->[7:0])
             e_name = e_name_temp;
         }
-        else if(e_range.low < 0 && e_range.high >= 0){   // which means .B(n2->[-2147483648:3])
-            
-        }
-        else if(e_range.low >= 0 && e_range.high >= 0){// which means .D(n7->[7:0])
-        
-        }
-        else{// which means .C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:-1])(n5->[15:0])}) or ?
-
-        }
-
-        // it -> connect_edge(e_name); // connect n1/n2_3 to M1/M2
-        // auto it_ = edgeMap.find(e_name); // find edge
-        // if (it_ != edgeMap.end()) {
-        //     // if found, connect_vertex
-        //     it_ -> second -> connect_vertex(vertex_name); // connect T1/T2 to n1/n2_3
-        // }
-    }
-};
-
-// This function is used to handle the following situation:
-    // ~~ instance => tu_test_mod, M3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:-1])(n5->[15:0])})
-void Graph::connect_mod_edge(Module_index_type& module_name, 
-    std::vector< VerilogParser::GeneralName >& group_edge){
-    /*  temp : how to use in 
-        //for (std::vector<VerilogParser::GeneralName>::const_iterator 
-        // itn = it->extension.vNetName->begin(); 
-        // itn != it->extension.vNetName->end(); ++itn){ 
-        //     function(name,*itn)
-        // }
-        */
-    // at first find the mod M3
-    auto this_graph = std::find_if( this -> get_subgraph_list().begin(), 
-                            this -> get_subgraph_list().end(), [&]( Graph* g) {//*?
-        return g -> get_module_name() == module_name;
-    });
-
-    // Using a hash table to store edges in a vector for quick access
-    std::unordered_map< std::string, Edge* > edgeMap;
-    // creat the hash table
-    for (auto& e : this -> get_internal_edge_list()){
-        edgeMap[e.get_name()] = &e; 
-    }
-        
-    std::vector< VerilogParser::GeneralName >::const_iterator current_edge = group_edge.begin(); 
-    while (current_edge != group_edge.end()) { // n1 -> n2 -> n5
-        Name_type e_name_temp = current_edge -> name;
-        Name_type e_name;
-        Range e_range( current_edge -> range.low, current_edge -> range.high );
-        ++current_edge;
-
-        // instance => tu_test_mod, M3, C(GROUP_NETS {(n1->[-1:-1])(n2->[-1:4])(n5->[15:0])})
-        if(e_range.low < 0){ // n1 and n2
-            // which means n1->[-1:-1] and n2[-1,4] in GROUP_NETS {(n1->[-1:-1])(n2->[-1:4])(n5->[15:0])}
-            if(e_range.high >= 0){
-                // which means e_name <- n2_4
-                e_name = e_name_temp + '_' + std::to_string(e_range.high);
-                // if(e_range.high < 0) e_name = n1 which means do nothing
-            }
-            // else{ 
-            //     // which means e_name <- n1
-            //     // do nothing
-            // }
-
-            // Note that this_graph is an iterator that points to Graph*.
-            // so should used (*this_graph)
-            (*this_graph) -> connect_edge(e_name); // connect n1/n2_4 to M3
-            auto it_ = edgeMap.find(e_name); // find edge
-
-            if (it_ != edgeMap.end()) {
-            // if found, connect_vertex
-                it_ -> second -> connect_vertex(module_name); // connect T1/T2 to n1/n2_3
-            }
-        }
         else{
-        
-        };
-        
+            e_name = e_name_temp + '_' + std::to_string(e_range.high);
+        }
+        /*~*/
     }
 };

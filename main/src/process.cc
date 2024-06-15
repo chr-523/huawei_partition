@@ -21,11 +21,37 @@ bool is_ins_test(const Name_type& instance_name){
     return name_prefix == instance_prefix;
 }    
 
+std::vector<std::string> split_by_brackets(const std::string& line, bool use_big_brackets = false){
+    std::string re_p;
+    if (use_big_brackets){
+        re_p = "\\{([^}]+)\\}";
+    }
+    else{
+        re_p = "\\(([^)]+)\\)";
+    }
+    std::regex re(re_p); // Regular expression matching content within parentheses
+    std::sregex_iterator next(line.begin(), line.end(), re);
+    std::sregex_iterator end;
+    std::vector<std::string> line_data;
+    std::vector<std::string> edge_data;
+    for ( ; next != end; ++next) {
+        line_data.push_back( next -> str(1) ); // str(1) gets the content within the first parentheses
+    }
+    return line_data;
+}
 
-
-std::vector<std::string> get_edge_data(const std::string& tokens) {
+std::vector<std::string> get_group_edge_data(const std::string& edge_data) {
+    std::vector<std::string> result_temp;
     std::vector<std::string> result;
-    std::istringstream iss(tokens);
+    result_temp = split_by_brackets(edge_data, true);
+    result = result_temp;
+    return result;
+
+}
+
+std::vector<std::string> get_edge_data(const std::string& edge_data) {
+    std::vector<std::string> result;
+    std::istringstream iss(edge_data);
     std::string token;
     while (iss >> token) {
         result.push_back(token);
@@ -49,48 +75,51 @@ Graph read_file(const std::string& filename){
 
     std::string line;
     std::getline(file, line); // ignore the first line
-
+    bool first_module = true;
+    std::string previous_module_name;
     while( getline(file, line) ){
 
         std::string token;
-
         if ( (line[0] == 'm') && (line[1] == 'o') && (line[2] == 'd') && (line[3] == 'u') && (line[4] == 'l') && (line[5] == 'e') ){
             std::string module_name = line.substr(7);
-            Graph* gra_2 = new Graph(gra);
-            std::pair<Name_type, Graph*> pair = std::make_pair(module_name, gra_2);
+            if( !(first_module) ){
+                Graph* gra_2 = new Graph(gra);
+                std::pair<Name_type, Graph*> pair = std::make_pair(previous_module_name, gra_2);
+                sub_map.insert(pair); // 组成pair再插入
+                gra.clear();
+            }
+            else{
+                first_module = false;
+            }
             gra.set_module_name(module_name); //something wrong
-            sub_map.insert(pair); // 组成pair再插入
+            previous_module_name = module_name;
         } 
         else if (   ((line[0] == 'p') && (line[1] == 'i') && (line[2] == 'n')) or
                     ((line[0] == 'n') && (line[1] == 'e') && (line[2] == 't'))  ){
             std::regex re("\\(([^)]+)\\)"); // Regular expression matching content within parentheses
             std::sregex_iterator next(line.begin(), line.end(), re);
             std::sregex_iterator end;
-            std::vector<std::string> token_list;
-            std::vector<std::string> tokens;
-            std::vector<std::string> tokens_1;
-            for ( ; next != end; ++next) {
-                token_list.push_back( next -> str(1) ); // str(1) gets the content within the first parentheses
-                std::istringstream iss( next -> str(1) );
+            std::vector<std::string> edge_data;
+            for ( ; next != end; ++next) {std::istringstream iss( next -> str(1) );
                 // use space to split the string
                 std::string temp;
                 while(iss >> temp){
-                    tokens.push_back(temp);
+                    edge_data.push_back(temp);
                 }
             }
-            int low = std::stoi(tokens[1]);
-            int high = std::stoi(tokens[2]);
+            int low = std::stoi(edge_data[1]);
+            int high = std::stoi(edge_data[2]);
             Edge_type e_type;
-            if( tokens[3]=="1" ){ // input
+            if( edge_data[3]=="1" ){ // input
                 e_type = INPUT;
             }
-            else if( tokens[3]=="2" ){ // output
+            else if( edge_data[3]=="2" ){ // output
                 e_type = OUTPUT;
             }
             else{ // NORMAL
                 e_type = NORMAL;
             }
-            gra.add_edge(tokens[0], low, high, e_type);
+            gra.add_edge(edge_data[0], low, high, e_type);
         }
         else if ( line.substr(0, 10) == "assignment" ){
             // 解析赋值信息
@@ -100,44 +129,91 @@ Graph read_file(const std::string& filename){
         else if ( line.substr(0,8) == "instance" ){
             // 解析实例化信息
             // parseInstance(line, gra, sub_map);
-            std::regex re("\\(([^)]+)\\)"); // Regular expression matching content within parentheses
-            std::sregex_iterator next(line.begin(), line.end(), re);
-            std::sregex_iterator end;
-            std::vector<std::string> token_list;
-            std::vector<std::string> tokens;
-            for ( ; next != end; ++next) {
-                token_list.push_back( next -> str(1) ); // str(1) gets the content within the first parentheses
-            }
-            // if( is_instance_type(token_list[0]) ){ // is instance
-            if( is_ins_test( token_list[0]) ){ // is instance
-                gra.add_instance(token_list[0], token_list[1]);//add (type, insname)
+            std::vector<std::string> line_data;
+            line_data = split_by_brackets(line);
+            // if( is_instance_type(line_data[0]) ){ // is instance
+            if( is_ins_test( line_data[0]) ){ // is instance
+                gra.add_instance(line_data[0], line_data[1]);//add (type, insname)
 
                 std::queue< Name_type> edge_name_queue;
                 std::queue< Range > range_queue;
-                for (size_t counter = 2; counter< token_list.size(); counter += 2) {
-                    if (counter + 1 < token_list.size()) { // 确保至少还有两个元素
-                        Name_type connect_pin_name = token_list[counter]; // 使用索引访问元素
-                        std::vector<std::string> tokens = get_edge_data(token_list[counter + 1]);
-                        if (tokens.size() >= 2) { // 确保tokens至少有两个元素
-                            edge_name_queue.push(tokens[0]);
-                            Range range_(std::stoi(tokens[1]), std::stoi(tokens[2]));
+
+                for (size_t counter = 2; counter< line_data.size(); counter += 2) {
+                    if (counter + 1 < line_data.size()) { // 确保至少还有两个元素
+                        Name_type connect_pin_name = line_data[counter]; // 使用索引访问元素
+                        std::vector<std::string> edge_data = get_edge_data(line_data[counter + 1]);
+                        if (edge_data.size() >= 2) { // 确保edge_data至少有两个元素
+                            edge_name_queue.push(edge_data[0]);
+                            Range range_(std::stoi(edge_data[1]), std::stoi(edge_data[2]));
                             range_queue.push(range_);
                         }
                     }
                 }
-                connect_ins_edge(gra, token_list[1], edge_name_queue, range_queue);
+
+                connect_ins_edge(gra, line_data[1], edge_name_queue, range_queue);
             }
             else{ // is module
-                auto sub_module = sub_map.find(token_list[0]);
+                auto sub_module = sub_map.find(line_data[0]);
                 if (sub_module == sub_map.end() ){
                     std::cerr << "can not find submodule" << std::endl;
                 }
                 gra.add_module( sub_module -> second );
-                // gra.add_instance(token_list[0], token_list[1]);//add (type, insname)
+
+                // gra.add_instance(line_data[0], line_data[1]);//add (type, insname)
 
                 std::queue< Name_type> edge_name_queue;
                 std::queue< Range > range_queue;
 
+                for (size_t counter = 2; counter< line_data.size(); counter += 2) {
+                    if (counter + 1 < line_data.size()) { // ensure as least 2 ele
+
+                        Name_type connect_pin_name = line_data[counter]; // use index to fangwen
+                        std::vector< std::string > edge_data;
+                        
+                        if( line_data[counter+1][0] != 123 ){ // not begin with 123 '{'
+                            edge_data = get_edge_data(line_data[counter + 1]);
+                            if (edge_data.size() >= 2) { // ensure edge_data at least 2ele
+                                edge_name_queue.push(edge_data[0]);
+                                Range range_(std::stoi(edge_data[1]), std::stoi(edge_data[2]));
+                                range_queue.push(range_);
+                            }
+                        }
+                        else{
+                           std::vector< std::string > edge_data_list;
+                            edge_data_list = get_group_edge_data(line_data[counter + 1]);
+                            for(size_t counter_l = 0 ; counter_l < edge_data_list.size(); counter_l++){
+                                edge_data = get_edge_data(edge_data_list[counter_l]);
+                                if (edge_data.size() >= 2){ // ensure edge_data at least 2ele
+                                    Name_type edge_name_temp = edge_data[0];
+                                    Name_type edge_name;
+                                    int low = std::stoi(edge_data[2]);
+                                    int high = std::stoi(edge_data[1]);
+                                    if (low > high) std::swap(low, high); // just in case
+                                    if(low < 0 ){
+                                        if (high >= 0){
+                                            edge_name = edge_name_temp + '_' + edge_data[2];
+                                        }
+                                        else{
+                                            edge_name = edge_name_temp;
+                                        }
+                                        edge_name_queue.push(edge_name);
+                                        Range range_(low, high);
+                                        range_queue.push(range_);
+                                    }
+                                    else{
+                                        // im here: why jinbuqu xunhuan
+                                        for (size_t now_high= 0; now_high >= high; now_high++){ 
+                                            edge_name = edge_name_temp + '_' + std::to_string(now_high); 
+                                            edge_name_queue.push(edge_name);
+                                            Range range_(-1, now_high);
+                                            range_queue.push(range_);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         } 
         else{

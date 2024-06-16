@@ -113,7 +113,7 @@ void test1(std::string const& filename)
     //     (*gra).add_edge(pin_name, t_low, t_high, t_type); // & transmit
 
     //     Name_type mod_name = "mod1";
-    //     std::pair<Name_type, Graph*> t_submod = std::make_pair(mod_name,gra);
+    //     std::pair<Name_type, Module*> t_submod = std::make_pair(mod_name,gra);
     //     (*sub_map).insert(t_submod);
     // }
 }
@@ -133,9 +133,9 @@ int main(int argc, char** argv)
     }
 
     std::string file_path = "test/output.txt";
-    Graph C_906("test_name",default_module_weight);
+    Module C_906("test_name",default_module_weight);
 
-    std::unordered_map< Name_type, Graph* > sub_map;
+    std::unordered_map< Name_type, Module* > sub_map;
 	// test1(path, &C_906, &sub_map);
     C_906 = read_file(file_path);
 
@@ -143,7 +143,7 @@ int main(int argc, char** argv)
         std::cout << " 1 " << std::endl;
         auto it = sub_map.find("mod1");
         if (it != sub_map.end() ){
-            std::cout << it -> second -> get_module_name() << std::endl; // it->second means Graph*
+            std::cout << it -> second -> get_module_name() << std::endl; // it->second means Module*
         } else{
             std::cout << "Not found" << std::endl;
         }

@@ -150,7 +150,7 @@ CMakeFiles/huawei_.dir/main.cc.o: \
  /usr/include/c++/11/bits/stl_tree.h /usr/include/c++/11/bits/stl_map.h \
  /usr/include/c++/11/bits/stl_multimap.h \
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h \
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h \
  /home/chr_523/Work_all/huawei_partition/main/include/edge.h \
  /home/chr_523/Work_all/huawei_partition/main/include/../paser/VerilogDataBase.h \
@@ -221,7 +221,7 @@ CMakeFiles/huawei_.dir/main.cc.o: \
  /usr/include/c++/11/bits/regex.h /usr/include/c++/11/bits/regex.tcc \
  /usr/include/c++/11/bits/regex_executor.h \
  /usr/include/c++/11/bits/regex_executor.tcc \
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
  /usr/include/c++/11/set /usr/include/c++/11/bits/stl_set.h \
  /usr/include/c++/11/bits/stl_multiset.h \
  /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDriver.h \

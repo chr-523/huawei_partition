@@ -190,29 +190,29 @@ src/edge.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/edge.cc.s
 .PHONY : src/edge.cc.s
 
-src/mygraph.o: src/mygraph.cc.o
-.PHONY : src/mygraph.o
+src/mymodule.o: src/mymodule.cc.o
+.PHONY : src/mymodule.o
 
 # target to build an object file
-src/mygraph.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/mygraph.cc.o
-.PHONY : src/mygraph.cc.o
+src/mymodule.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/mymodule.cc.o
+.PHONY : src/mymodule.cc.o
 
-src/mygraph.i: src/mygraph.cc.i
-.PHONY : src/mygraph.i
+src/mymodule.i: src/mymodule.cc.i
+.PHONY : src/mymodule.i
 
 # target to preprocess a source file
-src/mygraph.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/mygraph.cc.i
-.PHONY : src/mygraph.cc.i
+src/mymodule.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/mymodule.cc.i
+.PHONY : src/mymodule.cc.i
 
-src/mygraph.s: src/mygraph.cc.s
-.PHONY : src/mygraph.s
+src/mymodule.s: src/mymodule.cc.s
+.PHONY : src/mymodule.s
 
 # target to generate assembly for a file
-src/mygraph.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/mygraph.cc.s
-.PHONY : src/mygraph.cc.s
+src/mymodule.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/mymodule.cc.s
+.PHONY : src/mymodule.cc.s
 
 src/process.o: src/process.cc.o
 .PHONY : src/process.o
@@ -278,9 +278,9 @@ help:
 	@echo "... src/edge.o"
 	@echo "... src/edge.i"
 	@echo "... src/edge.s"
-	@echo "... src/mygraph.o"
-	@echo "... src/mygraph.i"
-	@echo "... src/mygraph.s"
+	@echo "... src/mymodule.o"
+	@echo "... src/mymodule.i"
+	@echo "... src/mymodule.s"
 	@echo "... src/process.o"
 	@echo "... src/process.i"
 	@echo "... src/process.s"

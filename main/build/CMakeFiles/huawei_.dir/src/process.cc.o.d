@@ -213,7 +213,7 @@ CMakeFiles/huawei_.dir/src/process.cc.o: \
  /usr/include/c++/11/bits/hashtable_policy.h \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_set.h \
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h \
  /home/chr_523/Work_all/huawei_partition/main/include/../paser/VerilogDataBase.h \
  /usr/include/c++/11/cassert /usr/include/assert.h \

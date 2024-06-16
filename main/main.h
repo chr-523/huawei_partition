@@ -2,7 +2,7 @@
 
 #include "edge.h"
 #include "vertex.h"
-#include "mygraph.h"
+#include "mymodule.h"
 #include "process.h"
 
 #include <iostream>

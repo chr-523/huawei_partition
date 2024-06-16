@@ -2,7 +2,7 @@ paser/CMakeFiles/verilogparser.dir/VerilogDriver.cc.o: \
  /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDriver.cc \
  /usr/include/stdc-predef.h \
  /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDriver.h \
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
  /usr/include/c++/11/vector /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

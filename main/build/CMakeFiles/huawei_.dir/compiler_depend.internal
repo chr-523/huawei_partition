@@ -185,7 +185,7 @@ CMakeFiles/huawei_.dir/main.cc.o
  /usr/include/c++/11/bits/stl_map.h
  /usr/include/c++/11/bits/stl_multimap.h
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h
  /home/chr_523/Work_all/huawei_partition/main/include/edge.h
  /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDataBase.h
@@ -279,7 +279,7 @@ CMakeFiles/huawei_.dir/main.cc.o
  /usr/include/c++/11/bits/regex.tcc
  /usr/include/c++/11/bits/regex_executor.h
  /usr/include/c++/11/bits/regex_executor.tcc
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h
  /usr/include/c++/11/set
  /usr/include/c++/11/bits/stl_set.h
  /usr/include/c++/11/bits/stl_multiset.h
@@ -701,10 +701,10 @@ CMakeFiles/huawei_.dir/src/edge.cc.o
  /usr/include/c++/11/bits/stl_multimap.h
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h
 
-CMakeFiles/huawei_.dir/src/mygraph.cc.o
- /home/chr_523/Work_all/huawei_partition/main/src/mygraph.cc
+CMakeFiles/huawei_.dir/src/mymodule.cc.o
+ /home/chr_523/Work_all/huawei_partition/main/src/mymodule.cc
  /usr/include/stdc-predef.h
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h
  /usr/include/c++/11/vector
  /usr/include/c++/11/bits/stl_algobase.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h
@@ -1200,7 +1200,7 @@ CMakeFiles/huawei_.dir/src/process.cc.o
  /usr/include/c++/11/bits/hashtable_policy.h
  /usr/include/c++/11/bits/enable_special_members.h
  /usr/include/c++/11/bits/unordered_set.h
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h
  /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDataBase.h
  /usr/include/c++/11/cassert

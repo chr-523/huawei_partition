@@ -154,7 +154,7 @@ paser/CMakeFiles/verilogparser.dir/VerilogParser.cc.o: \
  /home/chr_523/Work_all/huawei_partition/main/build/paser/VerilogParser.h \
  /home/chr_523/Work_all/huawei_partition/main/build/paser/location.hh \
  /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDriver.h \
- /home/chr_523/Work_all/huawei_partition/main/include/mygraph.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/ext/aligned_buffer.h \

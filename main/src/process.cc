@@ -60,10 +60,10 @@ std::vector<std::string> get_edge_data(const std::string& edge_data) {
 }
 
 //read_net
-Graph read_file(const std::string& filename){
+Module read_file(const std::string& filename){
 
-    Graph gra;
-    std::unordered_map<Name_type,Graph*> sub_map;
+    Module gra;
+    std::unordered_map<Name_type,Module*> sub_map;
     std::ifstream file(filename);
 
     if ( !file.is_open() ){
@@ -83,8 +83,8 @@ Graph read_file(const std::string& filename){
         if ( (line[0] == 'm') && (line[1] == 'o') && (line[2] == 'd') && (line[3] == 'u') && (line[4] == 'l') && (line[5] == 'e') ){
             std::string module_name = line.substr(7);
             if( !(first_module) ){
-                Graph* gra_2 = new Graph(gra);
-                std::pair<Name_type, Graph*> pair = std::make_pair(previous_module_name, gra_2);
+                Module* gra_2 = new Module(gra);
+                std::pair<Name_type, Module*> pair = std::make_pair(previous_module_name, gra_2);
                 sub_map.insert(pair); // 组成pair再插入
                 gra.clear();
             }
@@ -133,11 +133,8 @@ Graph read_file(const std::string& filename){
             line_data = split_by_brackets(line);
             // if( is_instance_type(line_data[0]) ){ // is instance
             if( is_ins_test( line_data[0]) ){ // is instance
-                gra.add_instance(line_data[0], line_data[1]);//add (type, insname)
-
                 std::queue< Name_type> edge_name_queue;
                 std::queue< Range > range_queue;
-
                 for (size_t counter = 2; counter< line_data.size(); counter += 2) {
                     if (counter + 1 < line_data.size()) { // 确保至少还有两个元素
                         Name_type connect_pin_name = line_data[counter]; // 使用索引访问元素
@@ -150,61 +147,88 @@ Graph read_file(const std::string& filename){
                     }
                 }
 
+                gra.add_instance(line_data[0], line_data[1]);//add (type, insname)
                 connect_ins_edge(gra, line_data[1], edge_name_queue, range_queue);
             }
             else{ // is module
-                auto sub_module = sub_map.find(line_data[0]);
-                if (sub_module == sub_map.end() ){
-                    std::cerr << "can not find submodule" << std::endl;
-                }
-                gra.add_module( sub_module -> second );
-
-                // gra.add_instance(line_data[0], line_data[1]);//add (type, insname)
-
-                std::queue< Name_type> edge_name_queue;
+                std::queue< Name_type > edge_name_queue;
+                std::queue< Name_type > pin_name_queue;
                 std::queue< Range > range_queue;
-
                 for (size_t counter = 2; counter< line_data.size(); counter += 2) {
                     if (counter + 1 < line_data.size()) { // ensure as least 2 ele
 
-                        Name_type connect_pin_name = line_data[counter]; // use index to fangwen
                         std::vector< std::string > edge_data;
-                        
-                        if( line_data[counter+1][0] != 123 ){ // not begin with 123 '{'
+                        // not begin with 123 '{'
+                        if( line_data[counter+1][0] != 123 ){
                             edge_data = get_edge_data(line_data[counter + 1]);
                             if (edge_data.size() >= 2) { // ensure edge_data at least 2ele
-                                edge_name_queue.push(edge_data[0]);
-                                Range range_(std::stoi(edge_data[1]), std::stoi(edge_data[2]));
-                                range_queue.push(range_);
+                                Name_type edge_name_temp = edge_data[0];
+                                Name_type pin_name_temp = line_data[counter]; // use index to fangwen
+                                Name_type edge_name;
+                                Name_type pin_name;
+                                int low = std::stoi(edge_data[2]);
+                                int high = std::stoi(edge_data[1]);
+                                if (low > high) std::swap(low, high); // just in case
+                                if (low < 0 ){ // means signal edge
+                                    if (high > 0){
+                                        edge_name = edge_name_temp + '_' + std::to_string(high);
+                                    }
+                                    else{
+                                        edge_name = edge_name_temp;
+                                    }
+                                    pin_name = pin_name_temp; // signal means suffix is needless
+                                    edge_name_queue.push(edge_name);
+                                    pin_name_queue.push(pin_name);
+                                    Range range_(low, high);
+                                    range_queue.push(range_);
+                                }
+                                else{ // low and high both > 0 means multi-edge, split it
+                                    for (size_t now_high= 0; now_high <= high; now_high++){ 
+                                        edge_name = edge_name_temp + '_' + std::to_string(now_high); 
+                                        edge_name_queue.push(edge_name);
+                                        pin_name = pin_name_temp + '_' + std::to_string(now_high); 
+                                        pin_name_queue.push(pin_name);
+                                        Range range_(-1, now_high);
+                                        range_queue.push(range_);
+                                    }
+                                }
                             }
                         }
-                        else{
-                           std::vector< std::string > edge_data_list;
+                        else{ // begin with '{' which means group edge
+                            std::vector< std::string > edge_data_list;
+                            int pin_counter = 0;
                             edge_data_list = get_group_edge_data(line_data[counter + 1]);
                             for(size_t counter_l = 0 ; counter_l < edge_data_list.size(); counter_l++){
                                 edge_data = get_edge_data(edge_data_list[counter_l]);
                                 if (edge_data.size() >= 2){ // ensure edge_data at least 2ele
                                     Name_type edge_name_temp = edge_data[0];
                                     Name_type edge_name;
+                                    Name_type pin_name_temp = line_data[counter];
+                                    Name_type pin_name;
                                     int low = std::stoi(edge_data[2]);
                                     int high = std::stoi(edge_data[1]);
                                     if (low > high) std::swap(low, high); // just in case
                                     if(low < 0 ){
                                         if (high >= 0){
-                                            edge_name = edge_name_temp + '_' + edge_data[2];
+                                            edge_name = edge_name_temp + '_' + std::to_string(high);
                                         }
                                         else{
                                             edge_name = edge_name_temp;
                                         }
+                                        pin_name = pin_name_temp + '_' + std::to_string(pin_counter);
                                         edge_name_queue.push(edge_name);
+                                        pin_name_queue.push(pin_name);
+                                        pin_counter++;
                                         Range range_(low, high);
                                         range_queue.push(range_);
                                     }
                                     else{
-                                        // im here: why jinbuqu xunhuan
-                                        for (size_t now_high= 0; now_high >= high; now_high++){ 
+                                        for (size_t now_high= 0; now_high <= high; now_high++){ 
                                             edge_name = edge_name_temp + '_' + std::to_string(now_high); 
                                             edge_name_queue.push(edge_name);
+                                            pin_name = pin_name_temp + '_' + std::to_string(pin_counter); 
+                                            pin_name_queue.push(pin_name);
+                                            pin_counter++;
                                             Range range_(-1, now_high);
                                             range_queue.push(range_);
                                         }
@@ -214,6 +238,15 @@ Graph read_file(const std::string& filename){
                         }
                     }
                 }
+                auto sub_module = sub_map.find(line_data[0]);
+                if (sub_module == sub_map.end() ){
+                    std::cerr << "can not find submodule" << std::endl;
+                }
+                std::vector< std::tuple<Edge_index_type, Edge_index_type >> e_l;
+                gra.add_module(e_l, line_data[1], sub_module -> second);
+                // im here 
+                connect_mod_edge(gra, line_data[1], edge_name_queue, pin_name_queue, range_queue);
+                // connect mod edge function to be done
             }
         } 
         else{

@@ -1,9 +1,9 @@
-#include "mygraph.h"
+#include "mymodule.h"
 #ifndef VERILOGPARSER_DRIVER_H
 #define VERILOGPARSER_DRIVER_H
 
 #include "VerilogDataBase.h"
-#include "mygraph.h"
+#include "mymodule.h"
 
 namespace VerilogParser {
 
@@ -40,17 +40,12 @@ public:
 
     bool parse_stream(std::istream& in,
 		      const string& sname = "stream input");
-    bool parse_stream_1(std::istream& in,//add
-		    const string& sname = "stream input", Graph* gra=NULL,
-            std::unordered_map<Name_type, Graph*>* sub_map=NULL);
 
 
     bool parse_string(const string& input,
 		      const string& sname = "string stream");
 
     bool parse_file(const string& filename);
-    bool parse_file_1(const string& filename, Graph* gra,//add
-            std::unordered_map<Name_type, Graph*>* sub_map);
 
     void error(const class location& l, const string& m);
     void error(const string& m);
@@ -78,22 +73,22 @@ public:
     void assignment_cbk(std::string const&, Range const&, std::string const&, Range const&);
     void assignment_cbk(std::string const&, Range const&, int, int); 
 
-    ///adddd
-    void module_name_cbk(std::string const&, std::vector<GeneralName> const&,
-                Graph* gra, std::unordered_map<Name_type,Graph*>*sub_map); 
-    void module_name_cbk(std::string const&, std::vector<GeneralName> const&, std::vector<GeneralName> const&,
-                Graph* gra, std::unordered_map<Name_type,Graph*>*sub_map); 
-//     void wire_pin_cbk(std::string&, std::string&, Range const& = Range());
-//     void wire_pin_cbk(int, int, std::string&);
-//     void wire_pin_cbk(std::vector<GeneralName>&, std::string&);
-//     void wire_declare_cbk(std::vector<GeneralName> const&, Range const&);
-//     void wire_declare_cbk(std::vector<GeneralName> const& vNetName);
-//     void pin_declare_cbk(std::vector<GeneralName> const&, unsigned, Range const&);
-//     void pin_declare_cbk(std::vector<GeneralName> const&, unsigned);
-//     void module_instance_cbk(std::string const&, std::string const&);
-//     void modules_cbk();    //add
-//     void assignment_cbk(std::string const&, Range const&, std::string const&, Range const&);
-//     void assignment_cbk(std::string const&, Range const&, int, int); 
+//     ///adddd
+//     void module_name_cbk(std::string const&, std::vector<GeneralName> const&,
+//                 Graph* gra, std::unordered_map<Name_type,Graph*>*sub_map); 
+//     void module_name_cbk(std::string const&, std::vector<GeneralName> const&, std::vector<GeneralName> const&,
+//                 Graph* gra, std::unordered_map<Name_type,Graph*>*sub_map); 
+// //     void wire_pin_cbk(std::string&, std::string&, Range const& = Range());
+// //     void wire_pin_cbk(int, int, std::string&);
+// //     void wire_pin_cbk(std::vector<GeneralName>&, std::string&);
+// //     void wire_declare_cbk(std::vector<GeneralName> const&, Range const&);
+// //     void wire_declare_cbk(std::vector<GeneralName> const& vNetName);
+// //     void pin_declare_cbk(std::vector<GeneralName> const&, unsigned, Range const&);
+// //     void pin_declare_cbk(std::vector<GeneralName> const&, unsigned);
+// //     void module_instance_cbk(std::string const&, std::string const&);
+// //     void modules_cbk();    //add
+// //     void assignment_cbk(std::string const&, Range const&, std::string const&, Range const&);
+// //     void assignment_cbk(std::string const&, Range const&, int, int); 
     /// @endcond
 
 protected:

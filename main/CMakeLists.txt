@@ -32,7 +32,7 @@ include_directories(include)
 add_subdirectory(paser)
 
 # 定义源文件变量
-set(SRC_FILE main.cc src/edge.cc src/mygraph.cc src/process.cc src/vertex.cc)
+set(SRC_FILE main.cc src/edge.cc src/mymodule.cc src/process.cc src/vertex.cc)
     # 可能还需要添加parser目录生成的对象文件或其他源文件
 
 # 链接parser库

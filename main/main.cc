@@ -29,6 +29,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
 			 outfile << "instance" << "(" << macro_name << ")(" << inst_name << ")";  
             for (std::vector<VerilogParser::NetPin>::const_iterator it = vNetPin.begin(); it != vNetPin.end(); ++it)
             {
+                int low,high;
                 if (it->net == "VerilogParser::CONSTANT_NET")
                 {
                      outfile << "(" << it->pin << ")(" << it->net << " " << it->extension.constant << ")";
@@ -36,19 +37,28 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
                 }
                 else if (it->net == "VerilogParser::GROUP_NETS")
                 {
+
                      outfile << "(" << it->pin << ")(";
                     for (std::vector<VerilogParser::GeneralName>::const_iterator itn = it->extension.vNetName->begin(); itn != it->extension.vNetName->end(); ++itn)
                     {
+                        if(itn->range.low < 0) {low = -1;}
+                        else{low = itn->range.low;}
+                        if(itn->range.high < 0) {high = -1;}
+                        else{high = itn->range.high;}
                          outfile << "{" <<itn->name << " " ;
-                         outfile << itn->range.low << " " ;
-                         outfile << itn->range.high << "}";
+                         outfile << low << " " ;
+                         outfile << high << "}";
                     }
                      outfile << ")";
                 }
                 else // it->net == NORMAL net
                 {
+                    if(it->range.low < 0) {low = -1;}
+                    else{low = it->range.low;}
+                    if(it->range.high < 0) {high = -1;}
+                    else{high = it->range.high;}
                      outfile << "(" << it->pin << ")(" << it->net << "";
-                     outfile << " " << it->range.low<<" "<<it->range.high<<")";
+                     outfile << " " << low <<" "<< high <<")";
                 }
             }
              outfile << std::endl;
@@ -64,7 +74,12 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
         //  else{
         //     outfile << "pin" << " => " << pin_name << "->[" << range.low << ":" << range.high << "] =>" << type << std::endl;
         //  }
-        outfile << "pin" << "(" << pin_name << " " << range.low << " " << range.high << ")";
+        int low,high;
+        if(range.low < 0) {low = -1;}
+        else{low = range.low;}
+        if(range.high < 0) {high = -1;}
+        else{high = range.high;}
+        outfile << "pin" << "(" << pin_name << " " << low << " " << high << ")";
    
         outfile << "(" << type << ")" << std::endl;
          
@@ -76,7 +91,13 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
         //     outfile << "net" << " " << net_name << "-1 -1"  << std::endl;
         //  }
         //  else{
-            outfile << "net" << "(" << net_name << " " << range.low << " " << range.high << ")" ;
+        int low,high;
+        if(range.low < 0) {low = -1;}
+        else{low = range.low;}
+        if(range.high < 0) {high = -1;}
+        else{high = range.high;}
+            
+            outfile << "net" << "(" << net_name << " " << low << " " << high << ")" ;
             outfile << "(0)" << std::endl;
         //  }
     }
@@ -84,8 +105,18 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
     virtual void verilog_assignment_cbk(std::string const& target_name, VerilogParser::Range const& target_range, std::string const& source_name, VerilogParser::Range const& source_range)
     {
         // Here, all range are printed. A "if(range<0)" should be add.
-         outfile << "assignment" << "(" << target_name << " " << target_range.low << " " << target_range.high  << ")";
-         outfile <<  "(" << source_name<< " " << source_range.low << " " << source_range.high << ")" << std::endl;
+        int t_low,t_high;
+        if(target_range.low < 0) {t_low = -1;}
+        else{t_low = target_range.low;}
+        if(target_range.high < 0) {t_high = -1;}
+        else{t_high = target_range.high;}
+        int low,high;
+        if(source_range.low < 0) {low = -1;}
+        else{low = source_range.low;}
+        if(source_range.high < 0) {high = -1;}
+        else{high = source_range.high;}
+         outfile << "assignment" << "(" << target_name << " " << t_low << " " << t_high  << ")";
+         outfile <<  "(" << source_name<< " " << low << " " << high << ")" << std::endl;
 
 
     }

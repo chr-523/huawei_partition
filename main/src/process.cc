@@ -1,4 +1,4 @@
-
+#include <ctime>
 #include "process.h"
 
 bool is_clk_module(const Name_type& module_name){
@@ -10,9 +10,12 @@ bool is_clk_module(const Name_type& module_name){
 //Determine whether it is instance or module through instance_name's prefix
 //If instance -> true     if module -> false*
 bool is_instance_type(const Name_type& instance_name){
-    Name_type instance_prefix = "sky130_fd_sc_hd__";    
-    Name_type name_prefix = instance_name.substr(0, instance_prefix.length() );
-    return name_prefix == instance_prefix;
+    Name_type instance_prefix_1 = "sky130_fd_sc_hd__";
+    Name_type instance_prefix_2 = "aq_spsram_";
+
+    Name_type name_prefix_1 = instance_name.substr(0, instance_prefix_1.length() );
+    Name_type name_prefix_2 = instance_name.substr(0, instance_prefix_2.length() );
+    return (name_prefix_1 == instance_prefix_1) || (name_prefix_2 == instance_prefix_2);
 }
 
 bool is_ins_test(const Name_type& instance_name){
@@ -66,6 +69,8 @@ Module read_file(const std::string& filename){
     std::unordered_map<Name_type,Module*> sub_map;
     std::ifstream file(filename);
 
+    clock_t start = clock(); // start time
+
     if ( !file.is_open() ){
         // When you need to display information or results to users, use std::cout.
         // When you need to report errors or abnormal situations, use std::cerr.
@@ -76,9 +81,19 @@ Module read_file(const std::string& filename){
     std::string line;
     std::getline(file, line); // ignore the first line
     bool first_module = true;
+    int line_c = 1;
     std::string previous_module_name;
     while( getline(file, line) ){
+            
+        clock_t end = clock(); // 记录结束时间
+        double elapsed_time = double(end - start) / CLOCKS_PER_SEC; // 计算经过的秒数
+        std::cout << "Time: " << elapsed_time << " s" << std::endl;
 
+        line_c++;
+        if(line_c == 632572){
+            int a = 1;
+        };
+        std::cout << line_c << std::endl;
         std::string token;
         if ( (line[0] == 'm') && (line[1] == 'o') && (line[2] == 'd') && (line[3] == 'u') && (line[4] == 'l') && (line[5] == 'e') ){
             std::string module_name = line.substr(7);
@@ -109,6 +124,7 @@ Module read_file(const std::string& filename){
             }
             int low = std::stoi(edge_data[1]);
             int high = std::stoi(edge_data[2]);
+            if (low > high) std::swap(low, high);
             Edge_type e_type;
             if( edge_data[3]=="1" ){ // input
                 e_type = INPUT;
@@ -120,6 +136,7 @@ Module read_file(const std::string& filename){
                 e_type = NORMAL;
             }
             gra.add_edge(edge_data[0], low, high, e_type);
+            assert( gra.get_internal_edge_list().back().get_range().low == -1);
         }
         else if ( line.substr(0, 10) == "assignment" ){
             // 解析赋值信息
@@ -131,8 +148,8 @@ Module read_file(const std::string& filename){
             // parseInstance(line, gra, sub_map);
             std::vector<std::string> line_data;
             line_data = split_by_brackets(line);
-            // if( is_instance_type(line_data[0]) ){ // is instance
-            if( is_ins_test( line_data[0]) ){ // is instance
+            if( is_instance_type(line_data[0]) ){ // is instance
+            // if( is_ins_test( line_data[0]) ){ // is instance
                 std::queue< Name_type> edge_name_queue;
                 std::queue< Range > range_queue;
                 for (size_t counter = 2; counter< line_data.size(); counter += 2) {
@@ -168,7 +185,7 @@ Module read_file(const std::string& filename){
                                 Name_type pin_name;
                                 int low = std::stoi(edge_data[2]);
                                 int high = std::stoi(edge_data[1]);
-                                if (low > high) std::swap(low, high); // just in case
+                                if (low > high) std::swap(low, high);
                                 if (low < 0 ){ // means signal edge
                                     if (high > 0){
                                         edge_name = edge_name_temp + '_' + std::to_string(high);
@@ -176,7 +193,7 @@ Module read_file(const std::string& filename){
                                     else{
                                         edge_name = edge_name_temp;
                                     }
-                                    pin_name = pin_name_temp; // signal means suffix is needless
+                                    pin_name = pin_name_temp; // suffix is unnecessary for signal-edge
                                     edge_name_queue.push(edge_name);
                                     pin_name_queue.push(pin_name);
                                     Range range_(low, high);
@@ -186,6 +203,8 @@ Module read_file(const std::string& filename){
                                     for (size_t now_high= 0; now_high <= high; now_high++){ 
                                         edge_name = edge_name_temp + '_' + std::to_string(now_high); 
                                         edge_name_queue.push(edge_name);
+                                        // unnecessary to use pin_counter 
+                                        // because edge_suffix is equal to pin_suffix in this case
                                         pin_name = pin_name_temp + '_' + std::to_string(now_high); 
                                         pin_name_queue.push(pin_name);
                                         Range range_(-1, now_high);
@@ -244,9 +263,9 @@ Module read_file(const std::string& filename){
                 }
                 std::vector< std::tuple<Edge_index_type, Edge_index_type >> e_l;
                 gra.add_module(e_l, line_data[1], sub_module -> second);
-                // im here 
+                // gra,type,index,e_que,p_que,r_que
                 connect_mod_edge(gra, line_data[1], edge_name_queue, pin_name_queue, range_queue);
-                // connect mod edge function to be done
+
             }
         } 
         else{

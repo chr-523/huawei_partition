@@ -92,6 +92,7 @@ public: // function
 public: // get_function
     Edge_type get_type() const { return type; };
     Name_type get_name() const { return edge_name; };
+    Range get_range() const { return range; }
     // std::array<Edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector< Vertex_index_type > get_adjacency_array() const { return adjacency_array; }
 protected:

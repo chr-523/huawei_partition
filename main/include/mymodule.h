@@ -80,7 +80,9 @@ public: //function
         std::queue< Range >& range_queue);
     // connect module and edge...to be done
     friend void connect_mod_edge(
-        Module& gra, Module_index_type& name, 
+        Module& gra,
+        std::string& module_type, 
+        // Module_index_type& module_name,
         std::queue< Name_type >& edge_name_queue,        
         std::queue< Name_type >& pin_name_queue, 
         std::queue< Range >& range_queue); 
@@ -91,9 +93,6 @@ public: //function
     void add_module( 
         std::vector< std::tuple<Edge_index_type, Edge_index_type >> connect_edge_list, 
         Module_index_type module_index, Module* G_1); 
-    // used in connecting edge except group net
-   
-
         // same as vertex
     void connect_edge(Edge& edge){ /**/ }; // connect vertex to the edge
     void connect_edge(Name_type& edge_name){ /**/ }; // connect vertex to the edge

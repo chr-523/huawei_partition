@@ -1,5 +1,6 @@
 // #include "../include/module.h"
 #include "mymodule.h"
+#include <cassert>
 #include <algorithm>
 #include <unordered_set>
 
@@ -20,12 +21,12 @@ void Module::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
             // pin => dd->[3:0] =>2    =>  add_edge(dd, 15,  0, OUTPUT)
         for (size_t counter = 0; counter <= high ; counter++) // split the multi edge: to instantiation high + 1 Edges
         {   //the counter is from 0 to the high    
-            //     -> add_adge(dd_0, -1, -1, OUTPUT)
-            //     -> add_adge(dd_1, -1, -1, OUTPUT)
-            //     -> add_adge(dd_2, -1, -1, OUTPUT)
-            //     -> add_adge(dd_3, -1, -1, OUTPUT)
+            //     -> add_adge(dd_0, -1,  0, OUTPUT)
+            //     -> add_adge(dd_1, -1,  1, OUTPUT)
+            //     -> add_adge(dd_2, -1,  2, OUTPUT)
+            //     -> add_adge(dd_3, -1,  3, OUTPUT)
             Name_type se_name = name + '_' + std::to_string(counter) ; // se_name means signal_edge_name 
-            Edge edge_(se_name, type); // name -> name_'counter'
+            Edge edge_(se_name,-1, counter, type); // name -> name_'counter'
             this -> internal_edge_list.push_back(edge_);
         }
     }
@@ -132,21 +133,31 @@ void connect_mod_edge(
     for (auto& e : gra.internal_edge_list){
         edgeMap[e.get_name()] = &e; 
     }
+
+    assert(edge_name_queue.size() == pin_name_queue.size());
+    assert(range_queue.size() == pin_name_queue.size());
+    
         // queue is not empty do ->
-    while (!range_queue.empty() && !edge_name_queue.empty()) {
+    while (
+        !edge_name_queue.empty() && 
+        !pin_name_queue.empty() &&
+        !range_queue.empty() ) {
         Name_type e_name/*_temp*/ = edge_name_queue.front();
-        // Name_type e_name; // temp  has already been processed outside the function
+        // Name_type e_name; // temp has already been processed outside the function
+        Name_type p_name = pin_name_queue.front();
         Range e_range = range_queue.front();
+        pin_name_queue.pop();
         edge_name_queue.pop();
         range_queue.pop();
+        assert( e_range.low < 0 ); // only signal edge
+        
+        std::tuple<Edge_index_type, Edge_index_type> e_c_l = std::make_tuple(e_name, p_name);
+        std::get<1>(*this_module).push_back(e_c_l);
 
-        if(e_range.low < 0 && e_range.high < 0){
-            // e_name = e_name_temp;
-            int a = 1;
+        auto it_ = edgeMap.find(e_name); // find edge
+        if (it_ != edgeMap.end()) {
+            // if found, connect_vertex
+            it_ -> second -> connect_vertex(module_name); // connect T1/T2 to n1/n2_3
         }
-        else{ // low <0 && high > 0
-            int a = 1;
-        }
-
     }
 };

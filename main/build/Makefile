@@ -190,6 +190,30 @@ src/edge.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/edge.cc.s
 .PHONY : src/edge.cc.s
 
+src/instance.o: src/instance.cc.o
+.PHONY : src/instance.o
+
+# target to build an object file
+src/instance.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/instance.cc.o
+.PHONY : src/instance.cc.o
+
+src/instance.i: src/instance.cc.i
+.PHONY : src/instance.i
+
+# target to preprocess a source file
+src/instance.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/instance.cc.i
+.PHONY : src/instance.cc.i
+
+src/instance.s: src/instance.cc.s
+.PHONY : src/instance.s
+
+# target to generate assembly for a file
+src/instance.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/instance.cc.s
+.PHONY : src/instance.cc.s
+
 src/mymodule.o: src/mymodule.cc.o
 .PHONY : src/mymodule.o
 
@@ -238,30 +262,6 @@ src/process.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/process.cc.s
 .PHONY : src/process.cc.s
 
-src/vertex.o: src/vertex.cc.o
-.PHONY : src/vertex.o
-
-# target to build an object file
-src/vertex.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.o
-.PHONY : src/vertex.cc.o
-
-src/vertex.i: src/vertex.cc.i
-.PHONY : src/vertex.i
-
-# target to preprocess a source file
-src/vertex.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.i
-.PHONY : src/vertex.cc.i
-
-src/vertex.s: src/vertex.cc.s
-.PHONY : src/vertex.s
-
-# target to generate assembly for a file
-src/vertex.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.s
-.PHONY : src/vertex.cc.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -278,15 +278,15 @@ help:
 	@echo "... src/edge.o"
 	@echo "... src/edge.i"
 	@echo "... src/edge.s"
+	@echo "... src/instance.o"
+	@echo "... src/instance.i"
+	@echo "... src/instance.s"
 	@echo "... src/mymodule.o"
 	@echo "... src/mymodule.i"
 	@echo "... src/mymodule.s"
 	@echo "... src/process.o"
 	@echo "... src/process.i"
 	@echo "... src/process.s"
-	@echo "... src/vertex.o"
-	@echo "... src/vertex.i"
-	@echo "... src/vertex.s"
 .PHONY : help
 
 

@@ -78,11 +78,18 @@ Module read_file(const std::string& filename){
         return gra; // empty graph
     }
 
+    char currentChar;
+
     std::string line;
+
     std::getline(file, line); // ignore the first line
+
     bool first_module = true;
+
     int line_c = 1;
+
     std::string previous_module_name;
+
     while( getline(file, line) ){
             
         clock_t end = clock(); // 记录结束时间
@@ -93,9 +100,12 @@ Module read_file(const std::string& filename){
         if(line_c == 632572){
             int a = 1;
         };
+        
         std::cout << line_c << std::endl;
         std::string token;
+
         if ( (line[0] == 'm') && (line[1] == 'o') && (line[2] == 'd') && (line[3] == 'u') && (line[4] == 'l') && (line[5] == 'e') ){
+        
             std::string module_name = line.substr(7);
             if( !(first_module) ){
                 Module* gra_2 = new Module(gra);
@@ -115,7 +125,8 @@ Module read_file(const std::string& filename){
             std::sregex_iterator next(line.begin(), line.end(), re);
             std::sregex_iterator end;
             std::vector<std::string> edge_data;
-            for ( ; next != end; ++next) {std::istringstream iss( next -> str(1) );
+            for ( ; next != end; ++next) {
+                std::istringstream iss( next -> str(1) );
                 // use space to split the string
                 std::string temp;
                 while(iss >> temp){

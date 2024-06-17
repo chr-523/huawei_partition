@@ -12,7 +12,7 @@
 
 using Name_type = std::string;
 using Edge_index_type = std::string;
-using Vertex_index_type  = std::string;
+using Instance_index_type  = std::string;
 using Edge_offset_type = int;
 
 #ifndef EDGE_H
@@ -34,7 +34,7 @@ enum Edge_type { // INPUT_OUTPUT_NORMAL
     NORMAL = 0x0    // equal 0
 };
 
-class Vertex;
+class Instance;
 
 class Edge{
 /*
@@ -43,7 +43,7 @@ class Edge{
         edge_name
         range
         edge_index
-        adjacency_array : what vertex it connect
+        adjacency_array : what instance it connect
     
     Function：
 
@@ -85,16 +85,16 @@ public: // initialization
 
 public: // function
     void split_edge();//to be done, maybe it should be in graph
-    //connect signal edge to the vertex
-    void connect_vertex(Vertex& vertex);
-    void connect_vertex(Name_type& vertex_name);
+    //connect signal edge to the instance
+    void connect_instance(Instance& instance);
+    void connect_instance(Name_type& instance_name);
 
 public: // get_function
     Edge_type get_type() const { return type; };
     Name_type get_name() const { return edge_name; };
     Range get_range() const { return range; }
     // std::array<Edge_offset_type,2> get_offset_array() const { return offset_array; }
-    std::vector< Vertex_index_type > get_adjacency_array() const { return adjacency_array; }
+    std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
 protected:
 private:// data
     
@@ -103,7 +103,7 @@ private:// data
     Name_type edge_name; // pin/net's name + '_' + edge_index  // maybe assign -> (list name)
     Range range; // [range.low (and range.high) < 0] means edge is signal
     // std::array<Edge_offset_type,2> offset_array;
-    std::vector< Vertex_index_type > adjacency_array;//what vertex it connect
+    std::vector< Instance_index_type > adjacency_array;//what instance it connect
 };
 
 #endif

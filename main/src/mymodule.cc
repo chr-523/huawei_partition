@@ -45,26 +45,26 @@ void Module::add_edge(Name_type& name, Range& range, Edge_type& type){
     this -> add_edge(name, range.low, range.high, type);
 }
 
-void Module::add_instance(Name_type& type_name, Vertex_index_type& name){
+void Module::add_instance(Name_type& type_name, Instance_index_type& name){
     // eg. ↓ 
     // instance => tu_test_ins, T1, A(n1)
-    //          -> vertex(tu_test_ins, T1)
+    //          -> instance(tu_test_ins, T1)
     //              then push_back it
-    Vertex v_1(type_name, name); // type_name is only used to determine is_clk during initialization
-    this -> vertex.push_back(v_1);
+    Instance v_1(type_name, name); // type_name is only used to determine is_clk during initialization
+    this -> instance.push_back(v_1);
 }
 //friend void Module::connect_ins_edg(~~)
 void connect_ins_edge(
     Module& gra, 
-    Vertex_index_type& vertex_name, 
+    Instance_index_type& instance_name, 
     std::queue< Name_type >& edge_name_queue,
      std::queue< Range >& range_queue){
     // instance => tu_test_ins, T1, A(n1->[-2147483648:-2147483648])B(n2->[-2147483648:3])
     // instance => tu_test_ins, T2, B(n2->[-2147483648:3])
     ;
     // at first find the ins
-    auto this_vertex = std::find_if( gra.vertex.begin(), gra.vertex.end(), [&]( Vertex v) {
-        return std::get<1>( v.get_vertex_data() ) == vertex_name;
+    auto this_instance = std::find_if( gra.instance.begin(), gra.instance.end(), [&]( Instance v) {
+        return std::get<1>( v.get_instance_data() ) == instance_name;
     });
         // Using a hash table to store edges in a vector for quick access
     std::unordered_map< std::string, Edge* > edgeMap;
@@ -88,11 +88,11 @@ void connect_ins_edge(
             e_name = e_name_temp + '_' + std::to_string(e_range.high);
         }
 
-        this_vertex -> connect_edge(e_name); // connect n1/n2_3 to T1/T2
+        this_instance -> connect_edge(e_name); // connect n1/n2_3 to T1/T2
         auto it_ = edgeMap.find(e_name); // find edge
         if (it_ != edgeMap.end()) {
-            // if found, connect_vertex
-            it_ -> second -> connect_vertex(vertex_name); // connect T1/T2 to n1/n2_3
+            // if found, connect_instance
+            it_ -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
         }
     }
 };
@@ -156,8 +156,8 @@ void connect_mod_edge(
 
         auto it_ = edgeMap.find(e_name); // find edge
         if (it_ != edgeMap.end()) {
-            // if found, connect_vertex
-            it_ -> second -> connect_vertex(module_name); // connect T1/T2 to n1/n2_3
+            // if found, connect_instance
+            it_ -> second -> connect_instance(module_name); // connect T1/T2 to n1/n2_3
         }
     }
 };

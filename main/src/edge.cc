@@ -1,19 +1,19 @@
 #include "edge.h"
-#include "vertex.h"
+#include "instance.h"
 
 void Edge::split_edge(){
    //it is done in the Graph::add_adge and Graph::connecd_v_e 
 }
 
-void Edge::connect_vertex(Vertex& vertex){
+void Edge::connect_instance(Instance& instance){
     // instance => tu_test_ins, T1, A(n5->[-1: -1])        
-    // get the vertex's index and push into adjancy_array
-    Name_type vertex_name = std::get<1>(vertex.get_vertex_data());
-    this -> connect_vertex(vertex_name);
+    // get the instance's index and push into adjancy_array
+    Name_type instance_name = std::get<1>(instance.get_instance_data());
+    this -> connect_instance(instance_name);
 }
 
-void Edge::connect_vertex(Name_type& vertex_name){
+void Edge::connect_instance(Name_type& instance_name){
     // instance => tu_test_ins, T1, A(n5->[-1: -1])
     //  adj.pushback("T1")
-    this -> adjacency_array.push_back(vertex_name); 
+    this -> adjacency_array.push_back(instance_name); 
 }

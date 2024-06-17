@@ -1,7 +1,7 @@
 #pragma once
 
 #include "edge.h"
-#include "vertex.h"
+#include "instance.h"
 #include "mymodule.h"
 #include "process.h"
 

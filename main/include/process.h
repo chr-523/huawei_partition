@@ -6,7 +6,7 @@
 
 #include "edge.h"
 #include "mymodule.h"
-#include "vertex.h"
+#include "instance.h"
 
 bool is_clk_module(const Name_type& module_name);
 

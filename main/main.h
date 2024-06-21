@@ -3,6 +3,8 @@
 #include "edge.h"
 #include "instance.h"
 #include "mymodule.h"
+#include "read_graph.h"
+#include "vertex.h"
 #include "process.h"
 
 #include <iostream>
@@ -17,3 +19,4 @@
 #include <paser/VerilogDriver.h>
 #include <boost/regex.hpp>
 #include <unordered_map>
+

@@ -118,7 +118,6 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
          outfile << "assignment" << "(" << target_name << " " << t_low << " " << t_high  << ")";
          outfile <<  "(" << source_name<< " " << low << " " << high << ")" << std::endl;
 
-
     }
 
     virtual void verilog_modules_cbk(){}
@@ -151,7 +150,10 @@ void test1(std::string const& filename)
  
 int main(int argc, char** argv)
 {    
-    if(1){
+    bool updata_output = true;
+    bool read_test = true;
+
+    if(updata_output){
         std::ifstream infile;
         std::string path = argv[1]; 
         boost::regex re("[^/]*$");
@@ -162,23 +164,32 @@ int main(int argc, char** argv)
         test1(path);
         infile.close();
     }
-
+    // the previous code is to generate/updata the output.txt
+    
     std::string file_path = "test/output.txt";
+
     Module C_906("test_name",default_module_weight);
 
     std::unordered_map< Name_type, Module* > sub_map;
-	// test1(path, &C_906, &sub_map);
-    C_906 = read_file(file_path);
+    graph_data temp(C_906, sub_map);
 
-    if(0){ // test
-        std::cout << " 1 " << std::endl;
-        auto it = sub_map.find("mod1");
-        if (it != sub_map.end() ){
-            std::cout << it -> second -> get_module_name() << std::endl; // it->second means Module*
-        } else{
-            std::cout << "Not found" << std::endl;
-        }
-    }
+    C_906 = read_file_1(file_path);
+
+    temp = read_file(file_path);
+    
+
+    Vertex A;
+    Graph gra;
+    gra.addVertex(A);
+    int a = 1;
+
+
+        // +sub_module map
+    // split sub module -> level/weight -> Algorithm 1 
+        // many level-split graphs (STA Graphs)
+    // Algorithm 2  change to CSR (Endpoint Graphs)
+    // kahypar
+
 
 	return 0;
 }

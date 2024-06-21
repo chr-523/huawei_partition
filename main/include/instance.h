@@ -20,21 +20,13 @@ class Edge;
 #ifndef VERTEX_H
 #define VERTEX_H
 
+// enum Ins_IO{
+//     INPUT = 0x1,
+//     OUTPUT =0x2
+// };
 
 class Instance{
-/*    
-    Instance Infromation:
-        <is_clk,index>
-    Function：
 
-    |-e0-\     /-e1-|		0--\       /--4
-    | 0	   \ /    4 |		2---+--1--+---5
-    | 2    |1|      |		3--/      
-    |_3____/ \____5_|
-    v_0 index: v_0          v_1 index: v_1     ...  v_5 index: v_5
-        data: <true,v_0>        data: <false,v_1>       data: <true,v_5>
-        e_l: [0]                e_l: [1,0]              e_l: [1]
-*/
 public: // Initialization
     // Instance(){}; // equal to the next
     Instance(Instance_index_type index = default_name, weight_type instance_weight = default_instance_weight, bool is_clk = false){
@@ -76,9 +68,8 @@ private:
     bool is_clk(const Name_type& name); //Determine whether it is clk through instance_name
     // Name_type instance_name;  
     weight_type instance_weight;    // When multiple instance are synthesized, instance_weight may rise. (default 1.0)
-    std::vector< Edge_index_type > connect_edge_list; // what edge this instance connect
-    // std::vector< std::tuple < Edge_index_type,IO > > connect_edge_list; // what edge this instance connect
-    std::tuple< bool, Instance_index_type > instance_data;   //  = <isclk?,index>
+    std::vector< Edge_index_type  > connect_edge_list; // what edge this instance connect
+    std::tuple< bool, Instance_index_type > instance_data;
 
 };
 

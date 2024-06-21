@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <string>
 #include <map>
+#include <algorithm>
 
 #define default_name "default"
 #define default_edge_weight 1.0
@@ -95,15 +96,20 @@ public: // get_function
     Range get_range() const { return range; }
     // std::array<Edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
+    void set_adjacency_array(std::vector< Instance_index_type >& adjacency_array) { 
+        this -> adjacency_array = adjacency_array; 
+        }
+    void set_adj_byassign(std::vector< Instance_index_type >& v_2) {     
+        std::copy(v_2.begin(), v_2.end(), std::back_inserter(this -> adjacency_array));
+    }
 protected:
 private:// data
     
     Edge_type type;    //input, output or normal
-    Name_type connect_pin_name;//this represents which pin it connects to when it connects to module
     Name_type edge_name; // pin/net's name + '_' + edge_index  // maybe assign -> (list name)
     Range range; // [range.low (and range.high) < 0] means edge is signal
     // std::array<Edge_offset_type,2> offset_array;
-    std::vector< Instance_index_type > adjacency_array;//what instance it connect
+    std::vector< Instance_index_type > adjacency_array; //what instance it connect
 };
 
 #endif

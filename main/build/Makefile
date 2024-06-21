@@ -262,6 +262,54 @@ src/process.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/process.cc.s
 .PHONY : src/process.cc.s
 
+src/read_graph.o: src/read_graph.cc.o
+.PHONY : src/read_graph.o
+
+# target to build an object file
+src/read_graph.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/read_graph.cc.o
+.PHONY : src/read_graph.cc.o
+
+src/read_graph.i: src/read_graph.cc.i
+.PHONY : src/read_graph.i
+
+# target to preprocess a source file
+src/read_graph.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/read_graph.cc.i
+.PHONY : src/read_graph.cc.i
+
+src/read_graph.s: src/read_graph.cc.s
+.PHONY : src/read_graph.s
+
+# target to generate assembly for a file
+src/read_graph.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/read_graph.cc.s
+.PHONY : src/read_graph.cc.s
+
+src/vertex.o: src/vertex.cc.o
+.PHONY : src/vertex.o
+
+# target to build an object file
+src/vertex.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.o
+.PHONY : src/vertex.cc.o
+
+src/vertex.i: src/vertex.cc.i
+.PHONY : src/vertex.i
+
+# target to preprocess a source file
+src/vertex.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.i
+.PHONY : src/vertex.cc.i
+
+src/vertex.s: src/vertex.cc.s
+.PHONY : src/vertex.s
+
+# target to generate assembly for a file
+src/vertex.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.s
+.PHONY : src/vertex.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -287,6 +335,12 @@ help:
 	@echo "... src/process.o"
 	@echo "... src/process.i"
 	@echo "... src/process.s"
+	@echo "... src/read_graph.o"
+	@echo "... src/read_graph.i"
+	@echo "... src/read_graph.s"
+	@echo "... src/vertex.o"
+	@echo "... src/vertex.i"
+	@echo "... src/vertex.s"
 .PHONY : help
 
 

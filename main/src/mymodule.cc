@@ -51,8 +51,9 @@ void Module::add_instance(Name_type& type_name, Instance_index_type& name){
     //          -> instance(tu_test_ins, T1)
     //              then push_back it
     Instance v_1(type_name, name); // type_name is only used to determine is_clk during initialization
-    this -> instance.push_back(v_1);
+    this -> internal_instance.push_back(v_1);
 }
+
 //friend void Module::connect_ins_edg(~~)
 void connect_ins_edge(
     Module& gra, 
@@ -63,7 +64,8 @@ void connect_ins_edge(
     // instance => tu_test_ins, T2, B(n2->[-2147483648:3])
     ;
     // at first find the ins
-    auto this_instance = std::find_if( gra.instance.begin(), gra.instance.end(), [&]( Instance v) {
+    auto this_instance = std::find_if( gra.internal_instance.begin(), 
+        gra.internal_instance.end(), [&]( Instance v) {
         return std::get<1>( v.get_instance_data() ) == instance_name;
     });
         // Using a hash table to store edges in a vector for quick access
@@ -95,7 +97,8 @@ void connect_ins_edge(
             it_ -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
         }
     }
-};
+}
+
 
 void Module::add_module(){
     std::vector< std::tuple< Edge_index_type, Edge_index_type >> connect_edge_list;
@@ -122,6 +125,7 @@ void connect_mod_edge(
     std::queue< Name_type >& pin_name_queue,
     std::queue< Range >& range_queue){
     // at first find the mod
+
     auto this_module = std::find_if(gra.submodule.begin(), 
         gra.submodule.end(), [&](const Sub_Module_type& submodule){            
             return std::get<0>(submodule) == module_name;
@@ -161,3 +165,45 @@ void connect_mod_edge(
         }
     }
 };
+
+void assign_2_edge(
+    Module& gra,
+    Edge_index_type& edge_name_1,
+    Edge_index_type& edge_name_2){
+
+    std::unordered_map< std::string, Edge* > edgeMap;        
+    for (auto& e : gra.internal_edge_list){
+        edgeMap[e.get_name()] = &e; 
+    }
+
+    auto it_1 = edgeMap.find(edge_name_1); // find edge
+    auto it_2 = edgeMap.find(edge_name_2); // find edge
+    bool can_find_both_it1_2 = !(it_1 == edgeMap.end() || it_2 == edgeMap.end());
+
+    if ( can_find_both_it1_2 ){// both e_1 and e_2 has found.
+        std::vector< Edge_index_type > ee_1 = it_1 -> second -> get_adjacency_array();
+        std::vector< Edge_index_type > ee_2 = it_2 -> second -> get_adjacency_array();
+        std::vector< Edge_index_type > ee_c;
+        ee_1.reserve(ee_1.size() + ee_2.size()); // 预先分配足够的空间
+        ee_1.insert(ee_1.end(), ee_2.begin(), ee_2.end());
+            // it_2 -> second -> set_adj_byassign(ee_1);
+            // it_1 -> second -> set_adj_byassign(ee_2);
+        it_1 -> second -> set_adjacency_array(ee_1);
+        it_2 -> second -> set_adjacency_array(ee_1);
+        int a =1 ;
+    } // im here
+    //asdasdaskjrhjkl12chfusdhcrsgherg
+    else{ // canot be found
+        if (it_1 == edgeMap.end() && it_2 == edgeMap.end()){
+            std::cerr << "Cannot find both " << edge_name_1 << " and " << edge_name_2 << ".\n";
+        } 
+        else if ( it_1 == edgeMap.end() ){
+            std::cerr << "Cannot find " << edge_name_1 << ".\n";
+        } 
+        else{
+            std::cerr << "Cannot find " << edge_name_2 << ".\n";
+        }
+    }
+    int b = 1;
+};
+

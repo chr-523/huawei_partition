@@ -174,6 +174,10 @@ paser/CMakeFiles/verilogparser.dir/VerilogParser.cc.o: \
  /usr/include/c++/11/bits/stl_multimap.h \
  /home/chr_523/Work_all/huawei_partition/main/include/instance.h \
  /home/chr_523/Work_all/huawei_partition/main/include/edge.h \
+ /usr/include/c++/11/algorithm /usr/include/c++/11/bits/stl_algo.h \
+ /usr/include/c++/11/bits/algorithmfwd.h \
+ /usr/include/c++/11/bits/stl_tempbuf.h \
+ /usr/include/c++/11/bits/uniform_int_dist.h \
  /home/chr_523/Work_all/huawei_partition/main/include/../paser/VerilogDataBase.h \
  /usr/include/c++/11/fstream /usr/include/c++/11/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \

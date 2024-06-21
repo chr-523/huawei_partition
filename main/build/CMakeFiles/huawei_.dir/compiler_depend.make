@@ -229,7 +229,7 @@ CMakeFiles/huawei_.dir/main.cc.o: ../main.cc \
   /usr/include/c++/11/limits \
   /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/bits/unordered_map.h \
-  ../include/process.h \
+  ../include/read_graph.h \
   /usr/include/c++/11/regex \
   /usr/include/c++/11/algorithm \
   /usr/include/c++/11/bits/stl_algo.h \
@@ -279,6 +279,8 @@ CMakeFiles/huawei_.dir/main.cc.o: ../main.cc \
   /usr/include/c++/11/bits/regex_executor.h \
   /usr/include/c++/11/bits/regex_executor.tcc \
   ../include/mymodule.h \
+  ../include/vertex.h \
+  ../include/process.h \
   /usr/include/c++/11/set \
   /usr/include/c++/11/bits/stl_set.h \
   /usr/include/c++/11/bits/stl_multiset.h \
@@ -1114,6 +1116,9 @@ CMakeFiles/huawei_.dir/src/mymodule.cc.o: ../src/mymodule.cc \
   /usr/include/c++/11/bits/uniform_int_dist.h
 
 CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
+  /usr/include/stdc-predef.h
+
+CMakeFiles/huawei_.dir/src/read_graph.cc.o: ../src/read_graph.cc \
   /usr/include/stdc-predef.h \
   /usr/include/c++/11/ctime \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
@@ -1146,7 +1151,7 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
   /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
   /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
-  ../include/process.h \
+  ../include/read_graph.h \
   /usr/include/c++/11/string \
   /usr/include/c++/11/bits/stringfwd.h \
   /usr/include/c++/11/bits/memoryfwd.h \
@@ -1388,6 +1393,11 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
   /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/bits/unordered_map.h
 
+CMakeFiles/huawei_.dir/src/vertex.cc.o: ../src/vertex.cc \
+  /usr/include/stdc-predef.h
+
+
+../src/vertex.cc:
 
 ../src/process.cc:
 
@@ -1448,6 +1458,8 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
 /home/chr_523/anaconda3/include/boost/predef/hardware/simd/x86/versions.h:
 
 /home/chr_523/anaconda3/include/boost/predef/hardware/simd/x86.h:
+
+../src/read_graph.cc:
 
 /home/chr_523/anaconda3/include/boost/predef/platform/windows_runtime.h:
 
@@ -1668,6 +1680,8 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
 /usr/include/c++/11/bits/stl_set.h:
 
 /usr/include/c++/11/set:
+
+../include/process.h:
 
 /usr/include/c++/11/bits/regex_executor.h:
 
@@ -2041,6 +2055,8 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
 
 /home/chr_523/anaconda3/include/boost/predef/architecture/loongarch.h:
 
+../include/vertex.h:
+
 /usr/include/c++/11/ext/new_allocator.h:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
@@ -2245,10 +2261,6 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
 
 /usr/include/stdio.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
-
-/usr/include/c++/11/cerrno:
-
 /home/chr_523/anaconda3/include/boost/predef/os/beos.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
@@ -2387,7 +2399,11 @@ CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc \
 
 /usr/include/c++/11/limits:
 
-../include/process.h:
+/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
+
+/usr/include/c++/11/cerrno:
+
+../include/read_graph.h:
 
 /usr/include/c++/11/bits/algorithmfwd.h:
 

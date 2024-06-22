@@ -178,32 +178,29 @@ void assign_2_edge(
 
     auto it_1 = edgeMap.find(edge_name_1); // find edge
     auto it_2 = edgeMap.find(edge_name_2); // find edge
-    bool can_find_both_it1_2 = !(it_1 == edgeMap.end() || it_2 == edgeMap.end());
+    bool can_find_both_it1and2 = !(it_1 == edgeMap.end() || it_2 == edgeMap.end());
 
-    if ( can_find_both_it1_2 ){// both e_1 and e_2 has found.
+    if ( can_find_both_it1and2 ){// both e_1 and e_2 has found.
         std::vector< Edge_index_type > ee_1 = it_1 -> second -> get_adjacency_array();
         std::vector< Edge_index_type > ee_2 = it_2 -> second -> get_adjacency_array();
         std::vector< Edge_index_type > ee_c;
-        ee_1.reserve(ee_1.size() + ee_2.size()); // 预先分配足够的空间
+        ee_1.reserve(ee_1.size() + ee_2.size()); //Pre-allocate sufficient space
         ee_1.insert(ee_1.end(), ee_2.begin(), ee_2.end());
             // it_2 -> second -> set_adj_byassign(ee_1);
             // it_1 -> second -> set_adj_byassign(ee_2);
         it_1 -> second -> set_adjacency_array(ee_1);
         it_2 -> second -> set_adjacency_array(ee_1);
-        int a =1 ;
-    } // im here
-    //asdasdaskjrhjkl12chfusdhcrsgherg
+    }
     else{ // canot be found
         if (it_1 == edgeMap.end() && it_2 == edgeMap.end()){
-            std::cerr << "Cannot find both " << edge_name_1 << " and " << edge_name_2 << ".\n";
+            std::cerr << "    Cannot find both " << edge_name_1 << " and " << edge_name_2 << ".\n";
         } 
         else if ( it_1 == edgeMap.end() ){
-            std::cerr << "Cannot find " << edge_name_1 << ".\n";
+            std::cerr << "    Cannot find " << edge_name_1 << ".\n";
         } 
         else{
-            std::cerr << "Cannot find " << edge_name_2 << ".\n";
+            std::cerr << "    Cannot find " << edge_name_2 << ".\n";
         }
     }
-    int b = 1;
 };
 

@@ -22,8 +22,10 @@ public:
     std::string get_name() const { return name; }
     weight_type get_weight() const { return weight; }
     int get_outDgree() const { return outDegree; }
+        void add_outDgree(){ outDegree++ ; }
         void set_outDgree( int O_ ){ outDegree = O_ ; }
     int get_inDgree() const { return inDegree; }
+        void add_inDgree(){ inDegree++ ; }
         void set_inDgree( int I_ ){ inDegree = I_ ; }
     bool get_is_clk() const { return is_clk; }
     int get_comb_rank() const { return comb_rank; }
@@ -34,10 +36,13 @@ private:
     weight_type weight;
     int outDegree;
     int inDegree;
-
+    
     bool is_clk;
+    // Required by subsequent processes
     int comb_rank;
+    // Required by subsequent processes
     int reg_rank;
+    // Required by subsequent processes
     int reg_temp;
 };
 

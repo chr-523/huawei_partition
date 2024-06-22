@@ -72,7 +72,7 @@ graph_data read_file(const std::string& output_path){
 
 }
 //read_net
-Module read_file_1(const std::string& filename){
+graph_data read_file_1(const std::string& filename){
 
     Module gra;
     std::unordered_map<Name_type, Module*> sub_map;
@@ -84,7 +84,9 @@ Module read_file_1(const std::string& filename){
         // When you need to display information or results to users, use std::cout.
         // When you need to report errors or abnormal situations, use std::cerr.
         std::cerr << "Can not open file. " << std::endl;
-        return gra; // empty graph
+        
+        graph_data result(gra, sub_map);
+        return result; // empty graph
     }
 
     char currentChar;
@@ -319,6 +321,15 @@ Module read_file_1(const std::string& filename){
     }
 
     file.close();
-    // 最后c_906的 assign
-    return gra;
+    // the assign operation of the last module (C906)  
+    int size = assign_temp.size();
+    for (int counter = 0; counter < size; ++counter) {
+        Edge_index_type edge_name_0 = std::get<0>(assign_temp[counter]);
+        Edge_index_type edge_name_1 = std::get<1>(assign_temp[counter]);
+        assign_2_edge(gra, edge_name_0,edge_name_1);
+    }
+
+    graph_data result(gra, sub_map);
+    
+    return result;
 }

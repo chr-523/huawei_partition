@@ -168,16 +168,17 @@ int main(int argc, char** argv)
     
     std::string file_path = "test/output.txt";
 
-    Module C_906("test_name",default_module_weight);
+    // Module C_906("test_name",default_module_weight);
+    // std::unordered_map< Name_type, Module* > sub_map;
+    // graph_data temp_data_c906(C_906, sub_map);
+    // graph_data temp_data(C_906, sub_map);
 
-    std::unordered_map< Name_type, Module* > sub_map;
-    graph_data temp(C_906, sub_map);
-
-    C_906 = read_file_1(file_path);
-
-    temp = read_file(file_path);
+    //old read_file_function
+    graph_data temp_data_c906 = read_file_1(file_path);
+    //new read -> to be done
+    graph_data temp_data = read_file(file_path);
     
-
+    Module temp_gra = temp_data_c906.module;
     Vertex A;
     Graph gra;
     gra.addVertex(A);

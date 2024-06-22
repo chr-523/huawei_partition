@@ -197,7 +197,8 @@ graph_data read_file_1(const std::string& filename){
             line_data = split_by_brackets(line);
             if( is_instance_type(line_data[0]) ){ // is instance // tesst
             // if( is_ins_test( line_data[0]) ){ // is instance // tesst
-                std::queue< Name_type> edge_name_queue;
+                std::queue< Name_type > edge_name_queue;
+                std::queue< Name_type > pin_name_queue;
                 std::queue< Range > range_queue;
                 for (size_t counter = 2; counter< line_data.size(); counter += 2) {
                     if (counter + 1 < line_data.size()) { // 确保至少还有两个元素
@@ -205,6 +206,7 @@ graph_data read_file_1(const std::string& filename){
                         std::vector<std::string> edge_data = get_edge_data(line_data[counter + 1]);
                         if (edge_data.size() >= 2) { // 确保edge_data至少有两个元素
                             edge_name_queue.push(edge_data[0]);
+                            pin_name_queue.push(connect_pin_name);
                             Range range_(std::stoi(edge_data[1]), std::stoi(edge_data[2]));
                             range_queue.push(range_);
                         }
@@ -212,7 +214,7 @@ graph_data read_file_1(const std::string& filename){
                 }
 
                 gra.add_instance(line_data[0], line_data[1]);//add (type, insname)
-                connect_ins_edge(gra, line_data[1], edge_name_queue, range_queue);
+                connect_ins_edge(gra, line_data[1], edge_name_queue, pin_name_queue, range_queue);
             }
             else{ // is module
                 std::queue< Name_type > edge_name_queue;

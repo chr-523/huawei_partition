@@ -85,6 +85,7 @@ public: //function
     friend void connect_ins_edge(
         Module& gra, Instance_index_type& name, 
         std::queue< Name_type >& edge_name_queue, 
+        std::queue< Name_type >& pin_name_queue,
         std::queue< Range >& range_queue);
     // connect module and edge...to be done
     friend void connect_mod_edge(

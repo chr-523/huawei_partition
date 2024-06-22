@@ -59,6 +59,7 @@ void connect_ins_edge(
     Module& gra, 
     Instance_index_type& instance_name, 
     std::queue< Name_type >& edge_name_queue,
+    std::queue< Name_type >& pin_name_queue,
      std::queue< Range >& range_queue){
     // instance => tu_test_ins, T1, A(n1->[-2147483648:-2147483648])B(n2->[-2147483648:3])
     // instance => tu_test_ins, T2, B(n2->[-2147483648:3])
@@ -74,12 +75,23 @@ void connect_ins_edge(
     for (auto& e : gra.internal_edge_list){
         edgeMap[e.get_name()] = &e; 
     }
+
+
+    assert(edge_name_queue.size() == pin_name_queue.size());
+    assert(range_queue.size() == pin_name_queue.size());
+    
         // queue is not empty do ->
-    while (!range_queue.empty() && !edge_name_queue.empty()) {
+    while (
+        !edge_name_queue.empty() && 
+        !pin_name_queue.empty() &&
+        !range_queue.empty() ) {
+
         Name_type e_name_temp = edge_name_queue.front();
         Name_type e_name;
+        Name_type p_name = pin_name_queue.front();
         Range e_range = range_queue.front();
         edge_name_queue.pop();
+        pin_name_queue.pop();
         range_queue.pop();
 
         if(e_range.low < 0 && e_range.high < 0){
@@ -95,6 +107,7 @@ void connect_ins_edge(
         if (it_ != edgeMap.end()) {
             // if found, connect_instance
             it_ -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
+            it_ -> second -> ci_find_direction(p_name);
         }
     }
 }
@@ -153,11 +166,14 @@ void connect_mod_edge(
         pin_name_queue.pop();
         edge_name_queue.pop();
         range_queue.pop();
+
         assert( e_range.low < 0 ); // only signal edge
         
         std::tuple<Edge_index_type, Edge_index_type> e_c_l = std::make_tuple(e_name, p_name);
         std::get<1>(*this_module).push_back(e_c_l);
 
+        // im here next to chuli mod direction
+        
         auto it_ = edgeMap.find(e_name); // find edge
         if (it_ != edgeMap.end()) {
             // if found, connect_instance
@@ -183,13 +199,26 @@ void assign_2_edge(
     if ( can_find_both_it1and2 ){// both e_1 and e_2 has found.
         std::vector< Edge_index_type > ee_1 = it_1 -> second -> get_adjacency_array();
         std::vector< Edge_index_type > ee_2 = it_2 -> second -> get_adjacency_array();
-        std::vector< Edge_index_type > ee_c;
-        ee_1.reserve(ee_1.size() + ee_2.size()); //Pre-allocate sufficient space
+        // std::vector< Edge_index_type > ee_c;
+        std::vector< Direction > dd_1 = it_1 -> second -> get_adj_array_direction();
+        std::vector< Direction > dd_2 = it_2 -> second -> get_adj_array_direction();
+        // std::vector< Direction > dd_c;
+
+        assert(ee_1.size() == dd_1.size());
+        assert(ee_2.size() == dd_1.size());
+
+        size_t temp_size = ee_1.size() + ee_2.size();
+
+        dd_1.reserve(temp_size);
+        ee_1.reserve(temp_size); //Pre-allocate sufficient space
         ee_1.insert(ee_1.end(), ee_2.begin(), ee_2.end());
-            // it_2 -> second -> set_adj_byassign(ee_1);
+        dd_1.insert(dd_1.end(), dd_2.begin(), dd_2.end());
+            // it_2 -> second -> set_adj_byassign(ee_1); // was abandoned
             // it_1 -> second -> set_adj_byassign(ee_2);
         it_1 -> second -> set_adjacency_array(ee_1);
         it_2 -> second -> set_adjacency_array(ee_1);
+        it_1 -> second -> set_adj_array_direction(dd_1);
+        it_2 -> second -> set_adj_array_direction(dd_1);
     }
     else{ // canot be found
         if (it_1 == edgeMap.end() && it_2 == edgeMap.end()){

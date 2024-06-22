@@ -28,11 +28,19 @@ struct Range { // low_high
     }
     Range(int l, int h) : low(l), high(h) {}
 };
-
-enum Edge_type { // INPUT_OUTPUT_NORMAL
+// Represents I/O PIN or internal normal wire within a module
+// ----> INPUT, OUTPUT and NORMAL
+enum Edge_type {
     INPUT = 0x1,    // equal 1
     OUTPUT = 0x2,   // equal 2
     NORMAL = 0x0    // equal 0
+};
+
+// Rrepresent the direction between vertex and edge
+// ----> v_to_edge / edge_to_v
+enum Direction {
+    v_to_edge = 0x1,    // represents the direction from vertex to edge
+    edge_to_v = 0x0     // represents the direction from vertex to edge
 };
 
 class Instance;
@@ -89,19 +97,27 @@ public: // function
     //connect signal edge to the instance
     void connect_instance(Instance& instance);
     void connect_instance(Name_type& instance_name);
+    void ci_find_direction(Name_type& pin_name);
 
 public: // get_function
     Edge_type get_type() const { return type; };
     Name_type get_name() const { return edge_name; };
     Range get_range() const { return range; }
-    // std::array<Edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
+    std::vector< Direction > get_adj_array_direction() const { return adj_array_direction; }
+
     void set_adjacency_array(std::vector< Instance_index_type >& adjacency_array) { 
         this -> adjacency_array = adjacency_array; 
         }
-    void set_adj_byassign(std::vector< Instance_index_type >& v_2) {     
-        std::copy(v_2.begin(), v_2.end(), std::back_inserter(this -> adjacency_array));
+
+    void set_adj_array_direction(std::vector< Direction >&adj_array_direction) { 
+        this -> adj_array_direction = adj_array_direction; 
     }
+    // Because of direction, this has been abandoned    
+    // void set_adj_byassign(std::vector< Instance_index_type >& v_2) {     
+    //     std::copy(v_2.begin(), v_2.end(), std::back_inserter(this -> adjacency_array));
+    // }
+
 protected:
 private:// data
     
@@ -110,6 +126,7 @@ private:// data
     Range range; // [range.low (and range.high) < 0] means edge is signal
     // std::array<Edge_offset_type,2> offset_array;
     std::vector< Instance_index_type > adjacency_array; //what instance it connect
+    std::vector< Direction > adj_array_direction; //what instance it connect
 };
 
 #endif

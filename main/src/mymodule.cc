@@ -16,6 +16,13 @@ void Module::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
         // net => n1->[-1:-1]       ->  add_edge(n1, -1, -1, NORMAL)    
         Edge edge_(name, -1, -1, type); // name is index
         this -> internal_edge_list.push_back(edge_); //range = [-1, -1]
+        
+        if( type != NORMAL ){
+            this -> IO_type_map[name] = type;
+        }
+        else{ // type == NORMAL
+            // do nothing
+        }
     }
     else{   // only in cases where high low is greater than 0
             // pin => dd->[3:0] =>2    =>  add_edge(dd, 15,  0, OUTPUT)
@@ -28,6 +35,14 @@ void Module::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
             Name_type se_name = name + '_' + std::to_string(counter) ; // se_name means signal_edge_name 
             Edge edge_(se_name,-1, counter, type); // name -> name_'counter'
             this -> internal_edge_list.push_back(edge_);
+
+                    
+            if( type != NORMAL ){
+                this -> IO_type_map[name] = type;
+            }
+            else{ // type == NORMAL
+                // do nothing
+            }
         }
     }
 }
@@ -107,7 +122,7 @@ void connect_ins_edge(
         if (it_ != edgeMap.end()) {
             // if found, connect_instance
             it_ -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
-            it_ -> second -> ci_find_direction(p_name);
+            it_ -> second -> ci_find_direction_ins(p_name); // true -> instance
         }
     }
 }
@@ -138,7 +153,6 @@ void connect_mod_edge(
     std::queue< Name_type >& pin_name_queue,
     std::queue< Range >& range_queue){
     // at first find the mod
-
     auto this_module = std::find_if(gra.submodule.begin(), 
         gra.submodule.end(), [&](const Sub_Module_type& submodule){            
             return std::get<0>(submodule) == module_name;
@@ -172,20 +186,33 @@ void connect_mod_edge(
         std::tuple<Edge_index_type, Edge_index_type> e_c_l = std::make_tuple(e_name, p_name);
         std::get<1>(*this_module).push_back(e_c_l);
 
-        // im here next to chuli mod direction
-        
+        std::unordered_map< Name_type, Edge_type > IOMAP;
+        IOMAP = std::get<2>(*this_module)->get_IO_type_map();
+
+        auto IO_ = IOMAP.find(p_name); // find IO_type
+        if( IO_ == IOMAP.end() ){ 
+            std::cerr << "This pin_name can not be found. -> " << p_name << std::endl;
+        }
         auto it_ = edgeMap.find(e_name); // find edge
-        if (it_ != edgeMap.end()) {
+        if ( it_ != edgeMap.end() ){
             // if found, connect_instance
             it_ -> second -> connect_instance(module_name); // connect T1/T2 to n1/n2_3
+            it_ -> second -> ci_find_direction_mod(p_name, IO_ -> second);
+        }
+        else{
+            
+            std::cerr << "This edge_name can not be found. -> " << e_name << std::endl;
         }
     }
 };
 
+
+
 void assign_2_edge(
-    Module& gra,
-    Edge_index_type& edge_name_1,
-    Edge_index_type& edge_name_2){
+    Module &gra,
+    Edge_index_type &edge_name_1,
+    Edge_index_type &edge_name_2)
+{
 
     std::unordered_map< std::string, Edge* > edgeMap;        
     for (auto& e : gra.internal_edge_list){
@@ -205,7 +232,7 @@ void assign_2_edge(
         // std::vector< Direction > dd_c;
 
         assert(ee_1.size() == dd_1.size());
-        assert(ee_2.size() == dd_1.size());
+        assert(ee_2.size() == dd_2.size());
 
         size_t temp_size = ee_1.size() + ee_2.size();
 
@@ -232,4 +259,3 @@ void assign_2_edge(
         }
     }
 };
-

@@ -61,9 +61,13 @@ public:
     Module(Name_type module_name = default_name, weight_type module_weight = default_module_weight):
           module_name(module_name), module_weight(module_weight){};
 
-    Module(const Module& other): module_name(other.module_name),
-          module_weight(other.module_weight), internal_instance(other.internal_instance), submodule(other.submodule),
-          internal_edge_list(other.internal_edge_list){};
+    Module(const Module& other): 
+        module_name(other.module_name),
+        module_weight(other.module_weight), 
+        internal_instance(other.internal_instance), 
+        submodule(other.submodule),
+        internal_edge_list(other.internal_edge_list),
+        IO_type_map(other.IO_type_map){};
     // operator = 
     Module& operator=(const Module& other){
         if (this != &other) { // Prevent self assigment
@@ -72,6 +76,7 @@ public:
             internal_instance = other.internal_instance;
             submodule = other.submodule;
             internal_edge_list = other.internal_edge_list;
+            IO_type_map = other.IO_type_map;
         }
         return *this;
     }
@@ -87,11 +92,9 @@ public: //function
         std::queue< Name_type >& edge_name_queue, 
         std::queue< Name_type >& pin_name_queue,
         std::queue< Range >& range_queue);
-    // connect module and edge...to be done
+    // connect module and edge
     friend void connect_mod_edge(
-        Module& gra,
-        std::string& module_type, 
-        // Module_index_type& module_name,
+        Module& gra, Module_index_type& module_type, 
         std::queue< Name_type >& edge_name_queue,        
         std::queue< Name_type >& pin_name_queue, 
         std::queue< Range >& range_queue); 
@@ -116,13 +119,15 @@ public: //function about the data
         this -> internal_instance.clear();       
         this -> submodule.clear();        
         this -> internal_edge_list.clear();
+        this -> IO_type_map.clear();
     }
-    void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; }
+    void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; };
     Name_type get_module_name() const { return module_name; };
     weight_type get_module_weight() const { return module_weight; };
     std::vector< Internal_Instance_type > get_instance_list() const { return internal_instance; };
     std::vector< Sub_Module_type > get_submodule_list() const { return submodule; };
-    std::vector< Edge > get_internal_edge_list() const { return internal_edge_list; }protected:
+    std::vector< Edge > get_internal_edge_list() const { return internal_edge_list; };
+    std::unordered_map< Name_type, Edge_type > get_IO_type_map() const { return IO_type_map; };
 private: 
     // module_name (It's the module name, not the initialized name)
     Name_type module_name;
@@ -152,6 +157,7 @@ private:
     // what edge this module contain (same as instance edgelist)
     // _Edge    IO_type, edge_name, range;
     std::vector< Edge > internal_edge_list; 
+    std::unordered_map< Name_type, Edge_type > IO_type_map;
 };
 
 #endif

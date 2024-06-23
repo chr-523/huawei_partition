@@ -97,7 +97,8 @@ public: // function
     //connect signal edge to the instance
     void connect_instance(Instance& instance);
     void connect_instance(Name_type& instance_name);
-    void ci_find_direction(Name_type& pin_name);
+    void ci_find_direction_ins(Name_type& pin_name); //for instance
+    void ci_find_direction_mod(Name_type& pin_name, Edge_type e_type); //for module
 
 public: // get_function
     Edge_type get_type() const { return type; };

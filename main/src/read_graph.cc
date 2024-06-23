@@ -1,6 +1,7 @@
 #include <ctime>
 #include "read_graph.h"
 
+//Determine whether it is only_clk_module through module_name's prefix
 bool is_clk_module(const Name_type& module_name){
     Name_type instance_prefix = "gated_clk_";
     Name_type name_prefix = module_name.substr(0, instance_prefix.length() );
@@ -8,19 +9,29 @@ bool is_clk_module(const Name_type& module_name){
 }
 
 //Determine whether it is instance or module through instance_name's prefix
-//If instance -> true     if module -> false*
+//If instance -> true     if module -> false
 bool is_instance_type(const Name_type& instance_name){
-    Name_type instance_prefix_1 = "sky130_fd_sc_hd__";
-    Name_type instance_prefix_2 = "aq_spsram_";
 
+    Name_type instance_prefix_1 = "sky130_fd_sc_hd__";
     Name_type name_prefix_1 = instance_name.substr(0, instance_prefix_1.length() );
-    Name_type name_prefix_2 = instance_name.substr(0, instance_prefix_2.length() );
-    return (name_prefix_1 == instance_prefix_1) || (name_prefix_2 == instance_prefix_2);
+    
+    if(name_prefix_1 == instance_prefix_1){
+        return true;
+    }
+    else{
+        Name_type instance_prefix_2 = "aq_spsram_";
+        Name_type name_prefix_2 = instance_name.substr(0, instance_prefix_2.length() );
+        return name_prefix_2 == instance_prefix_2;
+    }
+
+    return false;
 }
 
 bool is_ins_test(const Name_type& instance_name){
+
     Name_type instance_prefix = "tu_test_ins";    
     Name_type name_prefix = instance_name.substr(0, instance_prefix.length() );
+
     return name_prefix == instance_prefix;
 }    
 
@@ -115,7 +126,7 @@ graph_data read_file_1(const std::string& filename){
         std::cout << "Time: " << elapsed_time << " s" << std::endl;
 
         line_c++;
-        if(line_c == 632572){
+        if(line_c == 37){
             int a = 1;
         };
         
@@ -314,6 +325,7 @@ graph_data read_file_1(const std::string& filename){
                 gra.add_module(e_l, line_data[1], sub_module -> second);
                 // gra,type,index,e_que,p_que,r_que
                 connect_mod_edge(gra, line_data[1], edge_name_queue, pin_name_queue, range_queue);
+                int a = 1;
             }
         } 
         else{
@@ -328,7 +340,7 @@ graph_data read_file_1(const std::string& filename){
     for (int counter = 0; counter < size; ++counter) {
         Edge_index_type edge_name_0 = std::get<0>(assign_temp[counter]);
         Edge_index_type edge_name_1 = std::get<1>(assign_temp[counter]);
-        assign_2_edge(gra, edge_name_0,edge_name_1);
+        assign_2_edge(gra, edge_name_0, edge_name_1);
     }
 
     graph_data result(gra, sub_map);

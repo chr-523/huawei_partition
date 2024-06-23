@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <list>
 #include <deque>
@@ -77,8 +79,12 @@ public: // initialization
                 // this - > adjacency_array = NULL
                 };
     
-    Edge(const Edge& other): edge_name(other.edge_name), range(other.range), 
-        type(other.type), adjacency_array(other.adjacency_array){}
+    Edge(const Edge& other): 
+        edge_name(other.edge_name), 
+        range(other.range), 
+        type(other.type), 
+        adjacency_array(other.adjacency_array),
+        adj_array_direction(other.adj_array_direction){}
 
     Edge& operator=(const Edge& other) {
         if (this != &other) { // Prevent self assigmant
@@ -86,6 +92,7 @@ public: // initialization
             range = other.range; // is this no bug?
             type = other.type;
             adjacency_array = other.adjacency_array;
+            adj_array_direction = other.adj_array_direction;
         }
         return *this;
     }

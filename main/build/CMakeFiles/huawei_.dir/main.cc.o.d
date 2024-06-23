@@ -155,8 +155,6 @@ CMakeFiles/huawei_.dir/main.cc.o: \
  /usr/include/c++/11/bits/uniform_int_dist.h \
  /home/chr_523/Work_all/huawei_partition/main/include/instance.h \
  /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
- /home/chr_523/Work_all/huawei_partition/main/include/instance.h \
- /home/chr_523/Work_all/huawei_partition/main/include/edge.h \
  /home/chr_523/Work_all/huawei_partition/main/include/../paser/VerilogDataBase.h \
  /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
  /usr/include/c++/11/ios /usr/include/c++/11/exception \
@@ -221,7 +219,6 @@ CMakeFiles/huawei_.dir/main.cc.o: \
  /usr/include/c++/11/bits/regex.h /usr/include/c++/11/bits/regex.tcc \
  /usr/include/c++/11/bits/regex_executor.h \
  /usr/include/c++/11/bits/regex_executor.tcc \
- /home/chr_523/Work_all/huawei_partition/main/include/mymodule.h \
  /home/chr_523/Work_all/huawei_partition/main/include/vertex.h \
  /home/chr_523/Work_all/huawei_partition/main/include/process.h \
  /usr/include/c++/11/set /usr/include/c++/11/bits/stl_set.h \

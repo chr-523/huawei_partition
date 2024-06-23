@@ -150,8 +150,8 @@ void test1(std::string const& filename)
  
 int main(int argc, char** argv)
 {    
-    bool updata_output = true;
-    bool read_test = true;
+    bool updata_output = false;
+    bool read_test = false;
 
     if(updata_output){
         std::ifstream infile;
@@ -170,19 +170,19 @@ int main(int argc, char** argv)
 
     // Module C_906("test_name",default_module_weight);
     // std::unordered_map< Name_type, Module* > sub_map;
-    // graph_data temp_data_c906(C_906, sub_map);
-    // graph_data temp_data(C_906, sub_map);
+    // Graph_data temp_data_c906(C_906, sub_map);
+    // Graph_data temp_data(C_906, sub_map);
 
     //old read_file_function
-    graph_data temp_data_c906 = read_file_1(file_path);
+    Graph_data temp_data_c906 = read_file_1(file_path);
     //new read -> to be done
-    graph_data temp_data = read_file(file_path);
+    Graph_data temp_data = read_file(file_path);
     
-    Module temp_gra = temp_data_c906.module;
+        Module temp_gra = temp_data_c906.module;
+
     Vertex A;
-    Graph gra;
-    gra.addVertex(A);
-    int a = 1;
+    // Graph gra = read_graph_data(temp_data_c906);
+    Graph gra = read_graph_data(temp_data_c906.module);
 
 
         // +sub_module map

@@ -190,8 +190,6 @@ CMakeFiles/huawei_.dir/main.cc.o: ../main.cc \
   /usr/include/c++/11/bits/uniform_int_dist.h \
   ../include/instance.h \
   ../include/mymodule.h \
-  ../include/instance.h \
-  ../include/edge.h \
   ../paser/VerilogDataBase.h \
   /usr/include/c++/11/iostream \
   /usr/include/c++/11/ostream \
@@ -278,7 +276,6 @@ CMakeFiles/huawei_.dir/main.cc.o: ../main.cc \
   /usr/include/c++/11/bits/regex.tcc \
   /usr/include/c++/11/bits/regex_executor.h \
   /usr/include/c++/11/bits/regex_executor.tcc \
-  ../include/mymodule.h \
   ../include/vertex.h \
   ../include/process.h \
   /usr/include/c++/11/set \
@@ -1432,7 +1429,8 @@ CMakeFiles/huawei_.dir/src/read_graph.cc.o: ../src/read_graph.cc \
   /usr/include/assert.h \
   /usr/include/c++/11/limits \
   /usr/include/c++/11/unordered_map \
-  /usr/include/c++/11/bits/unordered_map.h
+  /usr/include/c++/11/bits/unordered_map.h \
+  ../include/vertex.h
 
 CMakeFiles/huawei_.dir/src/vertex.cc.o: ../src/vertex.cc \
   /usr/include/stdc-predef.h

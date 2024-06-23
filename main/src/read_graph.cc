@@ -1,6 +1,7 @@
 #include <ctime>
 #include "read_graph.h"
 
+using edge_map_type = std::unordered_map< std::string, Edge* >;
 //Determine whether it is only_clk_module through module_name's prefix
 bool is_clk_module(const Name_type& module_name){
     Name_type instance_prefix = "gated_clk_";
@@ -73,34 +74,30 @@ std::vector<std::string> get_edge_data(const std::string& edge_data) {
     return result;
 }
 
-graph_data read_file(const std::string& output_path){
+Graph_data read_file(const std::string& output_path){
     Module gra;
     std::unordered_map<Name_type, Module*> submodule_map;
 
-    graph_data result(gra, submodule_map);
+    Graph_data result(gra, submodule_map);
     
     return result;
 
 }
 //read_net
-graph_data read_file_1(const std::string& filename){
+Graph_data read_file_1(const std::string& filename){
 
     Module gra;
     std::unordered_map<Name_type, Module*> sub_map;
     std::ifstream file(filename);
-
-    clock_t start = clock(); // start time
 
     if ( !file.is_open() ){
         // When you need to display information or results to users, use std::cout.
         // When you need to report errors or abnormal situations, use std::cerr.
         std::cerr << "Can not open file. " << std::endl;
         
-        graph_data result(gra, sub_map);
+        Graph_data result(gra, sub_map);
         return result; // empty graph
     }
-
-    char currentChar;
 
     std::string line;
 
@@ -110,15 +107,17 @@ graph_data read_file_1(const std::string& filename){
 
     int line_c = 1;
 
-    std::string previous_module_name;
+    Name_type module_name;
+    Name_type previous_module_name;
 // char A;
 // while(file.get(A)){
 //     std::cout << A;
 
 // }
 
-
-    std::vector<std::tuple<Edge_index_type,Edge_index_type>> assign_temp;
+    double total_time = 0.0;
+    clock_t start = clock(); // start time
+    std::vector<std::tuple<Edge_index_type,Edge_index_type>> module_assign_list;
     while( getline(file, line) ){
             
         clock_t end = clock(); // 记录结束时间
@@ -126,41 +125,47 @@ graph_data read_file_1(const std::string& filename){
         std::cout << "Time: " << elapsed_time << " s" << std::endl;
 
         line_c++;
-        if(line_c == 37){
+
+        if(line_c == 37){  //for test
             int a = 1;
         };
         
         std::cout << line_c << std::endl;
-        std::string token;
 
         if ( (line[0] == 'm') && (line[1] == 'o') && (line[2] == 'd') && (line[3] == 'u') && (line[4] == 'l') && (line[5] == 'e') ){
-
-
-            std::string module_name = line.substr(7);
-            if( module_counter != 0 ){
-
-                int size = assign_temp.size();
+            // used to stored precious module into sub_map
+            previous_module_name = module_name;
+            // get the new module's name
+            module_name = line.substr(7);
+            // module_counter means how many modules have been processed
+            if( module_counter != 0 ){ // not the first module
+                int size = module_assign_list.size();
                 for (int counter = 0; counter < size; ++counter) {
-                    Edge_index_type edge_name_0 = std::get<0>(assign_temp[counter]);
-                    Edge_index_type edge_name_1 = std::get<1>(assign_temp[counter]);
+                    Edge_index_type edge_name_0 = std::get<0>(module_assign_list[counter]);
+                    Edge_index_type edge_name_1 = std::get<1>(module_assign_list[counter]);
                     assign_2_edge(gra, edge_name_0,edge_name_1);
                 }
-                // 新module出现 则上一个module需要 assign (C906的assign在最后面)
-                // 清空,然后 用于存这个module的assign信息
-                assign_temp.clear();        
+                // If a new module appears, the previous module needs to be assigned 
+                //     (the biggest module_assign's code is at the end)
+                // Clear assign_list and use it to store the assignment information for this new module
+                module_assign_list.clear();        
+                // Store old modules in the sub_map
+                    // Module* gra_2 = new Module(gra);
+                    // std::pair<Name_type, Module*> pair = std::make_pair(previous_module_name, gra_2);
+                    // sub_map.insert(pair); // Form a pair before insert it
+                sub_map.insert( std::make_pair(previous_module_name, new Module(gra)));
 
-                Module* gra_2 = new Module(gra);
-                std::pair<Name_type, Module*> pair = std::make_pair(previous_module_name, gra_2);
-                sub_map.insert(pair); // 组成pair再插入
+                // Clear gra to store the new module
                 gra.clear();
-                module_counter++;
 
             }
-            else{
-                module_counter++ ;
+            else{ // do nothing
+                // The first module does not need to handle assign
+                // so do nothing
             }
-            gra.set_module_name(module_name); //something wrong
-            previous_module_name = module_name;
+
+            module_counter++;
+            gra.set_module_name(module_name);
         } 
         else if (   ((line[0] == 'p') && (line[1] == 'i') && (line[2] == 'n')) or
                     ((line[0] == 'n') && (line[1] == 'e') && (line[2] == 't'))  ){
@@ -193,16 +198,15 @@ graph_data read_file_1(const std::string& filename){
             assert( gra.get_internal_edge_list().back().get_range().low == -1);
         }
         else if ( line.substr(0, 10) == "assignment" ){
-            // 解析赋值信息
             // parseAssignment(line, gra);
             std::vector<std::string> assign_data = split_by_brackets(line);
             std::vector<std::string> edge_data_0 = get_edge_data(assign_data[0]);
             std::vector<std::string> edge_data_1 = get_edge_data(assign_data[1]);
-            assign_temp.push_back(std::make_pair(edge_data_0[0],edge_data_1[0]));
-            // assign_2_edge(gra, edge_data_0[0],edge_data_1[0]);
+            // store assign's information
+            // this will be processed after all other information has been processed
+            module_assign_list.push_back(std::make_pair(edge_data_0[0],edge_data_1[0]));
         } 
         else if ( line.substr(0,8) == "instance" ){
-            // 解析实例化信息
             // parseInstance(line, gra, sub_map);
             std::vector<std::string> line_data;
             line_data = split_by_brackets(line);
@@ -325,25 +329,76 @@ graph_data read_file_1(const std::string& filename){
                 gra.add_module(e_l, line_data[1], sub_module -> second);
                 // gra,type,index,e_que,p_que,r_que
                 connect_mod_edge(gra, line_data[1], edge_name_queue, pin_name_queue, range_queue);
-                int a = 1;
+
             }
         } 
         else{
             std::cerr << "Unknown line token: " << line << std::endl;
         }
-
+        total_time = elapsed_time;
     }
 
     file.close();
+
+    std::cout << "Data in output.txt has been stored." << std::endl;
+    std::cout << "The total time spent: " << total_time << " seconds." << std::endl;
+
     // the assign operation of the last module (C906)  
-    int size = assign_temp.size();
+    int size = module_assign_list.size();
     for (int counter = 0; counter < size; ++counter) {
-        Edge_index_type edge_name_0 = std::get<0>(assign_temp[counter]);
-        Edge_index_type edge_name_1 = std::get<1>(assign_temp[counter]);
+        Edge_index_type edge_name_0 = std::get<0>(module_assign_list[counter]);
+        Edge_index_type edge_name_1 = std::get<1>(module_assign_list[counter]);
         assign_2_edge(gra, edge_name_0, edge_name_1);
     }
 
-    graph_data result(gra, sub_map);
+    Graph_data result(gra, sub_map);
     
     return result;
 }
+
+
+void add_ins_list_to_gra(
+    Graph result_gra, 
+    std::vector< Internal_Instance_type > gra_ins, 
+    edge_map_type edge_map){
+    
+    for(auto& ins:gra_ins){
+        for(auto& edge_name:ins.get_connect_edge()){
+            auto it = edge_map.find(edge_name);
+            int c = 1; // damn
+        }
+        Vertex A( std::get<1>(ins.get_instance_data()), std::get<0>(ins.get_instance_data()));
+        int a = 1;
+    }
+    int b = 1;
+};
+
+void add_mod_list_to_gra(
+    Graph result_gra, 
+    std::vector< Sub_Module_type >gra_mod, 
+    edge_map_type edge_map){
+
+    int a =1;
+};
+
+Graph read_graph_data(const Module& gra_data){
+    Graph result_gra;
+
+    edge_map_type edge_map;
+        // creat the hash table
+    std::vector< Edge > t_e = gra_data.get_internal_edge_list();
+    for (auto& e : t_e ){ // can not : gra_. ...  idont know why
+        edge_map[e.get_name()] = &e; 
+    }
+
+    std::vector< Internal_Instance_type > gra_ins = gra_data.get_internal_instance();
+    add_ins_list_to_gra(result_gra, gra_ins, edge_map);
+    std::vector< Sub_Module_type > gra_mod = gra_data.get_submodule_list();
+
+    return result_gra;
+};
+
+Graph read_graph_data(const Graph_data& gra_data){
+    Graph result_gra = read_graph_data(gra_data.module);
+    return result_gra;
+};

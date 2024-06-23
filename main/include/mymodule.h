@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <list>
 #include <deque>
@@ -124,7 +126,7 @@ public: //function about the data
     void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; };
     Name_type get_module_name() const { return module_name; };
     weight_type get_module_weight() const { return module_weight; };
-    std::vector< Internal_Instance_type > get_instance_list() const { return internal_instance; };
+    std::vector< Internal_Instance_type > get_internal_instance() const { return internal_instance; };
     std::vector< Sub_Module_type > get_submodule_list() const { return submodule; };
     std::vector< Edge > get_internal_edge_list() const { return internal_edge_list; };
     std::unordered_map< Name_type, Edge_type > get_IO_type_map() const { return IO_type_map; };

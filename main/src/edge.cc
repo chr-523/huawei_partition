@@ -29,8 +29,8 @@ void Edge::ci_find_direction_ins(Name_type& pin_name){
         "D", "RESET_B", "CLK"
     }; // these two table should be improved
     std::unordered_set<std::string> output_table = {   
-        "X", "Y", "Q",
-        "?"
+        "X", "Y", "Q",//补一下
+        "?",
     };
     // (.find() != end) means pin_name can be found in input_table
     //      means pin_name -> input

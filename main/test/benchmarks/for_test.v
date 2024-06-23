@@ -26,15 +26,15 @@ module binary_full_adder(a,b,cin,sum,cout);
     output sum;
     output cout;
 
-    wire sum1, sum2, cout1, cout2, cout3, carry, assign_temp;
+    wire sum1, sum2, cout1, cout2, cout3, assign_temp;
     assign assign_temp = cout3;
     assign sum = sum2;
-
+    
     sky130_fd_sc_hd__nor2_1 U1 ( .A(cout1), .B(cout2), .Y(cout3) );
     // sky130_fd_sc_hd__inv_1 U3 ( .A(cout3),.Y(cout) );
     //      assign assign_temp = cout3;
     sky130_fd_sc_hd__inv_1 U2 ( .A(assign_temp),.Y(cout) );
-    
+
     half_adder half_adder_1 (.A(a), .B(b), .SUM(sum1), .COUT(cout1));
     half_adder half_adder_2 (.A(sum1), .B(cin), .SUM(sum2), .COUT(cout2));
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -65,13 +67,22 @@ struct Graph{
     }
 
     void addVertex(const Vertex& v_) {
-        // 创建一个新的Vertex对象，并将其复制构造
-        Vertex* newVertex = new Vertex(v_);
-
-        std::string name =  v_.get_name();
-        
-        vertexs[name] = newVertex;
+        // Vertex* newVertex = new Vertex(v_);
+        // std::string name =  v_.get_name();
+        // vertexs[name] = newVertex;
+        vertexs[v_.get_name()] = new Vertex(v_);
     }
 
-    // void addadj()
+    void add_adj_minus(const std::string& vertex_name, 
+            const std::vector<std::pair<std::string, weight_type>>& adj_info) {
+        graph_adjlist_minus[vertex_name] = adj_info;
+    }
+
+    void add_adj_plus(const std::string& vertex_name, 
+            const std::vector<std::pair<std::string, weight_type>>& adj_info) {
+        graph_adjlist_plus[vertex_name] = adj_info;
+    }
+
+    
 };
+

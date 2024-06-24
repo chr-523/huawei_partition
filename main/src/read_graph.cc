@@ -1,7 +1,6 @@
 #include <ctime>
 #include "read_graph.h"
 
-using edge_map_type = std::unordered_map< std::string, Edge* >;
 //Determine whether it is only_clk_module through module_name's prefix
 bool is_clk_module(const Name_type& module_name){
     Name_type instance_prefix = "gated_clk_";

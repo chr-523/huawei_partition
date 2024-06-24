@@ -20,9 +20,13 @@ void Edge::connect_instance(Name_type& instance_name){
     //  adj.pushback("T1")
     this -> adjacency_array.push_back(instance_name); 
 }
-
+    
 void Edge::ci_find_direction_ins(Name_type& pin_name){
+    this -> adj_array_direction.push_back(find_direction_ins(pin_name));
+}
 
+Direction Edge::find_direction_ins(Name_type &pin_name)
+{
     std::unordered_set<std::string> input_table = {   
         "A", "A1", "A2", "A3", "A4",
         "B", "B2",  "C", "C1", "C2",
@@ -39,31 +43,38 @@ void Edge::ci_find_direction_ins(Name_type& pin_name){
     bool is_v2e = output_table.find(pin_name) != output_table.end();
 
     if (is_v2e){
-        this -> adj_array_direction.push_back(v_to_edge);
+        return v_to_edge;
     }
     else if(is_e2v){
-        this -> adj_array_direction.push_back(edge_to_v);
+        return edge_to_v;
     }
     else{ // can not find In/Out-put
-        std::cerr << "New pin name: " << pin_name << "should be add in table." << std::endl;
+        std::cerr << "New pin name: " << pin_name << " should be add in table." << std::endl;
     }
+    std::cerr << "Something wrong with the name:" << pin_name << "." << std::endl;
 
-
+    return Direction();
 }
+
 void Edge::ci_find_direction_mod(Name_type &pin_name, Edge_type e_type) {
- 
+    this -> adj_array_direction.push_back(find_direction_mod(pin_name, e_type));
+}
+
+Direction Edge::find_direction_mod(Name_type &pin_name, Edge_type e_type)
+{
     if (e_type == INPUT){
         // For submaodules, this edge is input, 
         // so for modules, the direction of this edge is from edge to vertex(sub_module)
-        this -> adj_array_direction.push_back(edge_to_v);
+        return edge_to_v;
     }
     else if (e_type == OUTPUT){
         // For submaodules, this edge is onput, 
         // so for modules, the direction of this edge is from vertex(sub_module) tp edge
-        this -> adj_array_direction.push_back(v_to_edge);
+        return v_to_edge;
     }
     else{
         std::cerr << "Submodule edge type made a mistake." << std::endl;
     }
 
+    return Direction();
 };

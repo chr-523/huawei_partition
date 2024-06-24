@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <unordered_set>
 
+using edge_map_type = std::unordered_map< std::string, Edge* >;
 
 //add internal edge -> pin and net
 //((Name_type& name, int& low, int& high, Edge_type& type))
@@ -85,10 +86,10 @@ void connect_ins_edge(
         return std::get<1>( v.get_instance_data() ) == instance_name;
     });
         // Using a hash table to store edges in a vector for quick access
-    std::unordered_map< std::string, Edge* > edgeMap;
+    edge_map_type edge_map;
         // creat the hash table
     for (auto& e : gra.internal_edge_list){
-        edgeMap[e.get_name()] = &e; 
+        edge_map[e.get_name()] = &e; 
     }
 
 
@@ -118,11 +119,11 @@ void connect_ins_edge(
         }
 
         this_instance -> connect_edge(e_name); // connect n1/n2_3 to T1/T2
-        auto it_ = edgeMap.find(e_name); // find edge
-        if (it_ != edgeMap.end()) {
+        auto it_ = edge_map.find(e_name); // find edge
+        if (it_ != edge_map.end()) {
             // if found, connect_instance
             it_ -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
-            it_ -> second -> ci_find_direction_ins(p_name); // true -> instance
+            it_ -> second -> ci_find_direction_ins(p_name);
         }
     }
 }
@@ -159,10 +160,10 @@ void connect_mod_edge(
         });
 
         // Using a hash table to store edges in a vector for quick access
-    std::unordered_map< std::string, Edge* > edgeMap;
+    edge_map_type edge_map;
         // creat the hash table
     for (auto& e : gra.internal_edge_list){
-        edgeMap[e.get_name()] = &e; 
+        edge_map[e.get_name()] = &e; 
     }
 
     assert(edge_name_queue.size() == pin_name_queue.size());
@@ -193,8 +194,8 @@ void connect_mod_edge(
         if( IO_ == IOMAP.end() ){ 
             std::cerr << "This pin_name can not be found. -> " << p_name << std::endl;
         }
-        auto it_ = edgeMap.find(e_name); // find edge
-        if ( it_ != edgeMap.end() ){
+        auto it_ = edge_map.find(e_name); // find edge
+        if ( it_ != edge_map.end() ){
             // if found, connect_instance
             it_ -> second -> connect_instance(module_name); // connect T1/T2 to n1/n2_3
             it_ -> second -> ci_find_direction_mod(p_name, IO_ -> second);
@@ -214,14 +215,14 @@ void assign_2_edge(
     Edge_index_type &edge_name_2)
 {
 
-    std::unordered_map< std::string, Edge* > edgeMap;        
+    edge_map_type edge_map;        
     for (auto& e : gra.internal_edge_list){
-        edgeMap[e.get_name()] = &e; 
+        edge_map[e.get_name()] = &e; 
     }
 
-    auto it_1 = edgeMap.find(edge_name_1); // find edge
-    auto it_2 = edgeMap.find(edge_name_2); // find edge
-    bool can_find_both_it1and2 = !(it_1 == edgeMap.end() || it_2 == edgeMap.end());
+    auto it_1 = edge_map.find(edge_name_1); // find edge
+    auto it_2 = edge_map.find(edge_name_2); // find edge
+    bool can_find_both_it1and2 = !(it_1 == edge_map.end() || it_2 == edge_map.end());
 
     if ( can_find_both_it1and2 ){// both e_1 and e_2 has found.
         std::vector< Edge_index_type > ee_1 = it_1 -> second -> get_adjacency_array();
@@ -248,10 +249,10 @@ void assign_2_edge(
         it_2 -> second -> set_adj_array_direction(dd_1);
     }
     else{ // canot be found
-        if (it_1 == edgeMap.end() && it_2 == edgeMap.end()){
+        if (it_1 == edge_map.end() && it_2 == edge_map.end()){
             std::cerr << "    Cannot find both " << edge_name_1 << " and " << edge_name_2 << ".\n";
         } 
-        else if ( it_1 == edgeMap.end() ){
+        else if ( it_1 == edge_map.end() ){
             std::cerr << "    Cannot find " << edge_name_1 << ".\n";
         } 
         else{

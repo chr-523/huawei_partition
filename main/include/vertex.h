@@ -7,7 +7,7 @@
 #include "mymodule.h"
 
 using weight_type = float;
-using degree_type = int;
+using degree_type = size_t;
 
 class Vertex
 {
@@ -92,12 +92,12 @@ struct Graph{
     }
 
     void add_adj_minus(const std::string& vertex_name, 
-            const std::vector<std::pair<std::string, weight_type>>& adj_info ) {
+            const std::vector<std::pair<std::string, weight_type>>& adj_info ){
         graph_adjlist_minus[vertex_name] = adj_info;
     }
 
     void add_adj_plus(const std::string& vertex_name, 
-            const std::vector<std::pair<std::string, weight_type>>& adj_info ) {
+            const std::vector<std::pair<std::string, weight_type>>& adj_info ){
         graph_adjlist_plus[vertex_name] = adj_info;
     }
 

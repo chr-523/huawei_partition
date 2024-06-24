@@ -182,8 +182,15 @@ int main(int argc, char** argv)
     // Graph gra = read_graph_data(temp_data_c906);
     Graph gra = read_graph_data(temp_data_c906.module);
 
-    int a = 1; // IO degree is the last thing!!!!!!
-
+    int a = 1; 
+    /**************************************/
+    /*Except for the IO diagram at the edge of the module, 
+    /*  everything else has been completed
+    /*
+    /*
+    /*
+    /*
+    /**************************************/
         // +sub_module map
     // split sub module -> level/weight -> Algorithm 1 
         // many level-split graphs (STA Graphs)

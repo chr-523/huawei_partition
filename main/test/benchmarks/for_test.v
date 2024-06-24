@@ -37,7 +37,7 @@ module binary_full_adder(a,b,cin,sum,cout);
 
     half_adder half_adder_1 (.A(a), .B(b), .SUM(sum1), .COUT(cout1));
     half_adder half_adder_2 (.A(sum1), .B(cin), .SUM(sum2), .COUT(cout2));
-    half_adder half_adder_3 (.A(a), .B(b), .SUM(sum1), .COUT(cout1));
+    // half_adder half_adder_3 (.A(a), .B(b), .SUM(sum1), .COUT(cout1));
 
 endmodule
 

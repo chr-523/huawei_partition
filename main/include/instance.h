@@ -13,7 +13,8 @@
 
 #define default_instance_weight 1.0
 #define default_name "default"
-using weight_type = float;
+
+using Weight_type = float;
 using Name_type = std::string;
 using Edge_index_type = std::string;
 using Instance_index_type  = std::string;
@@ -31,14 +32,14 @@ class Instance{
 
 public: // Initialization
     // Instance(){}; // equal to the next
-    Instance(Instance_index_type index = default_name, weight_type instance_weight = default_instance_weight, bool is_clk = false){
+    Instance(Instance_index_type index = default_name, Weight_type instance_weight = default_instance_weight, bool is_clk = false){
         /*this -> instance_index    = index; // this data is in the instance_data*/ 
         this -> instance_weight   = instance_weight;
         // this -> connect_edge_list = NULL; 
         this -> instance_data     = {is_clk,index};
     };    
     
-    Instance(Name_type instance_name, Instance_index_type index = default_name, weight_type instance_weight = default_instance_weight){
+    Instance(Name_type instance_name, Instance_index_type index = default_name, Weight_type instance_weight = default_instance_weight){
         this -> instance_weight   = instance_weight;
         // this -> connect_edge_list = NULL; 
         this -> instance_data = {is_clk(instance_name),index};
@@ -62,14 +63,14 @@ public: // function
     void connect_edge(Name_type& edge_name); // connect instance to the edge
 
 public: // get_Function
-    weight_type get_instance_weight() const { return instance_weight; }
+    Weight_type get_instance_weight() const { return instance_weight; }
     std::vector< Edge_index_type > get_connect_edge() const { return connect_edge_list; };
     std::tuple< bool, Instance_index_type > get_instance_data() const { return instance_data; };
 protected:
 private:
     bool is_clk(const Name_type& name); //Determine whether it is clk through instance_name
     // Name_type instance_name;  
-    weight_type instance_weight;    // When multiple instance are synthesized, instance_weight may rise. (default 1.0)
+    Weight_type instance_weight;    // When multiple instance are synthesized, instance_weight may rise. (default 1.0)
     std::vector< Edge_index_type  > connect_edge_list; // what edge this instance connect
     std::tuple< bool, Instance_index_type > instance_data;
 

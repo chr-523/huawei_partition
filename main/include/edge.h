@@ -13,6 +13,7 @@
 #define default_name "default"
 #define default_edge_weight 1.0
 
+using Weight_type = float;
 using Name_type = std::string;
 using Edge_index_type = std::string;
 using Instance_index_type  = std::string;
@@ -65,6 +66,7 @@ public: // initialization
                 this -> edge_name = edge_name;  // default = "default"  
                 this -> range.low = range.low;
                 this -> range.high = range.high;    // default high = low = -1
+                this -> edge_weight = default_edge_weight;
                 this -> type = type;    // default = NORMAL
                 // this -> offset_array = {0,-1};
                 // this - > adjacency_array = NULL
@@ -74,6 +76,7 @@ public: // initialization
                 this -> edge_name = edge_name;  // default = "default"  
                 this -> range.low = low;
                 this -> range.high = high;
+                this -> edge_weight = default_edge_weight;
                 this -> type = type;    // default = NORMAL
                 // this -> offset_array = {0,-1};
                 // this - > adjacency_array = NULL
@@ -82,6 +85,7 @@ public: // initialization
     Edge(const Edge& other): 
         edge_name(other.edge_name), 
         range(other.range), 
+        edge_weight(other.edge_weight),
         type(other.type), 
         adjacency_array(other.adjacency_array),
         adj_array_direction(other.adj_array_direction){}
@@ -90,6 +94,7 @@ public: // initialization
         if (this != &other) { // Prevent self assigmant
             edge_name = other.edge_name;
             range = other.range; // is this no bug?
+            edge_weight = other.edge_weight;
             type = other.type;
             adjacency_array = other.adjacency_array;
             adj_array_direction = other.adj_array_direction;
@@ -104,12 +109,15 @@ public: // function
     //connect signal edge to the instance
     void connect_instance(Instance& instance);
     void connect_instance(Name_type& instance_name);
-    void ci_find_direction_ins(Name_type& pin_name); //for instance
-    void ci_find_direction_mod(Name_type& pin_name, Edge_type e_type); //for module
+    // Determine the direction of the edge and store it (for instance)
+    void ci_find_direction_ins(Name_type& pin_name);
+    // Determine the direction of the edge and store it (for module)
+    void ci_find_direction_mod(Name_type& pin_name, Edge_type e_type); 
 
 public: // get_function
     Edge_type get_type() const { return type; };
     Name_type get_name() const { return edge_name; };
+    Weight_type get_weight() const { return edge_weight; };
     Range get_range() const { return range; }
     std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
     std::vector< Direction > get_adj_array_direction() const { return adj_array_direction; }
@@ -128,7 +136,9 @@ public: // get_function
 
 protected:
 private:// data
-    
+    Direction find_direction_ins(Name_type& pin_name);
+    Direction find_direction_mod(Name_type& pin_name, Edge_type e_type);
+    Weight_type edge_weight;
     Edge_type type;    //input, output or normal
     Name_type edge_name; // pin/net's name + '_' + edge_index  // maybe assign -> (list name)
     Range range; // [range.low (and range.high) < 0] means edge is signal

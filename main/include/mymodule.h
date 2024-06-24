@@ -16,6 +16,7 @@
 
 #define default_name "default"
 #define default_module_weight 1.0
+
 using weight_type = float;
 using Name_type = std::string;
 using Module_index_type  = std::string;
@@ -23,6 +24,8 @@ using Instance_index_type  = std::string;
 using Edge_index_type = std::string;
 class Module;
 using Internal_Instance_type = Instance;
+using edge_map_type = std::unordered_map< std::string, Edge* >;
+
 // using Internal_Instance_type =     
 // std::tuple<
 // Instance_index_type, 

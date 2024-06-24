@@ -34,8 +34,9 @@ void Edge::ci_find_direction_ins(Name_type& pin_name){
     };
     // (.find() != end) means pin_name can be found in input_table
     //      means pin_name -> input
-    bool is_v2e = input_table.find(pin_name) != input_table.end();
-    bool is_e2v = output_table.find(pin_name) != output_table.end();
+    // for ins, pin_name is input means edge to v
+    bool is_e2v = input_table.find(pin_name) != input_table.end();
+    bool is_v2e = output_table.find(pin_name) != output_table.end();
 
     if (is_v2e){
         this -> adj_array_direction.push_back(v_to_edge);
@@ -57,8 +58,8 @@ void Edge::ci_find_direction_mod(Name_type &pin_name, Edge_type e_type) {
         this -> adj_array_direction.push_back(edge_to_v);
     }
     else if (e_type == OUTPUT){
-        // For submaodules, this edge is input, 
-        // so for modules, the direction of this edge is from edge to vertex(sub_module)
+        // For submaodules, this edge is onput, 
+        // so for modules, the direction of this edge is from vertex(sub_module) tp edge
         this -> adj_array_direction.push_back(v_to_edge);
     }
     else{

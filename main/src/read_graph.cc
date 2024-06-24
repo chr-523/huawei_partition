@@ -122,15 +122,18 @@ Graph_data read_file_1(const std::string& filename){
             
         clock_t end = clock(); // 记录结束时间
         double elapsed_time = double(end - start) / CLOCKS_PER_SEC; // 计算经过的秒数
-        std::cout << "Time: " << elapsed_time << " s" << std::endl;
+        // std::cout << "Time: " << elapsed_time << " s" << std::endl;
 
         line_c++;
+
+        // char a;
+        // file.get(a);
+
+        // std::cout << line_c << std::endl;
 
         if(line_c == 37){  //for test
             int a = 1;
         };
-        
-        std::cout << line_c << std::endl;
 
         if ( (line[0] == 'm') && (line[1] == 'o') && (line[2] == 'd') && (line[3] == 'u') && (line[4] == 'l') && (line[5] == 'e') ){
             // used to stored precious module into sub_map
@@ -341,7 +344,7 @@ Graph_data read_file_1(const std::string& filename){
     file.close();
 
     std::cout << "Data in output.txt has been stored." << std::endl;
-    std::cout << "The total time spent: " << total_time << " seconds." << std::endl;
+    std::cout << "The total time spent: " << total_time << " seconds." << std::endl << std::endl;
 
     // the assign operation of the last module (C906)  
     int size = module_assign_list.size();
@@ -357,43 +360,13 @@ Graph_data read_file_1(const std::string& filename){
 }
 
 
-void add_ins_list_to_gra(
-    Graph result_gra, 
-    std::vector< Internal_Instance_type > gra_ins, 
-    edge_map_type edge_map){
-    
-    for(auto& ins:gra_ins){
-        for(auto& edge_name:ins.get_connect_edge()){
-            auto it = edge_map.find(edge_name);
-            int c = 1; // damn
-        }
-        Vertex A( std::get<1>(ins.get_instance_data()), std::get<0>(ins.get_instance_data()));
-        int a = 1;
-    }
-    int b = 1;
-};
-
-void add_mod_list_to_gra(
-    Graph result_gra, 
-    std::vector< Sub_Module_type >gra_mod, 
-    edge_map_type edge_map){
-
-    int a =1;
-};
 
 Graph read_graph_data(const Module& gra_data){
+
     Graph result_gra;
-
-    edge_map_type edge_map;
-        // creat the hash table
-    std::vector< Edge > t_e = gra_data.get_internal_edge_list();
-    for (auto& e : t_e ){ // can not : gra_. ...  idont know why
-        edge_map[e.get_name()] = &e; 
-    }
-
-    std::vector< Internal_Instance_type > gra_ins = gra_data.get_internal_instance();
-    add_ins_list_to_gra(result_gra, gra_ins, edge_map);
-    std::vector< Sub_Module_type > gra_mod = gra_data.get_submodule_list();
+    size_t level = 0;
+    Name_type empty_index = "C_906";
+    result_gra.read_graph_data(gra_data, &level, empty_index);
 
     return result_gra;
 };

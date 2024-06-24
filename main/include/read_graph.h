@@ -27,3 +27,6 @@ Graph_data read_file(const std::string& output_path);
 Graph_data read_file_1(const std::string& output_path);
 Graph read_graph_data(const Graph_data& gra_data_);
 Graph read_graph_data(const Module& gra_data);
+Graph read_graph_data(
+    const Module& gra_data, 
+    size_t* level, Name_type& mod_index);

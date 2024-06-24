@@ -37,10 +37,25 @@ module binary_full_adder(a,b,cin,sum,cout);
 
     half_adder half_adder_1 (.A(a), .B(b), .SUM(sum1), .COUT(cout1));
     half_adder half_adder_2 (.A(sum1), .B(cin), .SUM(sum2), .COUT(cout2));
-
-
-    
+    half_adder half_adder_3 (.A(a), .B(b), .SUM(sum1), .COUT(cout1));
 
 endmodule
 
+module bfa_add(aa,ba,cina,suma,couta);
+
+    input aa;
+    input ba;
+    input cina;
+    output suma;
+    output couta;
+
+    wire [1:0] NN;
+
+    sky130_fd_sc_hd__inv_1 U1 ( .A(aa),.Y(NN[0]) );
+    sky130_fd_sc_hd__inv_1 U2 ( .A(NN[0]),.Y(NN[1]) );
+
+    binary_full_adder binary_full_adder_1 (.a(NN[1]), .b(bb), .cin(cina), .sum(suma), .cout(couta));
+
+
+endmodule
 

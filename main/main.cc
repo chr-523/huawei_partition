@@ -150,8 +150,7 @@ void test1(std::string const& filename)
  
 int main(int argc, char** argv)
 {    
-    bool updata_output = false;
-    bool read_test = false;
+    bool updata_output = true;
 
     if(updata_output){
         std::ifstream infile;
@@ -180,10 +179,10 @@ int main(int argc, char** argv)
     
         Module temp_gra = temp_data_c906.module;
 
-    Vertex A;
     // Graph gra = read_graph_data(temp_data_c906);
     Graph gra = read_graph_data(temp_data_c906.module);
 
+    int a = 1; // IO degree is the last thing!!!!!!
 
         // +sub_module map
     // split sub module -> level/weight -> Algorithm 1 

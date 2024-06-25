@@ -41,7 +41,7 @@ module binary_full_adder(a,b,cin,sum,cout);
 
 endmodule
 
-module bfa_add(aa,ba,cina,suma,couta);
+module C906(aa,ba,cina,suma,couta);
 
     input aa;
     input ba;

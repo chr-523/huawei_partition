@@ -358,8 +358,6 @@ Graph_data read_file_1(const std::string& filename){
     return result;
 }
 
-
-
 Graph read_graph_data(const Module& gra_data){
 
     Graph result_gra;

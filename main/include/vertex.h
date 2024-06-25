@@ -71,7 +71,8 @@ private:
 struct Graph{
     // vertex's name, the data of vertex (use*)
     std::unordered_map< Name_type, Vertex* > vertexs;
-    std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> pin_temp;
+    std::unordered_map< Name_type, 
+        std::vector< std::tuple< Name_type, Edge_type, weight_type >>> pin_temp;
     // map of : vertexs' name and IO vector< adj_name, edge_weight >
     std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> graph_adjlist_plus;
     std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> graph_adjlist_minus;
@@ -95,7 +96,7 @@ struct Graph{
     }
 
     void add_ins_pin_temp(const Name_type& ins_name, 
-            const std::vector<std::pair<Name_type, weight_type>>& pin_info){
+            const std::vector<std::tuple<Name_type,Edge_type, weight_type>>& pin_info){
         pin_temp[ins_name] = pin_info;
     }
 

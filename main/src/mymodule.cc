@@ -197,7 +197,8 @@ void connect_mod_edge(
         auto it_ = edge_map.find(e_name); // find edge
         if ( it_ != edge_map.end() ){
             // if found, connect_instance
-            it_ -> second -> connect_instance(module_name); // connect T1/T2 to n1/n2_3
+            Module_index_type ex_mod_name = module_name + "*"; 
+            it_ -> second -> connect_instance(ex_mod_name); // connect T1/T2 to n1/n2_3
             it_ -> second -> ci_find_direction_mod(p_name, IO_ -> second);
         }
         else{

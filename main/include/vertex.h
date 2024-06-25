@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <iostream>
+
 #include "mymodule.h"
 
 using weight_type = float;
@@ -13,7 +15,7 @@ class Vertex
 {
 public:
     // name,clk -> other settings need to be set later
-    Vertex( const std::string& name = default_name, const bool& is_clk = false):
+    Vertex( const Name_type& name = default_name, const bool& is_clk = false):
         name(name), is_clk(is_clk)  {
             this -> weight = 1.0;
             this -> outDegree = 0;
@@ -29,7 +31,7 @@ public:
             outDegree(other.outDegree), inDegree(other.inDegree),
             comb_rank(other.comb_rank),reg_rank(other.reg_rank),reg_temp(other.reg_temp){};  
 
-    Vertex( const std::string& name, const bool& is_clk, const weight_type& weight,
+    Vertex( const Name_type& name, const bool& is_clk, const weight_type& weight,
         const degree_type& outDegree, const degree_type& inDegree):
         name(name), is_clk(is_clk),
         weight(weight),outDegree(outDegree), inDegree(inDegree){
@@ -39,7 +41,7 @@ public:
     };
     ~Vertex(){};
 public:
-    std::string get_name() const { return name; }
+    Name_type get_name() const { return name; }
     weight_type get_weight() const { return weight; }
     degree_type get_outDgree() const { return outDegree; }
         void add_outDgree(){ outDegree++ ; }
@@ -52,7 +54,7 @@ public:
     int get_reg_rank() const { return reg_rank; }
     int get_reg_temp() const { return reg_temp; }
 private:
-    std::string name;
+    Name_type name;
     weight_type weight;
     degree_type outDegree;
     degree_type inDegree;
@@ -68,12 +70,13 @@ private:
 
 struct Graph{
     // vertex's name, the data of vertex (use*)
-    std::unordered_map< std::string, Vertex* > vertexs;
+    std::unordered_map< Name_type, Vertex* > vertexs;
+    std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> pin_temp;
     // map of : vertexs' name and IO vector< adj_name, edge_weight >
-    std::unordered_map< std::string, std::vector< std::pair< std::string, weight_type >>> graph_adjlist_plus;
-    std::unordered_map< std::string, std::vector< std::pair< std::string, weight_type >>> graph_adjlist_minus;
+    std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> graph_adjlist_plus;
+    std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> graph_adjlist_minus;
     
-    // std::unordered_map<std::string,std::tuple<Vertex*, graph+,graph->>
+    // std::unordered_map<Name_type,std::tuple<Vertex*, graph+,graph->>
 
     Graph(){};
 
@@ -84,23 +87,28 @@ struct Graph{
         vertexs.clear();
     }
 
-    void addVertex(const Vertex& v_) {
+    void addVertex(const Vertex& v_){
         // Vertex* newVertex = new Vertex(v_);
-        // std::string name =  v_.get_name();
+        // Name_type name =  v_.get_name();
         // vertexs[name] = newVertex;
         vertexs[v_.get_name()] = new Vertex(v_);
     }
 
-    void add_adj_minus(const std::string& vertex_name, 
-            const std::vector<std::pair<std::string, weight_type>>& adj_info ){
+    void add_ins_pin_temp(const Name_type& ins_name, 
+            const std::vector<std::pair<Name_type, weight_type>>& pin_info){
+        pin_temp[ins_name] = pin_info;
+    }
+
+    void add_adj_minus(const Name_type& vertex_name, 
+            const std::vector<std::pair<Name_type, weight_type>>& adj_info ){
         graph_adjlist_minus[vertex_name] = adj_info;
     }
 
-    void add_adj_plus(const std::string& vertex_name, 
-            const std::vector<std::pair<std::string, weight_type>>& adj_info ){
+    void add_adj_plus(const Name_type& vertex_name, 
+            const std::vector<std::pair<Name_type, weight_type>>& adj_info ){
         graph_adjlist_plus[vertex_name] = adj_info;
     }
 
-    void read_graph_data(const Module& gra_data, size_t* level, Name_type& mod_index);
+    void read_graph_data(const Module& gra_data, Name_type& prefix, Name_type& mod_index);
 };
 

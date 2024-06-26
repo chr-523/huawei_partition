@@ -72,6 +72,13 @@ struct Graph{
     // vertex's name, the data of vertex (use*)
     std::unordered_map< Name_type, Vertex* > vertexs;
     size_t rec_level;
+    
+    std::unordered_map< Name_type, 
+        std::pair< Edge_index_type, Edge_type >> pin_outedge_temp; 
+    
+    std::unordered_map< Edge_index_type, 
+                                Module_index_type> outedge_pin_temp; 
+
     std::unordered_map< Name_type, 
         std::vector< std::tuple< Name_type, Edge >>> pin_ins_edge_temp;
     std::unordered_map< Name_type, 
@@ -103,24 +110,39 @@ struct Graph{
     //         const std::vector<std::tuple<Name_type,Edge_type, weight_type>>& pin_info){
     //     pin_temp[ins_name] = pin_info;
     // }
-    void clear_temp(){
+    void clear_temp_1(){
         ins_pin_edge_temp.clear();
         pin_ins_edge_temp.clear();
     }
-
-    void add_pin_ins_edge_temp(const Name_type& pin_name, 
-            const std::vector<std::tuple<Name_type, Edge>>& ins_edge_info){
-
-        pin_ins_edge_temp[pin_name] = ins_edge_info;
     
+    void clear_temp_2(){
+        pin_outedge_temp.clear();
+        outedge_pin_temp.clear();
     }
 
     void add_ins_pin_edge_temp(const Name_type& ins_name, 
             const std::vector<std::tuple<Name_type, Edge>>& edge_pin_info){
-
         ins_pin_edge_temp[ins_name] = edge_pin_info;
     
     }
+
+    void add_pin_outedge_temp(const Name_type& pin_name, 
+            const std::pair< Edge_index_type, Edge_type> out_edge){
+        pin_outedge_temp[pin_name] = out_edge;
+    }
+
+    void add_outedge_pin_temp(const Name_type& out_edge, 
+            const Module_index_type& pin_name){
+        outedge_pin_temp[out_edge] = pin_name;
+    }
+
+    void add_pin_ins_edge_temp(const Name_type& pin_name, 
+            const std::vector<std::tuple<Name_type, Edge>>& ins_edge_info){
+        pin_ins_edge_temp[pin_name] = ins_edge_info;
+    
+    }
+
+
 
     void add_adj_minus(const Name_type& vertex_name, 
             const std::vector<std::pair<Name_type, weight_type>>& adj_info ){
@@ -149,7 +171,7 @@ struct Graph{
         // 更新graph_adjlist_plus中的向量
         graph_adjlist_minus[vertex_name] = adj_list;
     }
-
+ 
     void add_adj_plus(const Name_type& vertex_name, 
             const std::vector<std::pair<Name_type, weight_type>>& adj_info ){
             // 检查键是否存在
@@ -163,7 +185,6 @@ struct Graph{
         graph_adjlist_plus[vertex_name] = adj_info;
         }
     }
-
     void add_adj_plus(const Name_type& vertex_name, 
             const std::pair<Name_type, weight_type>& single_adj_info) {
             // 检查键是否存在

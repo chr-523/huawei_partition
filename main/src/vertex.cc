@@ -21,17 +21,14 @@ void Graph::read_graph_data(
 
     std::vector< Sub_Module_type > sub_module_list = gra_data.get_submodule_list() ;
     bool is_sub_module_empty = sub_module_list.empty();
-    std::unordered_map< Name_type, std::pair<Name_type, Edge_type> > mod_to_ins;
-    std::unordered_map< Name_type, std::pair< Edge_index_type, Edge_type >> pin_outedge_map; 
-    
-    std::unordered_map< Edge_index_type, Module_index_type> outedge_pin_map; 
+
         // creat the hash table
 
     if( !is_sub_module_empty ){
         // creat the hash table
         // Recursively perform operations on all submodules
         for( auto& subModule : sub_module_list ){ //?
-            // pin_outedge_map[std::get<0>(subModule)] = &(std::get<1>(subModule));
+            // pin_outedge_temp[std::get<0>(subModule)] = &(std::get<1>(subModule));
 
 
             Module* sub_data = std::get<2>(subModule);            
@@ -62,32 +59,31 @@ void Graph::read_graph_data(
                     // std::unordered_map< Name_type, Edge_type > IO_type_map;
                     auto IO_ = sub_data -> get_IO_type_map().find(p_);
                     Edge_type t_ = IO_ -> second;
-                    pin_outedge_map[key] = {value,t_};
-                    // pin_outedge_map[key] = {value,t_,name};
+                    pin_outedge_temp[key] = {value,t_};
                     
                     if(t_ == INPUT){ 
                         Edge_index_type k_ = value + "_i";
-                        outedge_pin_map[k_] = key;
+                        outedge_pin_temp[k_] = key;
                     }
                     else{
                         Edge_index_type k_ = value + "_o";
-                        outedge_pin_map[k_] = key;
+                        outedge_pin_temp[k_] = key;
                     }
-                    int a =1;
+
                 }
             }
             rec_level--;
         }
     }
 
-    if(!is_sub_module_empty){
+    if( !is_sub_module_empty){
         for (const auto& i_p : this -> ins_pin_edge_temp ){
             // std::cout << pair.first << std::endl;
             Name_type this_ins_name = i_p.first;
             std::vector< std::tuple< Name_type, Edge >> i_p_temp = i_p.second;
             while(!i_p_temp.empty()){
                 Name_type pin_name = std::get<0>(i_p_temp.back());
-                auto out_edge = pin_outedge_map[pin_name];
+                auto out_edge = pin_outedge_temp[pin_name];
                 Edge_type edge_dire_for_ins = std::get<1>(i_p_temp.back()).get_type();
                 // for ins is output-> for edge is v2e
                 Direction this_ins_dire = edge_to_v;
@@ -141,7 +137,7 @@ void Graph::read_graph_data(
                                 //    Name_type subfix = "_i";
                                 // }
                                 Name_type check_pin_name = o_e_name + subfix;
-                                Name_type other_pin_name = outedge_pin_map[check_pin_name];
+                                Name_type other_pin_name = outedge_pin_temp[check_pin_name];
                                 Edge should_c_edge = std::get<1>(pin_ins_edge_temp[other_pin_name][0]);
                                 weight_type sce_weight = should_c_edge.get_weight();
                                 std::vector< Instance_index_type > c_ins =should_c_edge.get_adjacency_array();
@@ -192,14 +188,18 @@ void Graph::read_graph_data(
                     }
                 }
                 else{ // mod to io_pin 
+                    int a = 1;
                     // clear后加回temp hrere
-                    std::cout<<this_ins_name<<std::endl;
+                    // std::cout<<this_ins_name<<std::endl;
 
                 }
                 
             }
         }
-        clear_temp();
+        int a = 1;//hrer
+        clear_temp_1();
+        clear_temp_2();
+        int b = 1;
     }
     
 
@@ -288,27 +288,6 @@ void Graph::read_graph_data(
         add_adj_minus(all_name, adj_v2e);
         int a = 1;
 
-
-        // if(!is_sub_module_empty){ //--
-        //     for (const auto& pair : this -> pin_temp ){
-        //         // std::cout << pair.first << std::endl;
-        //         std::vector< std::tuple< Name_type, Edge_type, weight_type >> pair_temp = pair.second;
-        //         while(!pair_temp.empty()){
-        //             auto edge_data = pin_outedge_map.find(std::get<0>(pair_temp.front()));
-        //             pair_temp.pop_back();
-        //             if(edge_data != pin_outedge_map.end() ){
-        //                 auto v2m = edge_map.find(edge_data -> second.first);
-        //                 mod_to_ins[pair.first] = {v2m->second->get_name(),std::get<1>(pair_temp.front())};
-        //                 int a = 1;
-        //             }
-        //         }
-        //     }
-        // }
-
-
-        // if( !(pin_info.empty()) ){
-        //     add_ins_pin_temp(all_name, pin_info);
-        // }
 
         if( !(edge_pin_info.empty()) ){
             add_ins_pin_edge_temp(all_name, edge_pin_info);

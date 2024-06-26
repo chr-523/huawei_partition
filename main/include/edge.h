@@ -115,6 +115,7 @@ public: // function
     void ci_find_direction_mod(Name_type& pin_name, Edge_type e_type); 
 
 public: // get_function
+    void set_type(const Edge_type& s_type) { this->type=s_type; };
     Edge_type get_type() const { return type; };
     Name_type get_name() const { return edge_name; };
     Weight_type get_weight() const { return edge_weight; };

@@ -54,7 +54,7 @@ module C906(aa,ba,cina,suma,couta);
     sky130_fd_sc_hd__inv_1 U1 ( .A(aa),.Y(NN[0]) );
     sky130_fd_sc_hd__inv_1 U2 ( .A(NN[0]),.Y(NN[1]) );
 
-    binary_full_adder binary_full_adder_1 (.a(NN[1]), .b(bb), .cin(cina), .sum(suma), .cout(couta));
+    binary_full_adder binary_full_adder_1 (.a(NN[1]), .b(ba), .cin(cina), .sum(suma), .cout(couta));
 
 
 endmodule

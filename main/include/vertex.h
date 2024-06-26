@@ -71,8 +71,12 @@ private:
 struct Graph{
     // vertex's name, the data of vertex (use*)
     std::unordered_map< Name_type, Vertex* > vertexs;
+    size_t rec_level;
     std::unordered_map< Name_type, 
-        std::vector< std::tuple< Name_type, Edge_type, weight_type >>> pin_temp;
+        std::vector< std::tuple< Name_type, Edge >>> pin_ins_edge_temp;
+    std::unordered_map< Name_type, 
+        std::vector< std::tuple< Name_type, Edge >>> ins_pin_edge_temp;
+        
     // map of : vertexs' name and IO vector< adj_name, edge_weight >
     std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> graph_adjlist_plus;
     std::unordered_map< Name_type, std::vector< std::pair< Name_type, weight_type >>> graph_adjlist_minus;
@@ -95,20 +99,87 @@ struct Graph{
         vertexs[v_.get_name()] = new Vertex(v_);
     }
 
-    void add_ins_pin_temp(const Name_type& ins_name, 
-            const std::vector<std::tuple<Name_type,Edge_type, weight_type>>& pin_info){
-        pin_temp[ins_name] = pin_info;
+    // void add_ins_pin_temp(const Name_type& ins_name, 
+    //         const std::vector<std::tuple<Name_type,Edge_type, weight_type>>& pin_info){
+    //     pin_temp[ins_name] = pin_info;
+    // }
+    void clear_temp(){
+        ins_pin_edge_temp.clear();
+        pin_ins_edge_temp.clear();
+    }
+
+    void add_pin_ins_edge_temp(const Name_type& pin_name, 
+            const std::vector<std::tuple<Name_type, Edge>>& ins_edge_info){
+
+        pin_ins_edge_temp[pin_name] = ins_edge_info;
+    
+    }
+
+    void add_ins_pin_edge_temp(const Name_type& ins_name, 
+            const std::vector<std::tuple<Name_type, Edge>>& edge_pin_info){
+
+        ins_pin_edge_temp[ins_name] = edge_pin_info;
+    
     }
 
     void add_adj_minus(const Name_type& vertex_name, 
             const std::vector<std::pair<Name_type, weight_type>>& adj_info ){
-        graph_adjlist_minus[vertex_name] = adj_info;
+                        // 检查键是否存在
+        auto it = graph_adjlist_minus.find(vertex_name);
+        if (it != graph_adjlist_minus.end()) {
+            // 如果存在，将新的邻接信息添加到现有的向量中
+            it->second.insert(it->second.end(), adj_info.begin(), adj_info.end());
+        } else {
+            // 如果不存在，创建新的条目
+            graph_adjlist_minus[vertex_name] = adj_info;
+        }
+    }    
+    void add_adj_minus(const Name_type& vertex_name, 
+            const std::pair<Name_type, weight_type>& single_adj_info) {
+            // 检查键是否存在
+        auto it = graph_adjlist_minus.find(vertex_name);
+        std::vector<std::pair<Name_type, weight_type>> adj_list;
+        if (it != graph_adjlist_minus.end()) {
+            // 如果存在，获取现有的向量
+            adj_list = it->second;
+        } 
+        // 创建向量并添加单个邻接信息
+        adj_list.push_back(single_adj_info);
+
+        // 更新graph_adjlist_plus中的向量
+        graph_adjlist_minus[vertex_name] = adj_list;
     }
 
     void add_adj_plus(const Name_type& vertex_name, 
             const std::vector<std::pair<Name_type, weight_type>>& adj_info ){
+            // 检查键是否存在
+        auto it = graph_adjlist_plus.find(vertex_name);
+        if (it != graph_adjlist_plus.end()){
+            // 如果存在，将新的邻接信息添加到现有的向量中
+            it->second.insert(it->second.end(), adj_info.begin(), adj_info.end());
+        } 
+        else{
+        // 如果不存在，创建新的条目
         graph_adjlist_plus[vertex_name] = adj_info;
+        }
     }
+
+    void add_adj_plus(const Name_type& vertex_name, 
+            const std::pair<Name_type, weight_type>& single_adj_info) {
+            // 检查键是否存在
+        auto it = graph_adjlist_plus.find(vertex_name);
+        std::vector<std::pair<Name_type, weight_type>> adj_list;
+        if (it != graph_adjlist_plus.end()) {
+            // 如果存在，获取现有的向量
+            adj_list = it->second;
+        } 
+        // 创建向量并添加单个邻接信息
+        adj_list.push_back(single_adj_info);
+
+        // 更新graph_adjlist_plus中的向量
+        graph_adjlist_plus[vertex_name] = adj_list;
+    }
+    
 
     void read_graph_data(const Module& gra_data, Name_type& prefix, Name_type& mod_index);
 };

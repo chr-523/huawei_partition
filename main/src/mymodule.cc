@@ -223,6 +223,7 @@ void assign_2_edge(
 
     auto it_1 = edge_map.find(edge_name_1); // find edge
     auto it_2 = edge_map.find(edge_name_2); // find edge
+
     bool can_find_both_it1and2 = !(it_1 == edge_map.end() || it_2 == edge_map.end());
 
     if ( can_find_both_it1and2 ){// both e_1 and e_2 has found.
@@ -232,6 +233,23 @@ void assign_2_edge(
         std::vector< Direction > dd_1 = it_1 -> second -> get_adj_array_direction();
         std::vector< Direction > dd_2 = it_2 -> second -> get_adj_array_direction();
         // std::vector< Direction > dd_c;
+        Edge_type e_type_1 =  it_1 -> second -> get_type();
+        Edge_type e_type_2 =  it_2 -> second -> get_type();
+        
+        if(e_type_1 != NORMAL){
+            if(e_type_2 != NORMAL){ //e12both != nromal 
+                int a = 1;//io连一起了？
+            }
+            else{ //1==normal 2!=nromal
+                it_2->second->set_type(e_type_1);
+            }
+        }
+        else{ // e1 == nromal e2!=normal
+            // e12 both == nromal
+            // if(e_type_2 == NORMAL){ donothing }
+        
+            it_1->second->set_type(e_type_2);
+        }
 
         assert(ee_1.size() == dd_1.size());
         assert(ee_2.size() == dd_2.size());

@@ -361,6 +361,7 @@ Graph_data read_file_1(const std::string& filename){
 Graph read_graph_data(const Module& gra_data){
 
     Graph result_gra;
+    result_gra.rec_level = 0;
     Name_type empty_index = "C_906";
     result_gra.read_graph_data(gra_data, empty_index, empty_index);
 

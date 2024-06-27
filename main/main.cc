@@ -118,6 +118,7 @@ class VerilogDataBase : public VerilogParser::VerilogDataBase
          outfile << "assignment" << "(" << target_name << " " << t_low << " " << t_high  << ")";
          outfile <<  "(" << source_name<< " " << low << " " << high << ")" << std::endl;
 
+
     }
 
     virtual void verilog_modules_cbk(){}
@@ -135,24 +136,11 @@ void test1(std::string const& filename)
     VerilogDataBase db;
     VerilogParser::Driver driver (db);
     driver.parse_file(filename);
-    // if(0){ //test
-    //     int t_low = 0;
-    //     int t_high = 2;
-    //     Name_type pin_name = "pin1";
-    //     Edge_type t_type = INPUT;
-    //     (*gra).add_edge(pin_name, t_low, t_high, t_type); // & transmit
-
-    //     Name_type mod_name = "mod1";
-    //     std::pair<Name_type, Module*> t_submod = std::make_pair(mod_name,gra);
-    //     (*sub_map).insert(t_submod);
-    // }
 }
  
 int main(int argc, char** argv)
 {    
-    bool updata_output = true;
-
-    if(updata_output){
+    if(1){
         std::ifstream infile;
         std::string path = argv[1]; 
         boost::regex re("[^/]*$");
@@ -163,39 +151,8 @@ int main(int argc, char** argv)
         test1(path);
         infile.close();
     }
-    // the previous code is to generate/updata the output.txt
-    
+
     std::string file_path = "test/output.txt";
-
-    // Module C_906("test_name",default_module_weight);
-    // std::unordered_map< Name_type, Module* > sub_map;
-    // Graph_data temp_data_c906(C_906, sub_map);
-    // Graph_data temp_data(C_906, sub_map);
-
-    //old read_file_function
-    Graph_data temp_data_c906 = read_file_1(file_path);
-    //new read -> to be done
-    Graph_data temp_data = read_file(file_path);
-    
-        Module temp_gra = temp_data_c906.module;
-
-    // Graph gra = read_graph_data(temp_data_c906);
-    Graph gra = read_graph_data(temp_data_c906.module);
-
-    int a = 1; 
-    /**************************************/
-    /*Except for the IO diagram at the edge of the module, 
-    /*  everything else has been completed
-    /*
-    /*
-    /*
-    /*
-    /**************************************/
-        // +sub_module map
-    // split sub module -> level/weight -> Algorithm 1 
-        // many level-split graphs (STA Graphs)
-    // Algorithm 2  change to CSR (Endpoint Graphs)
-    // kahypar
 
 
 	return 0;

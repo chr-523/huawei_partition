@@ -83,114 +83,18 @@ CMakeFiles/huawei_.dir/main.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/main.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/main.cc -o CMakeFiles/huawei_.dir/main.cc.s
 
-CMakeFiles/huawei_.dir/src/edge.cc.o: CMakeFiles/huawei_.dir/flags.make
-CMakeFiles/huawei_.dir/src/edge.cc.o: ../src/edge.cc
-CMakeFiles/huawei_.dir/src/edge.cc.o: CMakeFiles/huawei_.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/huawei_.dir/src/edge.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/huawei_.dir/src/edge.cc.o -MF CMakeFiles/huawei_.dir/src/edge.cc.o.d -o CMakeFiles/huawei_.dir/src/edge.cc.o -c /home/chr_523/Work_all/huawei_partition/main/src/edge.cc
-
-CMakeFiles/huawei_.dir/src/edge.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/huawei_.dir/src/edge.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chr_523/Work_all/huawei_partition/main/src/edge.cc > CMakeFiles/huawei_.dir/src/edge.cc.i
-
-CMakeFiles/huawei_.dir/src/edge.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/src/edge.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/src/edge.cc -o CMakeFiles/huawei_.dir/src/edge.cc.s
-
-CMakeFiles/huawei_.dir/src/instance.cc.o: CMakeFiles/huawei_.dir/flags.make
-CMakeFiles/huawei_.dir/src/instance.cc.o: ../src/instance.cc
-CMakeFiles/huawei_.dir/src/instance.cc.o: CMakeFiles/huawei_.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/huawei_.dir/src/instance.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/huawei_.dir/src/instance.cc.o -MF CMakeFiles/huawei_.dir/src/instance.cc.o.d -o CMakeFiles/huawei_.dir/src/instance.cc.o -c /home/chr_523/Work_all/huawei_partition/main/src/instance.cc
-
-CMakeFiles/huawei_.dir/src/instance.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/huawei_.dir/src/instance.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chr_523/Work_all/huawei_partition/main/src/instance.cc > CMakeFiles/huawei_.dir/src/instance.cc.i
-
-CMakeFiles/huawei_.dir/src/instance.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/src/instance.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/src/instance.cc -o CMakeFiles/huawei_.dir/src/instance.cc.s
-
-CMakeFiles/huawei_.dir/src/mymodule.cc.o: CMakeFiles/huawei_.dir/flags.make
-CMakeFiles/huawei_.dir/src/mymodule.cc.o: ../src/mymodule.cc
-CMakeFiles/huawei_.dir/src/mymodule.cc.o: CMakeFiles/huawei_.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/huawei_.dir/src/mymodule.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/huawei_.dir/src/mymodule.cc.o -MF CMakeFiles/huawei_.dir/src/mymodule.cc.o.d -o CMakeFiles/huawei_.dir/src/mymodule.cc.o -c /home/chr_523/Work_all/huawei_partition/main/src/mymodule.cc
-
-CMakeFiles/huawei_.dir/src/mymodule.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/huawei_.dir/src/mymodule.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chr_523/Work_all/huawei_partition/main/src/mymodule.cc > CMakeFiles/huawei_.dir/src/mymodule.cc.i
-
-CMakeFiles/huawei_.dir/src/mymodule.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/src/mymodule.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/src/mymodule.cc -o CMakeFiles/huawei_.dir/src/mymodule.cc.s
-
-CMakeFiles/huawei_.dir/src/process.cc.o: CMakeFiles/huawei_.dir/flags.make
-CMakeFiles/huawei_.dir/src/process.cc.o: ../src/process.cc
-CMakeFiles/huawei_.dir/src/process.cc.o: CMakeFiles/huawei_.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/huawei_.dir/src/process.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/huawei_.dir/src/process.cc.o -MF CMakeFiles/huawei_.dir/src/process.cc.o.d -o CMakeFiles/huawei_.dir/src/process.cc.o -c /home/chr_523/Work_all/huawei_partition/main/src/process.cc
-
-CMakeFiles/huawei_.dir/src/process.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/huawei_.dir/src/process.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chr_523/Work_all/huawei_partition/main/src/process.cc > CMakeFiles/huawei_.dir/src/process.cc.i
-
-CMakeFiles/huawei_.dir/src/process.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/src/process.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/src/process.cc -o CMakeFiles/huawei_.dir/src/process.cc.s
-
-CMakeFiles/huawei_.dir/src/read_graph.cc.o: CMakeFiles/huawei_.dir/flags.make
-CMakeFiles/huawei_.dir/src/read_graph.cc.o: ../src/read_graph.cc
-CMakeFiles/huawei_.dir/src/read_graph.cc.o: CMakeFiles/huawei_.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/huawei_.dir/src/read_graph.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/huawei_.dir/src/read_graph.cc.o -MF CMakeFiles/huawei_.dir/src/read_graph.cc.o.d -o CMakeFiles/huawei_.dir/src/read_graph.cc.o -c /home/chr_523/Work_all/huawei_partition/main/src/read_graph.cc
-
-CMakeFiles/huawei_.dir/src/read_graph.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/huawei_.dir/src/read_graph.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chr_523/Work_all/huawei_partition/main/src/read_graph.cc > CMakeFiles/huawei_.dir/src/read_graph.cc.i
-
-CMakeFiles/huawei_.dir/src/read_graph.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/src/read_graph.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/src/read_graph.cc -o CMakeFiles/huawei_.dir/src/read_graph.cc.s
-
-CMakeFiles/huawei_.dir/src/vertex.cc.o: CMakeFiles/huawei_.dir/flags.make
-CMakeFiles/huawei_.dir/src/vertex.cc.o: ../src/vertex.cc
-CMakeFiles/huawei_.dir/src/vertex.cc.o: CMakeFiles/huawei_.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/huawei_.dir/src/vertex.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/huawei_.dir/src/vertex.cc.o -MF CMakeFiles/huawei_.dir/src/vertex.cc.o.d -o CMakeFiles/huawei_.dir/src/vertex.cc.o -c /home/chr_523/Work_all/huawei_partition/main/src/vertex.cc
-
-CMakeFiles/huawei_.dir/src/vertex.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/huawei_.dir/src/vertex.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chr_523/Work_all/huawei_partition/main/src/vertex.cc > CMakeFiles/huawei_.dir/src/vertex.cc.i
-
-CMakeFiles/huawei_.dir/src/vertex.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/huawei_.dir/src/vertex.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chr_523/Work_all/huawei_partition/main/src/vertex.cc -o CMakeFiles/huawei_.dir/src/vertex.cc.s
-
 # Object files for target huawei_
 huawei__OBJECTS = \
-"CMakeFiles/huawei_.dir/main.cc.o" \
-"CMakeFiles/huawei_.dir/src/edge.cc.o" \
-"CMakeFiles/huawei_.dir/src/instance.cc.o" \
-"CMakeFiles/huawei_.dir/src/mymodule.cc.o" \
-"CMakeFiles/huawei_.dir/src/process.cc.o" \
-"CMakeFiles/huawei_.dir/src/read_graph.cc.o" \
-"CMakeFiles/huawei_.dir/src/vertex.cc.o"
+"CMakeFiles/huawei_.dir/main.cc.o"
 
 # External object files for target huawei_
 huawei__EXTERNAL_OBJECTS =
 
 test_bison: CMakeFiles/huawei_.dir/main.cc.o
-test_bison: CMakeFiles/huawei_.dir/src/edge.cc.o
-test_bison: CMakeFiles/huawei_.dir/src/instance.cc.o
-test_bison: CMakeFiles/huawei_.dir/src/mymodule.cc.o
-test_bison: CMakeFiles/huawei_.dir/src/process.cc.o
-test_bison: CMakeFiles/huawei_.dir/src/read_graph.cc.o
-test_bison: CMakeFiles/huawei_.dir/src/vertex.cc.o
 test_bison: CMakeFiles/huawei_.dir/build.make
 test_bison: paser/libverilogparser.a
 test_bison: CMakeFiles/huawei_.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable test_bison"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test_bison"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/huawei_.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

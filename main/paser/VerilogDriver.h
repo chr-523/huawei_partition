@@ -1,9 +1,8 @@
-#include "mymodule.h"
+
 #ifndef VERILOGPARSER_DRIVER_H
 #define VERILOGPARSER_DRIVER_H
 
 #include "VerilogDataBase.h"
-#include "mymodule.h"
 
 namespace VerilogParser {
 

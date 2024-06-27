@@ -31,11 +31,13 @@ include_directories(include)
 # 添加子目录parser
 add_subdirectory(paser)
 
+
 # 定义源文件变量
 file(GLOB_RECURSE SRC_FILES "src/*.cc")
 
+# 定义源文件变量
 set(SRC_FILE main.cc ${SRC_FILES})
-
+# 可能还需要添加parser目录生成的对象文件或其他源文件
 # 链接parser库
 add_executable(huawei_ ${SRC_FILE})
 

@@ -1,11 +1,6 @@
 #pragma once
 
-#include "edge.h"
-#include "instance.h"
-#include "mymodule.h"
-#include "read_graph.h"
-#include "vertex.h"
-#include "process.h"
+
 
 #include <iostream>
 #include <fstream>
@@ -16,7 +11,7 @@
 #include <set>
 #include <string>
 #include <algorithm>
-#include <paser/VerilogDriver.h>
+#include "./paser/VerilogDriver.h"
 #include <boost/regex.hpp>
 #include <unordered_map>
 

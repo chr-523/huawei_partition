@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 class VerilogDataBase : public VerilogParser::VerilogDataBase
 {
 // std::ofstream outfile("/home/wy/contest/Extract_fanout/test/output/output.txt", std::ios::out);
@@ -136,6 +135,17 @@ void test1(std::string const& filename)
     VerilogDataBase db;
     VerilogParser::Driver driver (db);
     driver.parse_file(filename);
+    // if(0){ //test
+    //     int t_low = 0;
+    //     int t_high = 2;
+    //     Name_type pin_name = "pin1";
+    //     Edge_type t_type = INPUT;
+    //     (*gra).add_edge(pin_name, t_low, t_high, t_type); // & transmit
+
+    //     Name_type mod_name = "mod1";
+    //     std::pair<Name_type, Module*> t_submod = std::make_pair(mod_name,gra);
+    //     (*sub_map).insert(t_submod);
+    // }
 }
  
 int main(int argc, char** argv)
@@ -153,6 +163,18 @@ int main(int argc, char** argv)
     }
 
     std::string file_path = "test/output.txt";
+    Module C_906("test_name",default_module_weight);
+
+    std::unordered_map< Name_type, Module* > sub_map;
+	// test1(path, &C_906, &sub_map);
+    // C_906 = read_file_1(file_path);
+    Graph_data C_data = read_file(file_path);
+    int a=1;
+        // +sub_module map
+    // split sub module -> level/weight -> Algorithm 1 
+        // many level-split graphs (STA Graphs)
+    // Algorithm 2  change to CSR (Endpoint Graphs)
+    // kahypar
 
 
 	return 0;

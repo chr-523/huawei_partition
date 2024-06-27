@@ -98,12 +98,12 @@ paser/clean: paser/CMakeFiles/verilogparser.dir/clean
 CMakeFiles/huawei_.dir/all: paser/CMakeFiles/verilogparser.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=1,2 "Built target huawei_"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target huawei_"
 .PHONY : CMakeFiles/huawei_.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/huawei_.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles 14
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/huawei_.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles 0
 .PHONY : CMakeFiles/huawei_.dir/rule
@@ -124,7 +124,7 @@ CMakeFiles/huawei_.dir/clean:
 paser/CMakeFiles/verilogparser.dir/all:
 	$(MAKE) $(MAKESILENT) -f paser/CMakeFiles/verilogparser.dir/build.make paser/CMakeFiles/verilogparser.dir/depend
 	$(MAKE) $(MAKESILENT) -f paser/CMakeFiles/verilogparser.dir/build.make paser/CMakeFiles/verilogparser.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10 "Built target verilogparser"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/chr_523/Work_all/huawei_partition/main/build/CMakeFiles --progress-num=7,8,9,10,11,12,13,14 "Built target verilogparser"
 .PHONY : paser/CMakeFiles/verilogparser.dir/all
 
 # Build rule for subdir invocation for target.

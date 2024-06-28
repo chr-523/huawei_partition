@@ -1,11 +1,4 @@
-#include <vector>
-#include <list>
-#include <deque>
-#include <queue>
-#include <tuple> // to be choosen
-#include <unordered_set>
-#include <string>
-#include <map>
+#include "i_e_all.h"
 
 #define default_name "default"
 #define default_edge_weight 1.0
@@ -69,8 +62,10 @@ public: // initialization
                 // this - > adjacency_array = NULL
                 };
     
-    Edge(const Edge& other): edge_name(other.edge_name), range(other.range), 
-        type(other.type), adjacency_array(other.adjacency_array){}
+    Edge(const Edge& other): edge_name(other.edge_name), 
+        range(other.range), type(other.type), 
+        adjacency_array(other.adjacency_array),
+        adjacency_array_direction(other.adjacency_array_direction){}
 
     Edge& operator=(const Edge& other) {
         if (this != &other) { // Prevent self assigmant
@@ -78,6 +73,8 @@ public: // initialization
             range = other.range; // is this no bug?
             type = other.type;
             adjacency_array = other.adjacency_array;
+            adjacency_array_direction = 
+                    other.adjacency_array_direction;
         }
         return *this;
     }
@@ -89,6 +86,7 @@ public: // function
     //connect signal edge to the instance
     void connect_instance(Instance& instance);
     void connect_instance(Name_type& instance_name);
+    void connect_instance_direction(Direction& direc);
 
 public: // get_function
     Edge_type get_type() const { return type; };
@@ -96,6 +94,7 @@ public: // get_function
     Range get_range() const { return range; }
     // std::array<Edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
+    std::vector< Direction > get_adjacency_array_direction() const { return adjacency_array_direction; }
 protected:
 private:// data
     
@@ -104,6 +103,7 @@ private:// data
     Range range; // [range.low (and range.high) < 0] means edge is signal
     // std::array<Edge_offset_type,2> offset_array;
     std::vector< Instance_index_type > adjacency_array; //what instance it connect
+    std::vector< Direction > adjacency_array_direction; //what instance it connect
 };
 
 #endif

@@ -9,18 +9,13 @@
 #include "mymodule.h"
 #include "instance.h"
 
-struct Graph_data{
-    Module module;
-    std::unordered_map<Name_type, Module*> submodule_map;
-    Graph_data(
-        Module gra, std::unordered_map<Name_type, Module*> s_m):
-            module(gra), submodule_map(s_m) {}
-};
-
 bool is_clk_module(const Name_type& module_name);
 
 bool is_instance_type(const Name_type& instance_name);
 bool is_ins_test(const Name_type& instance_name);
+Direction find_mod_pin_direction(Name_type& pin_name,
+        Name_type& sub_module_name,
+        std::unordered_map<Name_type,Module*> sub_map);
 
 Graph_data read_file(const std::string& output_path);
 Module read_file_1(const std::string& output_path);

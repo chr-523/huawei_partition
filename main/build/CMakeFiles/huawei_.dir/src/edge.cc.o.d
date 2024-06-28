@@ -2,6 +2,7 @@ CMakeFiles/huawei_.dir/src/edge.cc.o: \
  /home/chr_523/Work_all/huawei_partition/main/src/edge.cc \
  /usr/include/stdc-predef.h \
  /home/chr_523/Work_all/huawei_partition/main/include/edge.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/i_e_all.h \
  /usr/include/c++/11/vector /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

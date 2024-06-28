@@ -205,6 +205,7 @@ CMakeFiles/huawei_.dir/src/process.cc.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc \
  /home/chr_523/Work_all/huawei_partition/main/include/edge.h \
+ /home/chr_523/Work_all/huawei_partition/main/include/i_e_all.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/list.tcc /usr/include/c++/11/queue \
  /usr/include/c++/11/bits/stl_queue.h /usr/include/c++/11/unordered_set \

@@ -17,3 +17,10 @@ void Edge::connect_instance(Name_type& instance_name){
     //  adj.pushback("T1")
     this -> adjacency_array.push_back(instance_name); 
 }
+
+void Edge::connect_instance_direction(Direction& direc){
+    // instance => tu_test_ins, T1, A(n5->[-1: -1])
+    //  adj.pushback("T1")
+    this -> adjacency_array_direction.push_back(direc); 
+}
+

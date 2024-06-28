@@ -1,6 +1,10 @@
 #include "edge.h"
 #include "instance.h"
 
+void Instance::add_edge_direction(Direction& direc){
+    connect_edge_direction.push_back(direc);
+}
+
 void Instance::connect_edge(Edge& edge){
     // instance => tu_test_ins, T1, A(n5->[-1:-1])
     // get the edge's index(= name) and push into edgelist

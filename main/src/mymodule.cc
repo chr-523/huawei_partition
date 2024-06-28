@@ -4,6 +4,38 @@
 #include <algorithm>
 #include <unordered_set>
 
+Direction fins_ins_pin_direction(Name_type &pin_name){
+
+    std::unordered_set<std::string> input_table = {   
+        "A", "A0", "A1", "A2", "A3", "A4", "A_N",
+        "B", "B1", "B2", "B_N", "C", "C1", "C2",
+        "D", "RESET_B", "CLK", "S","HI"
+    }; // these two table should be improved
+    std::unordered_set<std::string> output_table = {   
+        "X", "Y", "Q","LO",//也许需要补一下
+        "?",
+    };
+    // (.find() != end) means pin_name can be found in input_table
+    //      means pin_name -> input
+    // for ins, pin_name is input means edge to v
+    bool is_e2v = input_table.find(pin_name) != input_table.end();
+    bool is_v2e = output_table.find(pin_name) != output_table.end();
+
+    if (is_v2e){
+        return v2e;
+    }
+    else if(is_e2v){
+        return e2v;
+    }
+    else{ // can not find In/Out-put
+        std::cerr << "New pin name: " << pin_name << " should be add in table." << std::endl;
+    }
+    std::cerr << "Something wrong with the name:" << pin_name << "." << std::endl;
+
+    return Direction();
+}
+
+
 
 //add internal edge -> pin and net
 //((Name_type& name, int& low, int& high, Edge_type& type))
@@ -69,14 +101,16 @@ void Module::add_instance(Name_type& type_name, Instance_index_type& name){
 void connect_ins_edge(
     Module& gra, 
     Instance_index_type& instance_name, 
+    Name_type& pin_name,
     Name_type& edge_name,
     Range& e_range){
     Name_type e_name;
+    Direction direc;
         // creat the hash table
     // for (auto& e : gra.internal_edge_list){
     //     edge_map[e.get_name()] = &e; 
     // }
-
+    
     if(e_range.low < 0 && e_range.high < 0){
             // which means .A(n1->[-2147483648:-2147483648])
         e_name = edge_name;
@@ -87,20 +121,26 @@ void connect_ins_edge(
 
     // auto it = edge_map.find(e_name);
     auto it_ = gra.E_map.find(e_name);
+
+    direc = fins_ins_pin_direction(pin_name);
+
     gra.internal_edge_list[it_ -> second].connect_instance(instance_name);
+    gra.internal_edge_list[it_ -> second].connect_instance_direction(direc);
+    gra.internal_instance.back().add_edge_direction(direc);
     int  a = 1;
     // it -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
 }
 
-size_t connect_mod_edge(
+int connect_mod_edge(
     Module& gra, 
     Instance_index_type& mod_name, 
     Name_type& edge_name,
     Range& e_range,
     Name_type& pin_name,
-    size_t& subfix_counter){
+    size_t& subfix_counter,
+    Direction& e_m_type){
 
-    size_t is_normal =0;
+    int is_normal =-1;
     Name_type e_name;
 
     if(e_range.low < 0 && e_range.high < 0){
@@ -115,17 +155,23 @@ size_t connect_mod_edge(
     size_t index = it -> second;
     if(gra.internal_edge_list[index].get_type()!=Multi){
         gra.internal_edge_list[index].connect_instance(mod_name);
+        gra.internal_edge_list[index].connect_instance_direction(e_m_type);
     }
     else{
         int o_high= gra.internal_edge_list[index].get_range().high;
+        
         int o_low= gra.internal_edge_list[index].get_range().low;
+
+        int t = subfix_counter;
 
         for(int i = o_low; i <= o_high; ++i) {
             e_name = edge_name + '_' + std::to_string(i);
-            Name_type p_name = pin_name + '_' + std::to_string(i+subfix_counter);
+            Name_type p_name = pin_name + '_' + std::to_string(t);
+            t++;
             auto it_ = gra.E_map.find(e_name);
             size_t index_ = it_ -> second;
             gra.internal_edge_list[index_].connect_instance(mod_name);
+            gra.internal_edge_list[index].connect_instance_direction(e_m_type);
             gra.add_submodule_pin_edge(p_name);
             gra.add_submodule_pin_edge(e_name);
         }
@@ -137,13 +183,14 @@ size_t connect_mod_edge(
 }
 
 
-size_t connect_mod_edge(
+int connect_mod_edge(
     Module& gra, 
     Instance_index_type& mod_name, 
     Name_type& edge_name,
-    Range& e_range){
+    Range& e_range,
+    Direction& e_m_type){
 
-    size_t is_normal =0;
+    int is_normal =-1;
     Name_type e_name;
 
 
@@ -158,7 +205,7 @@ size_t connect_mod_edge(
     auto it = gra.E_map.find(e_name);
 
     gra.internal_edge_list[it->second].connect_instance(mod_name); // connect T1/T2 to n1/n2_3
-
+    gra.internal_edge_list[it->second].connect_instance_direction(e_m_type);
     return is_normal;
 
 }
@@ -196,7 +243,8 @@ void connect_ins_edge(
             e_name = e_name_temp + '_' + std::to_string(e_range.high);
         }
 
-        this_instance -> connect_edge(e_name); // connect n1/n2_3 to T1/T2
+        this_instance -> connect_edge(e_name); // connect n1/n2_3 to T1/T2 //int a = 1;
+
         auto it_ = gra.E_map.find(e_name); // find edge
         if (it_ != gra.E_map.end()) {
             // if found, connect_instance

@@ -54,6 +54,22 @@ std::vector<std::string> get_group_edge_data(const std::string& edge_data) {
 
 }
 
+Direction find_mod_pin_direction(Name_type& pin_name,
+        Name_type& sub_module_name,
+        std::unordered_map<Name_type,Module*> sub_map){
+    Direction result;
+    auto it = sub_map.find(sub_module_name);
+    auto it_ = it->second->IO_map.find(pin_name);
+    //若pin是input，这条线就是输入给mod，就是e2v
+    if(it_ -> second.first == INPUT){ 
+        result = e2v;
+    }
+    else{
+        result = v2e;
+    }
+    return result;
+
+    }
 
 std::vector<std::string> get_edge_data(const std::string& edge_data) {
     std::vector<std::string> result;
@@ -189,6 +205,7 @@ Graph_data read_file(const std::string& output_path){
             Instance_index_type pin_name;
             Name_type pin_name_subfix;
             size_t subfix_counter=0;
+            bool should_subfix=true;
             bool meet_group=false;
             bool need_right_bracket=false;
             bool is_this_line_ins;
@@ -233,9 +250,9 @@ Graph_data read_file(const std::string& output_path){
                     }
                     else{
                         // std::cout << data;
-                        if(!meet_group){
+                        if(!meet_group){ // normal pin
                             if(ins_data_counter%2!=0){ // pin name
-                                pin_name =  data;
+                                pin_name = data;
                             }
                             else{ // edge data
                             std::vector<std::string> edge_data = get_edge_data(data);
@@ -247,10 +264,14 @@ Graph_data read_file(const std::string& output_path){
                             if(is_this_line_ins){
                                 gra.add_back_ins_edge(edge_name);
                                 // gra.internal_instance.back().connect_edge_list.push_back(edge_name);
-                                connect_ins_edge(gra,ins_name,edge_name,r_);
+                                // 边内对ins的方向判断在函数内部 mod的在外部
+                                connect_ins_edge(gra,ins_name,pin_name,edge_name,r_);
                             }
                             else{
-                                connect_mod_edge(gra,ins_name,edge_name,r_);
+                                Direction d_ = find_mod_pin_direction(pin_name,ins_type_name,sub_map);
+                                // find
+                                
+                                connect_mod_edge(gra,ins_name,edge_name,r_,d_);
                                 gra.add_submodule_pin_edge(pin_name);
                                 gra.add_submodule_pin_edge(edge_name);
                             }
@@ -264,6 +285,7 @@ Graph_data read_file(const std::string& output_path){
                     int high;
                     bool to_h=false;
                     char ch;
+                    Direction d_ = find_mod_pin_direction(pin_name,ins_type_name,sub_map);
                     while(file.get(ch)){
                         int a =1;
                         if(ch!='}'){ 
@@ -280,7 +302,10 @@ Graph_data read_file(const std::string& output_path){
                             Name_type p_name;
                             if(low<0 and high <0){
                                 e_name = e_name_temp;
-                                if(subfix_counter!=0){
+                                // if(pin_name == "A"){
+                                //     int a = 1;
+                                // }
+                                if(should_subfix and subfix_counter!=0){
                                     p_name = pin_name +"_"+std::to_string(subfix_counter);
                                 }
                                 else{
@@ -290,14 +315,14 @@ Graph_data read_file(const std::string& output_path){
                                 //显示是单线{a}，但外部wire [3:0]a也有可能 
                                 //t_不是0就有问题
                                 if(pin_name == "SUM"){
-                                    int a =1;
+                                    int a = 1;
                                 }
-                                size_t t_ = connect_mod_edge(gra,ins_name,e_name,r_,p_name,subfix_counter);
-                                if(t_ !=0){
+                                int t_ = connect_mod_edge(gra,ins_name,e_name,r_,p_name,subfix_counter,d_);
+                                if(t_ !=-1){ // 不是 -1  不正常 是单线变多线
                                     subfix_counter+=t_;
-                                    int a =1;
+                                    should_subfix = true;
                                 }
-                                else{
+                                else{  //是-  正常 不是单线变多线
                                     gra.add_submodule_pin_edge(p_name);
                                     gra.add_submodule_pin_edge(e_name);
                                     // std::cout<< "p to e:"<<p_name <<" to " <<e_name <<std::endl;
@@ -309,7 +334,7 @@ Graph_data read_file(const std::string& output_path){
                                 p_name = pin_name +"_"+std::to_string(subfix_counter);
                                 subfix_counter++;
                                 Range r_(-1,-1);
-                                connect_mod_edge(gra,ins_name,e_name,r_);
+                                connect_mod_edge(gra,ins_name,e_name,r_,d_);
                                 gra.add_submodule_pin_edge(p_name);
                                 gra.add_submodule_pin_edge(e_name);
                             }
@@ -322,7 +347,7 @@ Graph_data read_file(const std::string& output_path){
                                     p_name = pin_name +"_"+std::to_string(subfix_counter);
                                     subfix_counter++;
                                     Range r_(-1,-1);
-                                    connect_mod_edge(gra,ins_name,e_name,r_);
+                                    connect_mod_edge(gra,ins_name,e_name,r_,d_);
                                     gra.add_submodule_pin_edge(p_name);
                                     gra.add_submodule_pin_edge(e_name);
                                     // std::cout<< "p to e:"<<p_name <<" to "<<e_name <<std::endl;
@@ -348,7 +373,7 @@ Graph_data read_file(const std::string& output_path){
     return result;
 
 }
-//read_net
+/*  old //read_net
 Module read_file_1(const std::string& filename){
 
     Module gra;
@@ -580,3 +605,4 @@ Module read_file_1(const std::string& filename){
     file.close();
     return gra;
 }
+*/

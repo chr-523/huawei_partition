@@ -32,7 +32,10 @@ include_directories(include)
 add_subdirectory(paser)
 
 # 定义源文件变量
-set(SRC_FILE main.cc src/edge.cc src/mymodule.cc src/process.cc src/instance.cc)
+file(GLOB_RECURSE SRC_FILES "src/*.cc")
+
+set(SRC_FILE main.cc ${SRC_FILES})
+
     # 可能还需要添加parser目录生成的对象文件或其他源文件
 # 链接parser库
 add_executable(huawei_ ${SRC_FILE})

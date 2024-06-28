@@ -84,6 +84,9 @@
         "__locale": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "__string": "cpp"
-    }
+        "__string": "cpp",
+        "version": "cpp",
+        "pp": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

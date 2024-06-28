@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/huawei_.dir/src/mymodule.cc.o.d"
   "CMakeFiles/huawei_.dir/src/process.cc.o"
   "CMakeFiles/huawei_.dir/src/process.cc.o.d"
+  "CMakeFiles/huawei_.dir/src/vertex.cc.o"
+  "CMakeFiles/huawei_.dir/src/vertex.cc.o.d"
   "test_bison"
   "test_bison.pdb"
 )

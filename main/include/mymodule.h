@@ -14,7 +14,7 @@
 
 #define default_name "default"
 #define default_module_weight 1.0
-using weight_type = float;
+using weight_type = int;
 using Name_type = std::string;
 using Module_index_type  = std::string;
 using Instance_index_type  = std::string;
@@ -91,22 +91,25 @@ public: //function
         std::queue< Range >& range_queue);
     friend void connect_ins_edge(
         Module& gra,
+        Name_type& pin_name,
         Instance_index_type& instance_name, 
         Name_type& edge_name, 
         Range& range);
 
-    friend size_t connect_mod_edge(
+    friend int connect_mod_edge(
         Module& gra,//返回值用来调整 a{a}+ wire[3:0]a的情况
         Instance_index_type& mode_name, 
         Name_type& edge_name, 
         Range& range,
         Name_type& pin_name,
-        size_t& subfix_counter);
-    friend size_t connect_mod_edge(
+        size_t& subfix_counter,
+        Direction& e_m_type);
+    friend int connect_mod_edge(
         Module& gra,//返回值用来调整 a{a}+ wire[3:0]a的情况
         Instance_index_type& mode_name, 
         Name_type& edge_name, 
-        Range& range);
+        Range& range,
+        Direction& e_m_type);
 
     void add_back_ins_edge(const Name_type& e_){
         // Internal_Instance_type = Instance;
@@ -160,4 +163,14 @@ private:
     std::vector< Edge > internal_edge_list; 
 };
 
+
+struct Graph_data{
+    Module module;
+    std::unordered_map<Name_type, Module*> submodule_map;
+    Graph_data(
+        Module gra, std::unordered_map<Name_type, Module*> s_m):
+            module(gra), submodule_map(s_m) {}
+};
+
+Direction fins_ins_pin_direction(Name_type &pin_name);
 #endif

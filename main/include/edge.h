@@ -87,7 +87,7 @@ public: // function
     void connect_instance(Instance& instance);
     void connect_instance(Name_type& instance_name);
     void connect_instance_direction(Direction& direc);
-
+    void add_assign_edge(Name_type& e_name);
 public: // get_function
     Edge_type get_type() const { return type; };
     Name_type get_name() const { return edge_name; };
@@ -95,9 +95,10 @@ public: // get_function
     // std::array<Edge_offset_type,2> get_offset_array() const { return offset_array; }
     std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
     std::vector< Direction > get_adjacency_array_direction() const { return adjacency_array_direction; }
+    std::vector<Edge_index_type> get_assign_list() const { return assign_list; }
 protected:
 private:// data
-    
+    std::vector<Edge_index_type> assign_list;
     Edge_type type;    //input, output or normal
     Name_type edge_name; // pin/net's name + '_' + edge_index  // maybe assign -> (list name)
     Range range; // [range.low (and range.high) < 0] means edge is signal

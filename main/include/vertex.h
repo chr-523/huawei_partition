@@ -19,31 +19,36 @@ using degree_type = size_t;
 class Vertex
 {
 public:
-    // name,clk -> other settings need to be set later
+
     Vertex( const Name_type& name = default_name, const size_t& index = 0,
-            const bool& is_clk = false):
+            const bool& is_clk = false)://wucanshu
             name(name), index(index), is_clk(is_clk){
             this -> weight = 1;
             this -> outDegree = 0;
             this -> inDegree = 0;
             this -> comb_rank = 0;
+            this -> comb_rank_temp = 0;
             this -> reg_rank = 0;
             this -> reg_temp = 0;
     }
 
     // name,clk,w_v,out,int
     Vertex( const Vertex& other):
-            name(other.name), index(other.index),
+            name(other.name), 
             is_clk(other.is_clk), weight(other.weight),
+            index(other.index),
             outDegree(other.outDegree), inDegree(other.inDegree),
-            comb_rank(other.comb_rank), reg_rank(other.reg_rank), 
+            comb_rank(other.comb_rank), comb_rank_temp(other.comb_rank_temp), reg_rank(other.reg_rank), 
             reg_temp(other.reg_temp){};  
 
     Vertex( const Name_type& name, const bool& is_clk, const weight_type& weight,
+        const size_t& index,
         const degree_type& outDegree, const degree_type& inDegree):
-        name(name), is_clk(is_clk),
-        weight(weight),outDegree(outDegree), inDegree(inDegree){
+        name(name), is_clk(is_clk), weight(weight), 
+        index(index),
+        outDegree(outDegree), inDegree(inDegree){
         this -> comb_rank = 0;
+        this -> comb_rank_temp = 0;
         this -> reg_rank = 0;
         this -> reg_temp = 0;
     };
@@ -52,7 +57,7 @@ public:/**tu**/
     void add_inDgree(){ inDegree++ ; }
     void set_inDgree( int I_ ){ inDegree = I_ ; }
     void add_outDgree(){ outDegree++ ; }
-    void set_outDgree( int O_ ){ outDegree = O_ ; }
+    void set_outDgree( int O_ ){ outDegree = O_ ; } 
 
 public:
 
@@ -97,16 +102,21 @@ struct Graph{
     std::unordered_map< Name_type, Vertex* > vertexs; 
     std::unordered_map<std::string, std::vector<std::pair<std::string, int>>> GraphAdjList_Plus;
     std::unordered_map<std::string, std::vector<std::pair<std::string, int>>> GraphAdjList_Minus;
+    
+    std::string prefix;
+    std::string this_submodule_index;
+    std::unordered_map<std::string, std::vector<Name_type>> ins_to_mod_pin_map;
+    std::unordered_map<std::string, std::vector<Name_type>> mod_pin_to_ins_map;
+    // std::unordered_map<std::string, std::vector<<std::string, int>>>> GraphAdjList_Minus;
 
-    // std::unordered_map<  >
+    // std::unordered_map< std::string >
 
     Graph(){};
-
     ~Graph(){
-        for (auto& pair : vertexs) {
-            delete pair.second;
-        }
-        vertexs.clear();
+        // for (auto& pair : vertexs) {
+        //     delete pair.second;
+        // }
+        // vertexs.clear();
     }
 
     /* old
@@ -248,9 +258,26 @@ struct Graph{
 
 };
 
-Graph module_to_graph(Graph_data& gra_data);
+Graph module_to_graph_old(Graph_data& gra_data);
 
-Graph module_to_graph(Graph_data& gra_data,int &temp_add);
+
+
+
+void module_to_graph_old(
+        Graph& result, Module& gra,
+        std::unordered_map<Name_type, Module*> sub_map,
+        int& temp_add);
+
+
+
+
+
+
+
+
+
+
+
 
 /**yours**/
 struct GarphData

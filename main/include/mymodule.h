@@ -21,12 +21,7 @@ using Instance_index_type  = std::string;
 using Edge_index_type = std::string;
 class Module;
 using Internal_Instance_type = Instance;
-// using Internal_Instance_type =     
-// std::tuple<
-// Instance_index_type, 
-// std::vector< std::tuple<    
-//         Edge_index_type,Edge_index_type > >, 
-// Instance>;
+
 using Sub_Module_type = std::tuple< Module_index_type, Module*>;
 
 #ifndef GRAPH_H
@@ -61,7 +56,8 @@ public:
           internal_edge_list(other.internal_edge_list),
           assign_edge_list(other.assign_edge_list),
           submodule_pin_edge(other.submodule_pin_edge),
-          IO_map(other.IO_map),E_map(other.E_map),Ins_map(other.Ins_map){};
+          IO_map(other.IO_map),E_map(other.E_map),
+          Ins_map(other.Ins_map),Submodule_map(other.Submodule_map){};
     // operator = 
     Module& operator=(const Module& other){
         if (this != &other) { // Prevent self assigment
@@ -75,6 +71,7 @@ public:
             IO_map = other.IO_map;
             E_map = other.E_map;
             Ins_map = other.Ins_map;
+            Submodule_map = other.Submodule_map;
         }
         return *this;
     }
@@ -85,6 +82,7 @@ public: //function
     void add_edge(Name_type& name, Range& range,        Edge_type& type); // add net/pin
     void add_instance(Name_type& type_name, Instance_index_type& name); // add instance without connection 
     // connect instance and edge
+
     friend void connect_ins_edge(
         Module& gra, Instance_index_type& name, 
         std::queue< Name_type >& edge_name_queue, 
@@ -134,8 +132,10 @@ public: //function about the data
         this -> IO_map.clear();
         this -> E_map.clear();
         this -> Ins_map.clear();
+        this -> Submodule_map.clear();
     }
     void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; }
+    void assign_two_edge(Name_type& e_1, Name_type& e_2);
     Name_type get_module_name() const { return module_name; };
     weight_type get_module_weight() const { return module_weight; };
     std::vector< Internal_Instance_type > get_instance_list() const { return internal_instance; };
@@ -146,6 +146,7 @@ public: //function about the data
     std::vector<std::pair<Edge_index_type,Edge_index_type>> assign_edge_list;
     std::unordered_map<Edge_index_type,std::pair<Edge_type,Range>> IO_map;
     std::unordered_map< Instance_index_type, size_t > Ins_map; 
+    std::unordered_map< Module_index_type, size_t > Submodule_map; 
     std::unordered_map< Edge_index_type, size_t > E_map;
     
 protected:
@@ -157,7 +158,7 @@ private:
     weight_type module_weight;
 
     std::vector< Internal_Instance_type > internal_instance;
-
+    // Sub_Module_type = std::tuple<Module_index_type, Module *>
     std::vector< Sub_Module_type > submodule; 
     std::vector<std::vector< Edge_index_type>> submodule_pin_edge;
     std::vector< Edge > internal_edge_list; 

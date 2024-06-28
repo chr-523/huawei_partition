@@ -20,6 +20,13 @@ bool is_instance_type(const Name_type& instance_name){
     return (name_prefix_1 == instance_prefix_1) || (name_prefix_2 == instance_prefix_2);
 }
 
+bool is_aq_sps(const Name_type& instance_name){
+    Name_type instance_prefix_2 = "aq_spsram_";
+
+    Name_type name_prefix_2 = instance_name.substr(0, instance_prefix_2.length() );
+    return name_prefix_2 == instance_prefix_2;
+}
+
 bool is_ins_test(const Name_type& instance_name){
     Name_type instance_prefix = "tu_test_ins";    
     Name_type name_prefix = instance_name.substr(0, instance_prefix.length() );
@@ -127,10 +134,6 @@ Graph_data read_file(const std::string& output_path){
                     max_time_module=module_counter;
                 }
 
-                if(module_counter == 1595){
-                    
-                    int a =1;
-                }
 
                 // if(module_counter ==  1706){
                 //     int a= 1;
@@ -139,7 +142,7 @@ Graph_data read_file(const std::string& output_path){
                 start2 = clock(); // start time                 
                 
                 module_counter++;
-                Name_type module_name = line.substr(6);
+                Name_type module_name = line.substr(6)+"*";
                 Name_type previous_module_name = gra.get_module_name();
                 if(module_counter!=1){
                     Module* gra_2 = new Module(gra);
@@ -187,13 +190,14 @@ Graph_data read_file(const std::string& output_path){
                     e_name_1 = e_data_1[0];
                 }                
                 if(e_data_2[2] != "-1"){
-                    e_name_2 = e_data_2[0]+"_"+e_data_1[2]; 
+                    e_name_2 = e_data_2[0]+"_"+e_data_2[2]; 
                 }
                 else{
                     e_name_2 = e_data_2[0];
                 }
-                gra.assign_edge_list.push_back({e_name_1,e_name_2});
 
+                gra.assign_edge_list.push_back({e_name_1,e_name_2});
+                gra.assign_two_edge(e_name_1,e_name_2);
             }
         }
         else{// is ins or mod
@@ -205,6 +209,7 @@ Graph_data read_file(const std::string& output_path){
             Instance_index_type pin_name;
             Name_type pin_name_subfix;
             size_t subfix_counter=0;
+            bool is_x_aq_sps=false;
             bool should_subfix=true;
             bool meet_group=false;
             bool need_right_bracket=false;
@@ -236,8 +241,14 @@ Graph_data read_file(const std::string& output_path){
                         is_this_line_ins = is_instance_type(ins_type_name);
                         if(is_this_line_ins){
                             gra.add_instance(ins_type_name,ins_name);
+                            is_x_aq_sps = is_aq_sps(ins_type_name);
+                            if(is_x_aq_sps){
+                                break;
+                            }
                         }
                         else{
+                            ins_type_name = ins_type_name + "*";
+                            ins_name = ins_name+"*";
                             auto sub_module = sub_map.find(ins_type_name);
                             if (sub_module == sub_map.end() ){
                                 std::cerr << "can not find submodule" << std::endl;
@@ -255,27 +266,35 @@ Graph_data read_file(const std::string& output_path){
                                 pin_name = data;
                             }
                             else{ // edge data
-                            std::vector<std::string> edge_data = get_edge_data(data);
-                            Name_type edge_name = edge_data[0];
-                            int low = std::stoi(edge_data[1]);
-                            int high = std::stoi(edge_data[2]);
-                            if (low > high) std::swap(low, high); // just in case
-                            Range r_(low,high);
-                            if(is_this_line_ins){
-                                gra.add_back_ins_edge(edge_name);
-                                // gra.internal_instance.back().connect_edge_list.push_back(edge_name);
-                                // 边内对ins的方向判断在函数内部 mod的在外部
-                                connect_ins_edge(gra,ins_name,pin_name,edge_name,r_);
+                                std::vector<std::string> edge_data = get_edge_data(data);
+                                Name_type edge_name = edge_data[0];
+                                int low = std::stoi(edge_data[1]);
+                                int high = std::stoi(edge_data[2]);
+                                if (low > high) std::swap(low, high); // just in case
+                                Range r_(low,high);
+                                if(is_this_line_ins){
+                                    if(high == low and low == 0){
+                                        edge_name = edge_name+"_0";
+                                    }
+                                    else if(low < 0){
+                                        if(high>=0){
+                                            edge_name = edge_name+"_"+std::to_string(high);
+                                        }
+                                    }
+                                    gra.add_back_ins_edge(edge_name);
+                                    // gra.internal_instance.back().connect_edge_list.push_back(edge_name);
+                                    // 边内对ins的方向判断在函数内部 mod的在外部
+                                    connect_ins_edge(gra,ins_name,pin_name,edge_data[0],r_);
+                                }
+                                else{
+                                    Direction d_ = find_mod_pin_direction(pin_name,ins_type_name,sub_map);
+                                    // find
+                                    
+                                    connect_mod_edge(gra,ins_name,edge_name,r_,d_);
+                                    gra.add_submodule_pin_edge(pin_name);
+                                    gra.add_submodule_pin_edge(edge_name);
+                                }
                             }
-                            else{
-                                Direction d_ = find_mod_pin_direction(pin_name,ins_type_name,sub_map);
-                                // find
-                                
-                                connect_mod_edge(gra,ins_name,edge_name,r_,d_);
-                                gra.add_submodule_pin_edge(pin_name);
-                                gra.add_submodule_pin_edge(edge_name);
-                            }
-                        }
                         }
                     }
                 }
@@ -285,7 +304,13 @@ Graph_data read_file(const std::string& output_path){
                     int high;
                     bool to_h=false;
                     char ch;
-                    Direction d_ = find_mod_pin_direction(pin_name,ins_type_name,sub_map);
+                    Direction d_;
+                    if(is_x_aq_sps){
+                        d_ = fins_ins_pin_direction(pin_name);
+                    }
+                    else{
+                        d_ = find_mod_pin_direction(pin_name,ins_type_name,sub_map);
+                    }
                     while(file.get(ch)){
                         int a =1;
                         if(ch!='}'){ 

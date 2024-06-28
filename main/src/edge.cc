@@ -24,3 +24,7 @@ void Edge::connect_instance_direction(Direction& direc){
     this -> adjacency_array_direction.push_back(direc); 
 }
 
+void Edge::add_assign_edge(Name_type& e_name){
+    this->assign_list.push_back(e_name);
+}
+

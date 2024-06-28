@@ -9,6 +9,7 @@
 #include "mymodule.h"
 #include "instance.h"
 
+bool is_aq_sps(const Name_type& instance_name);
 bool is_clk_module(const Name_type& module_name);
 
 bool is_instance_type(const Name_type& instance_name);

@@ -85,8 +85,10 @@
         "queue": "cpp",
         "stack": "cpp",
         "__string": "cpp",
-        "version": "cpp",
-        "pp": "c"
+        "version": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    
+
+    "editor.maxTokenizationLineLength": 108000,
 }

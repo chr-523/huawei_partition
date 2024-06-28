@@ -1707,34 +1707,3 @@ module aq_ifu_pcgen_0 ( btb_pcgen_tar_pc, btb_xx_chgflw_vld, cp0_ifu_icg_en,
   sky130_fd_sc_hd__nand3_1 U665 ( .A(n28), .B(n489), .C(n55), .Y(
         pcgen_icache_chgflw_vld) );
 endmodule
-
-
-module aq_ifu_ctrl_0 ( cp0_ifu_in_lpmd, cp0_ifu_lpmd_req, ctrl_btb_chgflw_vld, 
-        ctrl_btb_inst_fetch, ctrl_btb_stall, ctrl_ibuf_pop_en, 
-        ctrl_icache_abort, ctrl_icache_req_vld, ctrl_ipack_cancel, 
-        ibuf_ctrl_inst_fetch, icache_ctrl_stall, idu_ifu_id_stall, 
-        pcgen_ctrl_chgflw_vld, pred_ctrl_stall, rtu_ifu_dbg_mask, 
-        rtu_ifu_flush_fe, vec_ctrl_reset_mask );
-  input cp0_ifu_in_lpmd, cp0_ifu_lpmd_req, ibuf_ctrl_inst_fetch,
-         icache_ctrl_stall, idu_ifu_id_stall, pcgen_ctrl_chgflw_vld,
-         pred_ctrl_stall, rtu_ifu_dbg_mask, rtu_ifu_flush_fe,
-         vec_ctrl_reset_mask;
-  output ctrl_btb_chgflw_vld, ctrl_btb_inst_fetch, ctrl_btb_stall,
-         ctrl_ibuf_pop_en, ctrl_icache_abort, ctrl_icache_req_vld,
-         ctrl_ipack_cancel;
-  wire   ctrl_icache_abort, ctrl_icache_req_vld, n3;
-  assign ctrl_btb_chgflw_vld = ctrl_icache_abort;
-  assign ctrl_btb_inst_fetch = ctrl_icache_req_vld;
-
-  sky130_fd_sc_hd__nor4_4 U1 ( .A(rtu_ifu_dbg_mask), .B(n3), .C(
-        cp0_ifu_in_lpmd), .D(cp0_ifu_lpmd_req), .Y(ctrl_icache_req_vld) );
-  sky130_fd_sc_hd__or2_4 U2 ( .A(rtu_ifu_flush_fe), .B(pcgen_ctrl_chgflw_vld), 
-        .X(ctrl_icache_abort) );
-  sky130_fd_sc_hd__or2_1 U3 ( .A(rtu_ifu_flush_fe), .B(pcgen_ctrl_chgflw_vld), 
-        .X(ctrl_ipack_cancel) );
-  sky130_fd_sc_hd__nand2b_1 U4 ( .A_N(vec_ctrl_reset_mask), .B(
-        ibuf_ctrl_inst_fetch), .Y(n3) );
-  sky130_fd_sc_hd__inv_1 U5 ( .A(idu_ifu_id_stall), .Y(ctrl_ibuf_pop_en) );
-  sky130_fd_sc_hd__or2_0 U6 ( .A(icache_ctrl_stall), .B(pred_ctrl_stall), .X(
-        ctrl_btb_stall) );
-endmodule

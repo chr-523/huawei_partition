@@ -8,12 +8,17 @@ Direction fins_ins_pin_direction(Name_type &pin_name){
 
     std::unordered_set<std::string> input_table = {   
         "A", "A0", "A1", "A2", "A3", "A4", "A_N",
+        "B1_N","A1_N","D_N", "C_N", "D1","CI",
         "B", "B1", "B2", "B_N", "C", "C1", "C2",
-        "D", "RESET_B", "CLK", "S","HI"
+        "D", "RESET_B", "CLK", "S","HI","CEN","GWEM","WEN",
+        "SET_B","A2_N","S0","S1","DE","CIN",
+        "GATE_N",
+
+
     }; // these two table should be improved
     std::unordered_set<std::string> output_table = {   
         "X", "Y", "Q","LO",//也许需要补一下
-        "?",
+        "?","Q_N","SUM","COUT"
     };
     // (.find() != end) means pin_name can be found in input_table
     //      means pin_name -> input
@@ -53,6 +58,10 @@ void Module::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
         // pin => a->[-1:-1] =>1    ->  add_edge(a, -1, -1, INPUT)
         // net => n1->[-1:-1]       ->  add_edge(n1, -1, -1, NORMAL)    
         Edge edge_(name, -1, -1, type); // name is index
+        if(type != NORMAL){
+            Range r_(-1,-1);
+            this->IO_map[name] = {type,r_};
+        }
         this -> E_map[name] = this -> internal_edge_list.size();
         this -> internal_edge_list.push_back(edge_); //range = [-1, -1]
     }
@@ -69,6 +78,10 @@ void Module::add_edge(Name_type& name, int& low, int& high, Edge_type& type){
             //     -> add_adge(dd_3, -1,  3, OUTPUT)
             Name_type se_name = name + '_' + std::to_string(counter) ; // se_name means signal_edge_name 
             Edge edge_(se_name,-1, counter, type); // name -> name_'counter'
+            if(type!=NORMAL){
+                Range r_(-1,counter);
+                this->IO_map[se_name] = {type,r_};
+            }
             this -> E_map[se_name] = this -> internal_edge_list.size();
             this -> internal_edge_list.push_back(edge_);
         }
@@ -257,7 +270,15 @@ void connect_ins_edge(
 void Module::add_module( 
     Module_index_type module_index, 
     Module* G_1){
+
     this -> submodule.push_back(std::make_tuple(module_index, G_1));
+    this -> Submodule_map[module_index] = this -> submodule.size() - 1;
     std::vector<Edge_index_type> e_ = {"*"};
     this -> submodule_pin_edge.push_back(e_);
+}
+void Module::assign_two_edge(Name_type &e_1, Name_type &e_2){
+    auto e1 = this -> E_map.find(e_1);
+    auto e2 = this -> E_map.find(e_2);
+    this->internal_edge_list[e1->second].add_assign_edge(e_2);
+    this->internal_edge_list[e2->second].add_assign_edge(e_1);
 };

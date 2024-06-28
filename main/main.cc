@@ -26,7 +26,7 @@ int main(int argc, char** argv)
     
     Graph_data C906_data = read_file(file_path);
 
-    Graph gra = module_to_graph(C906_data);
+    Graph gra = module_to_graph_old(C906_data);
 
     int a=1;
 

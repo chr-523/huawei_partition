@@ -452,4 +452,6 @@ CMakeFiles/huawei_.dir/main.cc.o: \
  /home/chr_523/anaconda3/include/boost/regex/v5/regex_grep.hpp \
  /home/chr_523/anaconda3/include/boost/regex/v5/regex_replace.hpp \
  /home/chr_523/anaconda3/include/boost/regex/v5/regex_merge.hpp \
- /home/chr_523/anaconda3/include/boost/regex/v5/regex_split.hpp
+ /home/chr_523/anaconda3/include/boost/regex/v5/regex_split.hpp \
+ /home/chr_523/Work_all/huawei_partition/main/include/driver.h \
+ /home/chr_523/Work_all/huawei_partition/main/paser/VerilogDriver.h

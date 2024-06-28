@@ -61,7 +61,7 @@ public:
           internal_edge_list(other.internal_edge_list),
           assign_edge_list(other.assign_edge_list),
           submodule_pin_edge(other.submodule_pin_edge),
-          IO_map(other.IO_map){};
+          IO_map(other.IO_map),E_map(other.E_map),Ins_map(other.Ins_map){};
     // operator = 
     Module& operator=(const Module& other){
         if (this != &other) { // Prevent self assigment
@@ -73,6 +73,8 @@ public:
             assign_edge_list = other.assign_edge_list;
             submodule_pin_edge = other.submodule_pin_edge;
             IO_map = other.IO_map;
+            E_map = other.E_map;
+            Ins_map = other.Ins_map;
         }
         return *this;
     }
@@ -127,6 +129,8 @@ public: //function about the data
         this -> assign_edge_list.clear();
         this -> submodule_pin_edge.clear();
         this -> IO_map.clear();
+        this -> E_map.clear();
+        this -> Ins_map.clear();
     }
     void set_module_name(const Name_type& new_module_name){ this -> module_name = new_module_name; }
     Name_type get_module_name() const { return module_name; };
@@ -138,6 +142,9 @@ public: //function about the data
     std::vector< Edge > get_internal_edge_list() const { return internal_edge_list; };
     std::vector<std::pair<Edge_index_type,Edge_index_type>> assign_edge_list;
     std::unordered_map<Edge_index_type,std::pair<Edge_type,Range>> IO_map;
+    std::unordered_map< Instance_index_type, size_t > Ins_map; 
+    std::unordered_map< Edge_index_type, size_t > E_map;
+    
 protected:
 private: 
 
@@ -150,7 +157,6 @@ private:
 
     std::vector< Sub_Module_type > submodule; 
     std::vector<std::vector< Edge_index_type>> submodule_pin_edge;
-
     std::vector< Edge > internal_edge_list; 
 };
 

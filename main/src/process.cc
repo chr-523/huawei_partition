@@ -69,7 +69,14 @@ Graph_data read_file(const std::string& output_path){
     Module gra;
     std::unordered_map<Name_type, Module*> sub_map;
     std::ifstream file(output_path);
-    
+    std::string line;
+    size_t module_counter = 0;
+    size_t line_c = 2; //第一行开始，且第一行被忽略，所以第二行开始
+    double total_time = 0.0;
+    clock_t start = clock(); // start time
+    clock_t start2 = clock(); // start time
+    double max_time = 0.0;
+    size_t max_time_module =0;
 
     if ( !file.is_open() ){
         // When you need to display information or results to users, use std::cout.
@@ -80,20 +87,8 @@ Graph_data read_file(const std::string& output_path){
         return result; // empty graph
     }
 
-    std::string line;
-
-    size_t module_counter = 0;
-
-    size_t line_c = 1;
-
-    double total_time = 0.0;
-    clock_t start = clock(); // start time
-
-    std::vector<std::tuple<Edge_index_type,Edge_index_type>> module_assign_list;
-
 
     getline(file,line);
-    line_c++;
     char first_char;
     while(file.get(first_char)){
         if(line_c == 1120){
@@ -103,21 +98,29 @@ Graph_data read_file(const std::string& output_path){
             getline(file,line);
             line_c++;
             if (line[0]=='o'){//module    
-                
-                
-                            
+
                 clock_t end = clock(); // 记录结束时间
                 double elapsed_time = double(end - start) / CLOCKS_PER_SEC; // 计算经过的秒数
-                std::cout << "Time: " << elapsed_time << " s" << std::endl;
-            
-                std::cout << "Line:"<<line_c << std::endl;
+                double one_module_time = double(end - start2) / CLOCKS_PER_SEC; // 计算经过的秒数
+                std::cout << "Line:"<< line_c << "          ";
                 std::cout << "Modulenumber:"<<module_counter << std::endl;
+                std::cout << "Used time: " << elapsed_time << " s" << "          ";
+                std::cout << "This module used time: "<<one_module_time <<std::endl<<std::endl;;
+                if(one_module_time > max_time){
+                    max_time = one_module_time;
+                    max_time_module=module_counter;
+                }
 
+                if(module_counter == 1595){
                     
-                
-                
-                
-                
+                    int a =1;
+                }
+
+                // if(module_counter ==  1706){
+                //     int a= 1;
+                // }
+
+                start2 = clock(); // start time                 
                 
                 module_counter++;
                 Name_type module_name = line.substr(6);
@@ -147,6 +150,7 @@ Graph_data read_file(const std::string& output_path){
                 else if(pn_data[1]=="2"){
                     e_type = OUTPUT;
                     gra.IO_map[e_data[0]]={e_type,r_};
+                    
                 }
                 else{
                     e_type = NORMAL;
@@ -338,6 +342,9 @@ Graph_data read_file(const std::string& output_path){
         }
     }
     Graph_data result(gra, sub_map);
+    
+    std::cout<<"The number that took the most time is: "<<max_time_module<<std::endl;
+    std::cout <<"Time is: "<<max_time<<std::endl;
     return result;
 
 }

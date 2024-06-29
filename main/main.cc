@@ -17,7 +17,7 @@ int main(int argc, char** argv)
         infile.close();
     }
     std::string file_path;
-    if(0){
+    if(1){
 
         file_path = "test/C906_o.txt";
     }

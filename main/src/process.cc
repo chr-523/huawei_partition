@@ -125,15 +125,16 @@ Graph_data read_file(const std::string& output_path){
                 clock_t end = clock(); // 记录结束时间
                 double elapsed_time = double(end - start) / CLOCKS_PER_SEC; // 计算经过的秒数
                 double one_module_time = double(end - start2) / CLOCKS_PER_SEC; // 计算经过的秒数
-                std::cout << "Line:"<< line_c << "          ";
-                std::cout << "Modulenumber:"<<module_counter << std::endl;
-                std::cout << "Used time: " << elapsed_time << " s" << "          ";
-                std::cout << "This module used time: "<<one_module_time <<std::endl<<std::endl;;
-                if(one_module_time > max_time){
-                    max_time = one_module_time;
-                    max_time_module=module_counter;
-                }
-
+                // if ((line_c % 10 == 0 || line_c < 10) && module_counter == 1706) {
+                    std::cout << "Line:"<< line_c << "          ";
+                    std::cout << "Modulenumber:"<<module_counter << std::endl;
+                    std::cout << "Used time: " << elapsed_time << " s" << "          ";
+                    std::cout << "This module used time: "<<one_module_time <<std::endl<<std::endl;;
+                    if(one_module_time > max_time){
+                        max_time = one_module_time;
+                        max_time_module=module_counter;
+                    }
+                // }
 
                 // if(module_counter ==  1706){
                 //     int a= 1;
@@ -195,7 +196,7 @@ Graph_data read_file(const std::string& output_path){
                 else{
                     e_name_2 = e_data_2[0];
                 }
-
+                
                 gra.assign_edge_list.push_back({e_name_1,e_name_2});
                 gra.assign_two_edge(e_name_1,e_name_2);
             }

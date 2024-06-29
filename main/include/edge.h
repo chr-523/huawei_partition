@@ -65,7 +65,8 @@ public: // initialization
     Edge(const Edge& other): edge_name(other.edge_name), 
         range(other.range), type(other.type), 
         adjacency_array(other.adjacency_array),
-        adjacency_array_direction(other.adjacency_array_direction){}
+        adjacency_array_direction(other.adjacency_array_direction),
+        assign_list(other.assign_list){}
 
     Edge& operator=(const Edge& other) {
         if (this != &other) { // Prevent self assigmant
@@ -75,6 +76,7 @@ public: // initialization
             adjacency_array = other.adjacency_array;
             adjacency_array_direction = 
                     other.adjacency_array_direction;
+            assign_list = other.assign_list;
         }
         return *this;
     }

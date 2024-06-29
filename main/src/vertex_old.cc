@@ -56,9 +56,21 @@ Graph module_to_graph_old(Graph_data& gra_data){
     //         result.mod_pin_to_ins_map[pin_name].push_back(ins_name);
     //     }
     // }
+    
     result.empty_IO_map = gra_data.module.IO_map;
 
-    module_to_graph_old(
+    for (auto& pair : result.empty_IO_map) {
+        // pair.first 是键（Edge_index_type）
+        // pair.second 是值，即 std::pair<Edge_type, Range>
+        Edge_index_type index = pair.first;
+        std::pair<Name_type,Name_type> pair_ = {"C906",index};
+        result.ins_to_mod_pin_map["outside"+std::to_string(temp_add)].push_back(pair_);
+    }
+    temp_add = 0;
+
+
+
+     module_to_graph_old(
         result,
         gra_data.module,
         gra_data.submodule_map, 
@@ -128,6 +140,11 @@ void module_to_graph_old(
                 /* 遍历正在处理的边的所有连接点，判断ins mod分别处理*/
                 for(size_t counter_ =0;counter_<e_i_list.size();++counter_){
                     Name_type connect_v_name = e_i_list[counter_];
+                    if(counter_!=0){
+                        if(connect_v_name == e_i_list[counter_ - 1 ]){
+                            continue;
+                        }
+                    }
                     Direction connect_v_diec = e_i_d_list[counter_];
                     bool should_add_v=(connect_v_name!=v_name) and (connect_v_diec!= this_ins_to_edge_direc);
                     
@@ -147,7 +164,11 @@ void module_to_graph_old(
                             /**找到正在连接现在在处理的边对应的pin**/
                             for( size_t sub_pin_index = 2;sub_pin_index < sp_list.size();sub_pin_index += 2){
                                 if(sp_list[sub_pin_index]==e_name){
+                                    if(v_name == "U165"){
+                                        int a = 1;
+                                    }
                                     to_pin_vector.push_back({connect_v_name,sp_list[sub_pin_index-1]});
+                                    std::cout<<"    ins to mod ["<<v_name<<"] <- "<< sp_list[sub_pin_index-1]<<std::endl;
                                     //key是正在处理的点name，生成点的时候再压入graph
                                     //value 为 <点连接的module的name, 点连接的module的pin name>
                                     //也就是ins to mod pin map
@@ -218,6 +239,9 @@ void module_to_graph_old(
                                     /**找到正在连接现在在处理的边对应的pin**/
                                     for( size_t sub_pin_index = 2;sub_pin_index < sp_list.size();sub_pin_index += 2){
                                         if(sp_list[sub_pin_index]==e_name){
+                                            if(connect_v_name == "C906_165"){
+                                                int a = 1;
+                                            }
                                             to_pin_vector.push_back({connect_v_name,sp_list[sub_pin_index-1]});
                                             //key是正在处理的点name，生成点的时候再压入graph
                                             //value 为 <点连接的module的name, 点连接的module的pin name>
@@ -282,11 +306,10 @@ void module_to_graph_old(
             // }
 
     }
-
-        if(1){
-            int a = 1;
-        }
     /*遍历IO边需要在所有点处理完之后处理*/
+    if(t_p == "add_277*"){
+        int a = 1;
+    }
     /*遍历IO边*/
     for (auto IO_ = gra.IO_map.begin(); IO_ != gra.IO_map.end(); ++IO_){
     
@@ -302,51 +325,107 @@ void module_to_graph_old(
         if(IO_edge_index == gra.E_map.end()){
             std::cerr<<"Wrong"<<std::endl;
         }
-        else{
+        else{            
             std::vector<Name_type> e_i_list = 
                     gra.get_internal_edge_list()[IO_edge_index -> second].get_adjacency_array();
             std::vector<Direction> e_i_d_list = 
                     gra.get_internal_edge_list()[IO_edge_index -> second].get_adjacency_array_direction();
-        
-            /*遍历IO边连接的点***/
-            size_t size = e_i_d_list.size();
-            Name_type only_to_IO_name;
-            std::vector< Name_type > other_to_IO_name_list;
-            for (size_t ins_index = 0; ins_index < size ; ++ins_index) {    
-                Name_type v_name = e_i_list[ins_index];
-                Direction v_direc = e_i_d_list[ins_index];//v2e is 1 <=> e2v is 2
-                bool this_is_mod = (v_name.back() == '*');
-                /**对于module处理**/
-                if(this_is_mod){
-                    std::cout<<"  遍历IO的mod名: "<< v_name << "  (1 is v2e : 2 is e2v): " << v_direc << std::endl;
+                //8
+            std::vector<Name_type> assign_list =    
+                    gra.get_internal_edge_list()[IO_edge_index -> second].get_assign_list();
+            /*OUTPIN处理*/
 
-                    /**内部处理**/
+            if(IO_type == OUTPUT){
 
-                    /**内部处理**/                    
+                Name_type same_dire_v ;
+                std::vector< Name_type> not_same_v_list;
+                size_t size = e_i_d_list.size();
+                /*遍历IO边连接的点找到方向信息并分类*/
+                for (size_t ins_index = 0; ins_index < size ; ++ins_index) {    
+                    Name_type v_name = e_i_list[ins_index];
+                    Direction v_direc = e_i_d_list[ins_index];//v2e is 1 <=> e2v is 2
                     
-                    /**外部处理**/
-
-                    /**外部处理**/
-
-                }
-                /**对于module处理**/
-                /**对于ins处理**/
-                else{ //this is ins , not module
-                    std::cout<<"  遍历IO的ins名: "<< v_name << "  (1 is v2e : 2 is e2v): " << v_direc << std::endl;
-                    /**内部处理**/
-                    if(IO_type == OUTPUT){
-                        //PIN OUTPUT
-                        
+                    // bool this_is_mod = (v_name.back() == '*');
+                    if(v_direc == v2e){ // OUTPUT 特殊点/同向的点 是 点到边 是v2e
+                        same_dire_v = v_name;
                     }
-                    /**内部处理**/
-
-                    /**外部处理**/
-
-                    /**外部处理**/
+                    else{ // 不同向
+                        not_same_v_list.push_back(v_name);
+                    }
                 }
-                /**对于ins处理**/
+                /*遍历IO边连接的点找到方向信息并分类*/
+                
+                /*若有，遍历IO边assign连接的点找到方向信息并分类*/                
+                if(!assign_list.empty()){
+                    assign_list.back().pop_back();
+                    Name_type assign_edge_name = assign_list.back();
+                    auto assign_e = gra.E_map.find(assign_edge_name);      
+
+                    std::vector<Name_type> a_i_list = 
+                            gra.get_internal_edge_list()[assign_e -> second].get_adjacency_array();
+                    std::vector<Direction> a_i_d_list = 
+                            gra.get_internal_edge_list()[assign_e -> second].get_adjacency_array_direction();
+                    size = a_i_list().size();
+                    for (size_t ins_index = 0; ins_index < size ; ++ins_index) {    
+                        Name_type v_name = a_i_list[ins_index];
+                        Direction v_direc = a_i_d_list[ins_index];//v2e is 1 <=> e2v is 2
+                        
+                        // bool this_is_mod = (v_name.back() == '*');
+                        if(v_direc == v2e){ // OUTPUT 特殊点/同向的点 是 点到边 是v2e
+                            same_dire_v = v_name;
+                        }
+                        else{ // 不同向
+                            not_same_v_list.push_back(v_name);
+                        }
+                    }
+                /*若有遍历IO边assign连接的点找到方向信息并分类*/
+                }
+
+                /**/
+                if(same_dire_v.back()!='*'){//情况1+3 输入点不是module
+                    std::cout<<"  output出去的点为: "<<same_dire_v<<std::endl;
+                        int a = 1;
+                }
+                else{ //情况2+4 输入点  是module
+                    std::cout<<"  output出去的mod为: "<<same_dire_v<<std::endl;
+                        int a = 1;
+                }
             }
-            /*遍历IO边连接的点***/
+            /*OUTPIN处理*/
+            /*INPIN处理*/
+            else{ // IO_type == INPUT
+                Name_type same_dire_v ;
+                std::vector< Name_type> not_same_v_list;
+                size_t size = e_i_d_list.size();
+                /*遍历IO边连接的点*/
+                for (size_t ins_index = 0; ins_index < size ; ++ins_index) {    
+                    Name_type v_name = e_i_list[ins_index];
+                    Direction v_direc = e_i_d_list[ins_index];//v2e is 1 <=> e2v is 2
+                    bool this_is_mod = (v_name.back() == '*');
+                    if(!(this_is_mod)){  // 情况5 输入到 ins
+                        
+                        int a = 1;
+                    }
+                    else{//情况6 输入到 mod
+
+                        int a = 1;
+                    }
+
+                }
+                /*遍历IO边连接的点*/
+
+            }
+            /*INPIN处理*/
+                    // /*遍历IO边连接的点***/
+                    // size_t size = e_i_d_list.size();
+                    // Name_type only_to_IO_name;
+                    // std::vector< Name_type > other_to_IO_name_list;
+                    // for (size_t ins_index = 0; ins_index < size ; ++ins_index) {    
+                    //     Name_type v_name = e_i_list[ins_index];
+                    //     Direction v_direc = e_i_d_list[ins_index];//v2e is 1 <=> e2v is 2
+                    //     bool this_is_mod = (v_name.back() == '*');
+                    // }
+                    // /*遍历IO边连接的点***/
 
 
 
@@ -355,11 +434,7 @@ void module_to_graph_old(
     }
     /*遍历IO边*/
 
-
         std::cout<<"\t\t已处理点数量: "<<temp_add+1<<std::endl;
-
-
-
     
     /**生成点,压入graph**/
 /***Processing points for the current module***/

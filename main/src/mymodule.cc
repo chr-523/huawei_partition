@@ -279,6 +279,8 @@ void Module::add_module(
 void Module::assign_two_edge(Name_type &e_1, Name_type &e_2){
     auto e1 = this -> E_map.find(e_1);
     auto e2 = this -> E_map.find(e_2);
-    this->internal_edge_list[e1->second].add_assign_edge(e_2);
-    this->internal_edge_list[e2->second].add_assign_edge(e_1);
+    Name_type a_1 = e_1 + "+";
+    Name_type a_2 = e_2 + "-";
+    this->internal_edge_list[e1->second].add_assign_edge(a_2);
+    this->internal_edge_list[e2->second].add_assign_edge(a_1);
 };

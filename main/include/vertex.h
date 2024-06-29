@@ -13,7 +13,7 @@
 
 #include "mymodule.h"
 using weight_type = int;
-using degree_type = size_t;
+using degree_type = int;
 
 
 class Vertex
@@ -98,6 +98,9 @@ private:
     int reg_temp;       // is used to classify regs
 };
 
+
+
+
 struct Graph{
     std::unordered_map< Name_type, Vertex* > vertexs; 
     std::unordered_map<std::string, std::vector<std::pair<std::string, int>>> GraphAdjList_Plus;
@@ -105,12 +108,13 @@ struct Graph{
     
     std::string prefix;
     std::string this_submodule_index;
-    std::unordered_map<std::string, std::vector<Name_type>> ins_to_mod_pin_map;
+    std::unordered_map<std::string, std::vector<std::pair<Name_type,Name_type>>> ins_to_mod_pin_map;
     std::unordered_map<std::string, std::vector<Name_type>> mod_pin_to_ins_map;
+    std::unordered_map<Edge_index_type, std::pair<Edge_type, Range>> empty_IO_map;
+
     // std::unordered_map<std::string, std::vector<<std::string, int>>>> GraphAdjList_Minus;
-
+    bool is_top;
     // std::unordered_map< std::string >
-
     Graph(){};
     ~Graph(){
         // for (auto& pair : vertexs) {
@@ -119,7 +123,7 @@ struct Graph{
         // vertexs.clear();
     }
 
-    /* old
+    /* old_old
     // void addVertex(const Vertex& v_){
     //     // Vertex* newVertex = new Vertex(v_);
     //     // Name_type name =  v_.get_name();
@@ -258,16 +262,21 @@ struct Graph{
 
 };
 
+
+/*old*/
 Graph module_to_graph_old(Graph_data& gra_data);
-
-
-
-
+bool is_in_map(const Name_type& pin_name,
+            const std::unordered_map<Edge_index_type, std::pair<Edge_type, Range>>& IO_map);
+            
+bool is_in_map(const Name_type& pin_name,
+               const std::unordered_map<Name_type, int>& IO_map);
 void module_to_graph_old(
         Graph& result, Module& gra,
         std::unordered_map<Name_type, Module*> sub_map,
         int& temp_add);
 
+
+/*old*/
 
 
 

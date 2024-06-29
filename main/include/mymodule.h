@@ -92,7 +92,7 @@ public: //function
         Name_type& pin_name,
         Instance_index_type& instance_name, 
         Name_type& edge_name, 
-        Range& range);
+        Range& e_range);
 
     friend int connect_mod_edge(
         Module& gra,//返回值用来调整 a{a}+ wire[3:0]a的情况

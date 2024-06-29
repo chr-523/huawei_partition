@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv)
 {    
-    bool generate_new_output = true;
+    bool generate_new_output = false;
     if(generate_new_output){
         std::ifstream infile;
             // argv[0] = /home/chr_523/Work_all/huawei_partition/main/build/test_bison
@@ -16,8 +16,14 @@ int main(int argc, char** argv)
         test1(path);
         infile.close();
     }
+    std::string file_path;
+    if(0){
 
-    std::string file_path = "test/output.txt";
+        file_path = "test/C906_o.txt";
+    }
+    else{
+        file_path = "test/output.txt";
+    }
     // std::unordered_map<>;
     // std::unordered_map<>;
     // std::unordered_map<>;

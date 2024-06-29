@@ -286,6 +286,30 @@ src/vertex.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex.cc.s
 .PHONY : src/vertex.cc.s
 
+src/vertex_old.o: src/vertex_old.cc.o
+.PHONY : src/vertex_old.o
+
+# target to build an object file
+src/vertex_old.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex_old.cc.o
+.PHONY : src/vertex_old.cc.o
+
+src/vertex_old.i: src/vertex_old.cc.i
+.PHONY : src/vertex_old.i
+
+# target to preprocess a source file
+src/vertex_old.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex_old.cc.i
+.PHONY : src/vertex_old.cc.i
+
+src/vertex_old.s: src/vertex_old.cc.s
+.PHONY : src/vertex_old.s
+
+# target to generate assembly for a file
+src/vertex_old.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/huawei_.dir/build.make CMakeFiles/huawei_.dir/src/vertex_old.cc.s
+.PHONY : src/vertex_old.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -314,6 +338,9 @@ help:
 	@echo "... src/vertex.o"
 	@echo "... src/vertex.i"
 	@echo "... src/vertex.s"
+	@echo "... src/vertex_old.o"
+	@echo "... src/vertex_old.i"
+	@echo "... src/vertex_old.s"
 .PHONY : help
 
 

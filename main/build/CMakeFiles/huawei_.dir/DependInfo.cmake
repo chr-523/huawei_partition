@@ -14,6 +14,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/chr_523/Work_all/huawei_partition/main/src/mymodule.cc" "CMakeFiles/huawei_.dir/src/mymodule.cc.o" "gcc" "CMakeFiles/huawei_.dir/src/mymodule.cc.o.d"
   "/home/chr_523/Work_all/huawei_partition/main/src/process.cc" "CMakeFiles/huawei_.dir/src/process.cc.o" "gcc" "CMakeFiles/huawei_.dir/src/process.cc.o.d"
   "/home/chr_523/Work_all/huawei_partition/main/src/vertex.cc" "CMakeFiles/huawei_.dir/src/vertex.cc.o" "gcc" "CMakeFiles/huawei_.dir/src/vertex.cc.o.d"
+  "/home/chr_523/Work_all/huawei_partition/main/src/vertex_old.cc" "CMakeFiles/huawei_.dir/src/vertex_old.cc.o" "gcc" "CMakeFiles/huawei_.dir/src/vertex_old.cc.o.d"
   )
 
 # Targets to which this target links.

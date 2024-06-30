@@ -1,0 +1,125 @@
+
+                // Direction this_ins_to_edge_direc = e_direc_list[counter];//现在点到处理边的方向
+                output一定是V2E
+                //     // 这个边连了其他哪些点->根据index找edge的连哪些ins的属性
+                // std::vector<std::string> e_i_list = 
+                //         gra.get_internal_edge_list()[e_->second].get_adjacency_array();
+                //     // 对应其他点的方向
+                // std::vector<Direction> e_i_d_list = 
+                //         gra.get_internal_edge_list()[e_->second].get_adjacency_array_direction();
+                连接的其他点是connect_v_name
+                    //默认权重
+                int e_weight = 1;
+                /* 遍历正在处理的边的所有连接点，判断ins mod分别处理*/
+                Name_type connect_v_name = e_i_list[counter_];
+
+                std::cout<<"    正在处理IO边ins "<< <<result.prefix+"_"+connect_v_name<<std::endl;
+                /**是否需要加入节点**/            
+                    // 两个点 名字不同，且对于边来说方向不同，则需要加入
+                    bool is_this_v_mod =(connect_v_name.back()=='*');//判断是否是submod
+                    /**要加入的节点是submodule**/
+                    if(is_this_v_mod){
+                        // 根据名字找到mod信息
+                        auto mod = gra.Submodule_map.find(connect_v_name);
+                        size_t sub_index = mod -> second; //这是对应submodule的index
+                        // gra.get_submodule_list()[sub_index].second//这个是module指针 没用上
+                        std::vector<Name_type> sp_list = gra.get_submodule_pin_edge_list()[sub_index];
+                        // 上面这个是正在处理的submodule的pin和对应连线的list
+                        /**找到正在连接现在在处理的边对应的pin**/
+                        if(counter_!=0){ // int a = 1;
+                            if(connect_v_name == e_i_list[counter_ - 1 ]){
+                                continue;
+                            }
+                        }
+                        for( size_t sub_pin_index = 2 ; sub_pin_index < sp_list.size() ; sub_pin_index += 2){
+                            if(sp_list[sub_pin_index]==e_name){
+                                // 这里会找到点 ->边 -> 所连接的mod的 所有pin口
+                                // 所以前面如果mod名字重复就不再操作, continue 出去下一个点
+                                /*TEST*/    
+                                    if(v_name == "U165"){
+                                        int a = 1;
+                                    }
+                                /*TEST*/    
+                                to_pin_vector.push_back({connect_v_name,connect_v_name+"_"+sp_list[sub_pin_index-1]});
+
+                                std::cout<<"      ins->mod_pin_map ["<<result.prefix <<"_"<< v_name<<"] <- "<< connect_v_name+"_"<<sp_list[sub_pin_index-1]<<std::endl;
+
+                                //key是正在处理一开始 点的 name，生成点的时候再压入graph储存
+                                //value 为 <点连接的module的name, 点连接的module的pin name>
+                                //也就是 ins to mod pin map
+                            }
+                            // 点的邻接链就不存module了，另用ins_to_mod_pin来存
+                            // 后续submodule递归 之前找到pinname到name的映射，也就是mod pin to ins map
+                            // 递归submodule的时候 module内pin name 找外部 mod_to_pin_ins_map 来找到所连接的ins
+                            // 再 将内部信息 push进点的邻接 
+                        }
+                        /**找到正在连接现在在处理的边对应的pin**/
+                            
+                    }
+                    /**要加入的节点是submodule**/
+                    /**要加入的节点是普通节点**/
+                    else{
+                        if(this_ins_to_edge_direc == e2v){
+                        //这个边指向，从另一点指过来 -> 加入 minus
+                            minus_vector.push_back({result.prefix+"_"+connect_v_name,e_weight});
+                            in_degree++;
+                        }
+                        else{//反之加入PLUS
+                            plus_vector.push_back({result.prefix+"_"+connect_v_name,e_weight});
+                            out_degree++;
+                        }
+                        // to_pin_vector.push_back("*");
+                    }
+                    /**要加入的节点是普通节点**/                        
+                
+                /* 遍历正在处理的边的所有连接点，判断ins mod分别处理*/
+
+/555555555555555555555
+                        if(is_connect_empty){
+                            Name_type empty_name = "empty_"+IO_name+"_O";
+                            Vertex* e_v = new Vertex(empty_name,false,1,-1,0,1);  // Vertex(name,clk,w,index,o,i);
+                            //需要更新外部ins 到 内部submodule pin的 map
+
+                            result.vertexs[empty_name] = e_v;
+
+                            std::vector<Name_type> sp_list = gra.get_submodule_pin_edge_list()[sub_index];
+                                    // 上面这个是正在处理的submodule的pin和对应连线的list
+                            /*找到IO边submodule的对应pin连接，并将外部empty点信息存入，ins mod pin map*/
+                                // if(counter_!=0){ // int a = 1;
+                                //     if(connect_v_name == e_i_list[counter_ - 1 ]){
+                                //         continue;
+                                    //     } // int a = 1
+                                // }
+                            for( size_t sub_pin_index = 2 ; sub_pin_index < sp_list.size() ; sub_pin_index += 2){
+                                if(sp_list[sub_pin_index]==IO_name){
+                                    // 这里会找到IO边 -> 所连接的mod的 所有pin口// int a = 1
+                                    // 所以前面如果mod名字重复就不再操作, continue 出去下一个点  // int a = 1
+                                    // to_pin_vector.push_back({connect_v_name,sp_list[sub_pin_index-1]});
+                                    std::cout<<"      ins->mod_pin_map [";
+                                    std::cout<< result.prefix+"_"+empty_name<<"] <- ";
+                                    std::cout<< result.prefix+"_"+sp_list[sub_pin_index-1]<<std::endl;
+
+                                    std::vector<std::pair<Name_type, Name_type>> temp_vec;
+                                    if(sp_list[sub_pin_index-1] == "lsu_biu_vb_wvalid"){
+                                        int a = 1;
+                                    }
+                                    temp_vec.push_back({result.prefix+"_"+ s_v, sp_list[sub_pin_index-1] });
+                                    result.ins_to_mod_pin_map[empty_name] = temp_vec;
+                                    
+                                    // result.empty_IO_map[sp_list[sub_pin_index-1]]={OUTPUT,r_};
+                                        //key是外部empty name
+                                        //value 为 <dire的submodule的name, 这个empty线对应pin name>
+                                        //--ins to mod pin map
+                                }
+                            }
+                            /*找到IO边submodule的对应pin连接，并将外部empty点信息存入，ins mod pin map*/
+
+                            int a = 1;
+                        }
+
+
+
+
+
+
+

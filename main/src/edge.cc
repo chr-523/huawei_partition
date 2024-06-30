@@ -15,6 +15,7 @@ void Edge::connect_instance(Instance& instance){
 void Edge::connect_instance(Name_type& instance_name){
     // instance => tu_test_ins, T1, A(n5->[-1: -1])
     //  adj.pushback("T1")
+    // if(!())   
     this -> adjacency_array.push_back(instance_name); 
 }
 
@@ -22,6 +23,15 @@ void Edge::connect_instance_direction(Direction& direc){
     // instance => tu_test_ins, T1, A(n5->[-1: -1])
     //  adj.pushback("T1")
     this -> adjacency_array_direction.push_back(direc); 
+}
+
+void Edge::connect_instance_and_direction(Name_type& instance_name,Direction& direc){
+    if (this->seen_ins_name.find(instance_name) == this->seen_ins_name.end()) {
+        
+        this -> adjacency_array.push_back(instance_name); 
+        this -> adjacency_array_direction.push_back(direc); 
+        this->seen_ins_name.insert(instance_name);
+    }
 }
 
 void Edge::add_assign_edge(Name_type& e_name){

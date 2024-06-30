@@ -66,7 +66,8 @@ public: // initialization
         range(other.range), type(other.type), 
         adjacency_array(other.adjacency_array),
         adjacency_array_direction(other.adjacency_array_direction),
-        assign_list(other.assign_list){}
+        assign_list(other.assign_list),
+        seen_ins_name(other.seen_ins_name){}
 
     Edge& operator=(const Edge& other) {
         if (this != &other) { // Prevent self assigmant
@@ -77,6 +78,7 @@ public: // initialization
             adjacency_array_direction = 
                     other.adjacency_array_direction;
             assign_list = other.assign_list;
+            seen_ins_name = other.seen_ins_name;
         }
         return *this;
     }
@@ -89,6 +91,7 @@ public: // function
     void connect_instance(Instance& instance);
     void connect_instance(Name_type& instance_name);
     void connect_instance_direction(Direction& direc);
+    void connect_instance_and_direction(Name_type& instance_name,Direction& direc);
     void add_assign_edge(Name_type& e_name);
 public: // get_function
     Edge_type get_type() const { return type; };
@@ -98,6 +101,8 @@ public: // get_function
     std::vector< Instance_index_type > get_adjacency_array() const { return adjacency_array; }
     std::vector< Direction > get_adjacency_array_direction() const { return adjacency_array_direction; }
     std::vector<Edge_index_type> get_assign_list() const { return assign_list; }
+    
+    std::unordered_set<Name_type> seen_ins_name;
 protected:
 private:// data
     std::vector<Edge_index_type> assign_list;

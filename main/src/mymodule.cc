@@ -10,15 +10,15 @@ Direction fins_ins_pin_direction(Name_type &pin_name){
         "A", "A0", "A1", "A2", "A3", "A4", "A_N",
         "B1_N","A1_N","D_N", "C_N", "D1","CI",
         "B", "B1", "B2", "B_N", "C", "C1", "C2",
-        "D", "RESET_B", "CLK", "S","HI","CEN","GWEM","WEN",
+        "D", "RESET_B", "CLK", "S","CEN","GWEM","WEN",
         "SET_B","A2_N","S0","S1","DE","CIN",
         "GATE_N",
 
 
     }; // these two table should be improved
     std::unordered_set<std::string> output_table = {   
-        "X", "Y", "Q","LO",//也许需要补一下
-        "?","Q_N","SUM","COUT"
+        "X", "Y", "Q","LO",
+        "?","Q_N","SUM","COUT","HI"
     };
     // (.find() != end) means pin_name can be found in input_table
     //      means pin_name -> input
@@ -137,8 +137,9 @@ void connect_ins_edge(
 
     direc = fins_ins_pin_direction(pin_name);
 
-    gra.internal_edge_list[it_ -> second].connect_instance(instance_name);
-    gra.internal_edge_list[it_ -> second].connect_instance_direction(direc);
+    // gra.internal_edge_list[it_ -> second].connect_instance(instance_name);
+    // gra.internal_edge_list[it_ -> second].connect_instance_direction(direc);
+    gra.internal_edge_list[it_ -> second].connect_instance_and_direction(instance_name,direc);
     gra.internal_instance.back().add_edge_direction(direc);
     int  a = 1;
     // it -> second -> connect_instance(instance_name); // connect T1/T2 to n1/n2_3
@@ -167,8 +168,9 @@ int connect_mod_edge(
     auto it = gra.E_map.find(e_name);
     size_t index = it -> second;
     if(gra.internal_edge_list[index].get_type()!=Multi){
-        gra.internal_edge_list[index].connect_instance(mod_name);
-        gra.internal_edge_list[index].connect_instance_direction(e_m_type);
+        // gra.internal_edge_list[index].connect_instance(mod_name);
+        // gra.internal_edge_list[index].connect_instance_direction(e_m_type);
+        gra.internal_edge_list[index].connect_instance_and_direction(mod_name, e_m_type);
     }
     else{
         int o_high= gra.internal_edge_list[index].get_range().high;
@@ -183,8 +185,10 @@ int connect_mod_edge(
             t++;
             auto it_ = gra.E_map.find(e_name);
             size_t index_ = it_ -> second;
-            gra.internal_edge_list[index_].connect_instance(mod_name);
-            gra.internal_edge_list[index].connect_instance_direction(e_m_type);
+            // gra.internal_edge_list[index_].connect_instance(mod_name);
+            // gra.internal_edge_list[index].connect_instance_direction(e_m_type);
+            gra.internal_edge_list[index].connect_instance_and_direction(mod_name, e_m_type);
+
             gra.add_submodule_pin_edge(p_name);
             gra.add_submodule_pin_edge(e_name);
         }
@@ -217,8 +221,9 @@ int connect_mod_edge(
 
     auto it = gra.E_map.find(e_name);
 
-    gra.internal_edge_list[it->second].connect_instance(mod_name); // connect T1/T2 to n1/n2_3
-    gra.internal_edge_list[it->second].connect_instance_direction(e_m_type);
+    // gra.internal_edge_list[it->second].connect_instance(mod_name);
+    // gra.internal_edge_list[it->second].connect_instance_direction(e_m_type);
+    gra.internal_edge_list[it->second].connect_instance_and_direction(mod_name,e_m_type);
     return is_normal;
 
 }

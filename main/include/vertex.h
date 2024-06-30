@@ -20,8 +20,8 @@ class Vertex
 {
 public:
 
-    Vertex( const Name_type& name = default_name, const size_t& index = 0,
-            const bool& is_clk = false)://wucanshu
+    Vertex( const Name_type& name = default_name, const int& index = 0,
+            const bool& is_clk = false)://无参数初始化
             name(name), index(index), is_clk(is_clk){
             this -> weight = 1;
             this -> outDegree = 0;
@@ -87,7 +87,7 @@ public:
 private:
     std::string name;
     int weight = 1; // the weight of vertex
-    size_t index;
+    int index;
     int outDegree;
     int inDegree;
 

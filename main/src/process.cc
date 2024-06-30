@@ -1,6 +1,7 @@
 #include <ctime>
 #include <string>
 #include <iostream>
+#include <iomanip> //std::setprecision
 #include "process.h"
 
 bool is_clk_module(const Name_type& module_name){
@@ -94,7 +95,7 @@ Graph_data read_file(const std::string& output_path){
     std::ifstream file(output_path);
     std::string line;
     size_t module_counter = 0;
-    size_t line_c = 2; //第一行开始，且第一行被忽略，所以第二行开始
+    size_t line_c = 1; 
     double total_time = 0.0;
     clock_t start = clock(); // start time
     clock_t start2 = clock(); // start time
@@ -114,7 +115,7 @@ Graph_data read_file(const std::string& output_path){
     getline(file,line);
     char first_char;
     while(file.get(first_char)){
-        if(line_c == 1120){
+        if(line_c == 633208){
             int a=1;
         }
         if(first_char != 'i'){ // not ins
@@ -128,7 +129,9 @@ Graph_data read_file(const std::string& output_path){
                 // if ((line_c % 10 == 0 || line_c < 10) && module_counter == 1706) {
                     std::cout << "Line:"<< line_c << "          ";
                     std::cout << "Modulenumber:"<<module_counter << std::endl;
+                    std::cout << std::fixed << std::setprecision(3); // 设置精度为3位小数
                     std::cout << "Used time: " << elapsed_time << " s" << "          ";
+                    std::cout << std::fixed << std::setprecision(6); // 设置精度为3位小数
                     std::cout << "This module used time: "<<one_module_time <<std::endl<<std::endl;;
                     if(one_module_time > max_time){
                         max_time = one_module_time;
@@ -136,9 +139,9 @@ Graph_data read_file(const std::string& output_path){
                     }
                 // }
 
-                // if(module_counter ==  1706){
-                //     int a= 1;
-                // }
+                if(line_c == 633280){
+                    int a= 1;
+                }
 
                 start2 = clock(); // start time                 
                 
@@ -157,26 +160,33 @@ Graph_data read_file(const std::string& output_path){
             else if(line[0]=='i' or line[0]=='e'){ // pin net
                 std::vector<std::string> pn_data = split_by_brackets(line);
                 std::vector<std::string> e_data = get_edge_data(pn_data[0]);
-                Edge_type e_type;
+                Edge_type e_type = NORMAL;
                 // Edge_type e_name = e_data[0];
+                Name_type e_name;
+                    e_name = e_data[0];
                 int low = std::stoi(e_data[1]);
                 int high = std::stoi(e_data[2]);
                 if (low > high) std::swap(low, high); // just in case
                 Range r_(low,high);
+                    if(line_c == 21){
+                        int a = 0;
+                    }
                 if (pn_data[1] == "1"){
                     e_type = INPUT;
-                    gra.IO_map[e_data[0]]={e_type,r_};
+                    gra.IO_map[e_name]={e_type,r_};
                 }
                 else if(pn_data[1]=="2"){
                     e_type = OUTPUT;
-                    gra.IO_map[e_data[0]]={e_type,r_};
-                    
+                    gra.IO_map[e_name]={e_type,r_};
                 }
                 else{
-                    e_type = NORMAL;
+                    e_name = e_data[0];
                 }
-                gra.add_edge(e_data[0],low,high,e_type);
-                
+                auto it = gra.E_map.find(e_name);
+                if(it == gra.E_map.end()){
+                    gra.add_edge(e_name,low,high,e_type);
+                }
+
             }
             else if(line[0]=='s'){ //assign
                 std::vector<std::string> pn_data = split_by_brackets(line);

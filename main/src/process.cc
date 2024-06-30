@@ -115,8 +115,8 @@ Graph_data read_file(const std::string& output_path){
     getline(file,line);
     char first_char;
     while(file.get(first_char)){
-        if(line_c == 633208){
-            int a=1;
+        if(line_c == 83738){
+            break;
         }
         if(first_char != 'i'){ // not ins
             getline(file,line);

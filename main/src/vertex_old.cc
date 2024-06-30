@@ -101,8 +101,9 @@ void module_to_graph_old(
 
     /*遍历所有点 + 处理 + 生成压入 Graph */
     for (auto ins : gra.get_instance_list()){
+    std::cout<<"\t\t已处理点数量: "<<temp_add<<std::endl;
         Name_type v_name = std::get<1>(ins.get_instance_data());
-        std::cout<<"IO前遍历的节点名字: "<<result.prefix+"_"+v_name<<std::endl;
+        //std::cout<<"IO前遍历的节点名字: "<<result.prefix+"_"+v_name<<std::endl;
         /**TEST**/
             if(v_name == "U457"){
                 int a = 1;
@@ -128,7 +129,7 @@ void module_to_graph_old(
                 //好像后续可以所有边只遍历一次，但是好难改
             /**只处理不是io的情况**/
             Name_type e_name = e_name_list[counter];//正在处理的 边名字
-            std::cout<<"  正在处理的正常边: "<<result.prefix+"_"+ e_name<<std::endl;
+            //std::cout<<"  正在处理的正常边: "<<result.prefix+"_"+ e_name<<std::endl;
             auto io_ = gra.IO_map.find(e_name);//用于判断是否是IO_pin
             bool is_io = (io_ != gra.IO_map.end());//是否对应正在处理模块的IO_pin
             if (!is_io){//处理内部线 而不是pin口的结构
@@ -149,7 +150,7 @@ void module_to_graph_old(
                     Direction connect_v_diec = e_i_d_list[counter_];
                     bool should_add_v=(connect_v_name!=v_name) and (connect_v_diec!= this_ins_to_edge_direc);
                     
-                    std::cout<<"    正在处理连边的点: "<<result.prefix+"_"+connect_v_name<<std::endl;
+                    //std::cout<<"    正在处理连边的点: "<<result.prefix+"_"+connect_v_name<<std::endl;
                     /**是否需要加入节点**/
                     if(should_add_v){                    
                         // 两个点 名字不同，且对于边来说方向不同，则需要加入
@@ -160,6 +161,7 @@ void module_to_graph_old(
                             auto mod = gra.Submodule_map.find(connect_v_name);
                             size_t sub_index = mod -> second; //这是对应submodule的index
                             // gra.get_submodule_list()[sub_index].second//这个是module指针 没用上
+                            
                             std::vector<Name_type> sp_list = gra.get_submodule_pin_edge_list()[sub_index];
                             // 上面这个是正在处理的submodule的pin和对应连线的list
                             /**找到正在连接现在在处理的边对应的pin**/
@@ -179,7 +181,7 @@ void module_to_graph_old(
                                     /*TEST*/    
                                     to_pin_vector.push_back({connect_v_name,connect_v_name+"_"+sp_list[sub_pin_index-1]});
 
-                                    std::cout<<"      ins->mod_pin_map ["<<result.prefix <<"_"<< v_name<<"] <- "<< connect_v_name+"_"<<sp_list[sub_pin_index-1]<<std::endl;
+                                    //std::cout<<"      ins->mod_pin_map ["<<result.prefix <<"_"<< v_name<<"] <- "<< connect_v_name+"_"<<sp_list[sub_pin_index-1]<<std::endl;
 
                                     //key是正在处理一开始 点的 name，生成点的时候再压入graph储存
                                     //value 为 <点连接的module的name, 点连接的module的pin name>
@@ -256,7 +258,7 @@ void module_to_graph_old(
                                     for( size_t sub_pin_index = 2;sub_pin_index < sp_list.size();sub_pin_index += 2){
                                         if(sp_list[sub_pin_index]==e_name){
                                             to_pin_vector.push_back({connect_v_name,sp_list[sub_pin_index-1]});                                    
-                                            std::cout<<"      ins->mod_pin_map ["<<result.prefix <<"_"<< v_name<<"] <- "<< sp_list[sub_pin_index-1]<<std::endl;
+                                            //std::cout<<"      ins->mod_pin_map ["<<result.prefix <<"_"<< v_name<<"] <- "<< sp_list[sub_pin_index-1]<<std::endl;
 
                                             //key是正在处理的点name，生成点的时候再压入graph
                                             //value 为 <点连接的module的name, 点连接的module的pin name>
@@ -339,7 +341,7 @@ void module_to_graph_old(
     
         Name_type IO_name = IO_ -> first;
         Edge_type IO_type = IO_ -> second.first; 
-        std::cout<<"正在处理的IO边: "<<result.prefix+"_"+IO_name<< " -> "<<result.prefix+"_"<<IO_type<<std::endl;
+        //std::cout<<"正在处理的IO边: "<<result.prefix+"_"+IO_name<< " -> "<<result.prefix+"_"<<IO_type<<std::endl;
         /*TEST*/
             if(1){
                 int a = 1;
@@ -414,17 +416,17 @@ void module_to_graph_old(
                 /*对这条IO边的信息进行处理*/
                 for(auto s_v : same_dire_v_list){
                     //情况12 + 567
+        //std::cout<<"    正在处理IO边ins "<< result.prefix+"_"+s_v<<std::endl;
                     if(s_v.back()!='*'){
                         size_t size_counter = not_same_v_list.size();
                         //需要处理12
                         if(size_counter != 0){
                             for (auto c_index = 0; c_index < size_counter; ++c_index ){
                                 Name_type c_v = not_same_v_list[c_index];
-        std::cout<<"    正在处理IO边ins "<< result.prefix+"_"+s_v<<std::endl;
                                 bool is_connect_mod = (c_v.back()=='*');
                                 //情况1
                                 if(!is_connect_mod){
-        std::cout<<"        连接到 ins "<< result.prefix+"_"+c_v<<std::endl;
+        //std::cout<<"        连接到 ins "<< result.prefix+"_"+c_v<<std::endl;
                                     Name_type s_v_p = result.prefix +"_"+s_v;
                                     Name_type c_v_p = result.prefix +"_"+c_v;
                                     result.vertexs[s_v_p]->add_outDgree();//1是权重
@@ -437,7 +439,7 @@ void module_to_graph_old(
                                 else{
                                     Name_type c_v_p = result.prefix +"_"+c_v;
                                     Name_type s_v_p = result.prefix +"_"+s_v;
-        std::cout<<"        连接到 mod "<<result.prefix+"_"+c_v_p<<std::endl;
+        //std::cout<<"        连接到 mod "<<result.prefix+"_"+c_v_p<<std::endl;
                                     size_t submodule_index = gra.Submodule_map[c_v];
                                     std::vector<Name_type> sp_list = gra.get_submodule_pin_edge_list()[submodule_index];
                             
@@ -459,12 +461,12 @@ void module_to_graph_old(
                                                 // 不存在，使用 [ ] 运算符插入新 key，并给它赋值一个包含 pair 的 vector
                                                 result.ins_to_mod_pin_map[s_v] = {pair_value};
                                             }    
-        std::cout<<"            即 ins map 到"<<c_v_p<<", "<< "pinname"<<std::endl;                                                                 
+        //std::cout<<"            即 ins map 到"<<c_v_p<<", "<< c_pin_name <<std::endl;                                                                 
                                         }
                                     }
                                     if(xx){
-                                        std::cerr<<"在"<< c_v_p <<"的module pin map中"<<
-                                            " 找不到正在处理的IO边"<<std::endl;
+                                        // std::cerr<<"在"<< c_v_p <<"的module pin map中"<<
+                                        //     " 找不到正在处理的IO边"<<std::endl;
                                     }
                                 /**遍历对应module的pin_线 map 找到线对应pin 更新ins to mod pin**/
 
@@ -474,11 +476,49 @@ void module_to_graph_old(
                             }
                         }
                         //需要处理12
-                        /*ins567*/
-                        /*ins567*/
+                        //处理567
+                        /*ins情况5*/
+                        if(is_connect_empty){
+                            Name_type empty_name = "empty_"+IO_name+"_O";
+                            Vertex* e_v = new Vertex(empty_name,false,1,-1,0,1);  
+                            // Vertex(name,clk,w,index,o,i);
+                            result.vertexs[empty_name] = e_v;
+        //std::cout<<"      连接到 外部empty_ins "<< empty_name<<std::endl;
+                            Name_type s_v_p = result.prefix +"_"+s_v;
+                            result.vertexs[s_v_p]->add_outDgree();//1是权重
+                            result.GraphAdjList_Plus[s_v_p].push_back({empty_name,1});
+
+                            result.GraphAdjList_Minus[empty_name].push_back({s_v_p,1});
+                            result.GraphAdjList_Plus[empty_name].push_back({"none",1});
+
+                        }
+                        /*ins情况5*/
+                        // /*ins情况6+7*/
+                        // else{
+                        //     int a = 1;
+                        //     auto out_v = result.mod_pin_to_ins_map.find(IO_name);
+                        //     if(out_v != result.mod_pin_to_ins_map.end()){
+                        //         Name_type o_v_name = out_v->second;
+                        //         /*ins情况6*/
+                        //         if(o_v_name.back()=='*'){
+                        //             result.vertexs[s_v]->add_outDgree();
+                        //             result.GraphAdjList_Plus[s_v].push_back({o_v_name,1});
+                        //             result.vertexs[o_v_name]->add_inDgree();
+                        //             result.GraphAdjList_Plus[o_v_name].push_back({s_v,1});
+                        //         }
+                        //         /*ins情况6*/
+                        //         /*ins情况7*/
+                        //         else{
+
+                        //         }
+                        //         /*ins情况7*/
+                        //     }
+                        // }
+                        // /*ins情况6+7*/
+
                     }    //需要处理12
                     else{ //情况34 + 567
-                        std::cout<<"  output出去的mod为: "<<result.prefix+"_"+s_v<<std::endl;
+                        //std::cout<<"  output出去的mod为: "<<result.prefix+"_"+s_v<<std::endl;
                         //先找到submodule对应这条IO边的信息
                         // 根据名字找到mod信息
                         auto mod = gra.Submodule_map.find(s_v);
